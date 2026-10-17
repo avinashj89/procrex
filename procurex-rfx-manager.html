@@ -1,0 +1,2387 @@
+<title>Procure-X RFx Manager</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..24,400,0..1,0&icon_names=account_balance,account_balance_wallet,add,arrow_back,assignment_turned_in,attach_file,auto_awesome,balance,bar_chart,block,bookmark_add,bookmarks,call_split,cancel,check,check_circle,close,content_copy,content_paste,currency_exchange,delete,description,done,done_all,download,edit_document,emoji_events,error,event,expand_less,expand_more,fact_check,folder_open,format_list_numbered,forward_to_inbox,gavel,groups,help,history,hourglass_top,info,lock,mail,notifications,outgoing_mail,pending,person_add,photo_camera,picture_as_pdf,policy,psychology,query_stats,receipt_long,refresh,restart_alt,save,schedule,search,send,shield,smart_toy,star,stop_circle,table,table_chart,table_view,task_alt,troubleshoot,undo,upload_file,verified,verified_user,warehouse,warning&display=block">
+<style>
+/* Layout: navy command bar + white tab strip over a cool workspace; dense two-column work surfaces, each with an AI rail */
+:root {
+  --bg: #f3f5fb; --surface: #ffffff; --surface-2: #f2f4fb; --surface-3: #e6eaf6;
+  --border: #dde2ef; --border-strong: #c3cade;
+  --fg: #131b2e; --fg-2: #34405a; --muted: #5b6784;
+  --nav: #0c1b33; --nav-2: #1c2c4b; --nav-fg: #ffffff; --nav-muted: #a6b5d4;
+  --accent: #c8281b; --accent-hover: #a91f14; --accent-soft: #fde5e1; --accent-fg: #ffffff; --accent-text: #b51d13;
+  --ok: #0b6b30; --ok-soft: #dbf4e2; --ok-strong: #1f9d4c;
+  --warn: #8a5200; --warn-soft: #fff0d0; --warn-strong: #d98a00;
+  --bad: #a3120b; --bad-soft: #ffe2dd; --bad-strong: #d93829;
+  --info: #24448a; --info-soft: #e4ebfd;
+  --l1: #e2f6e7; --l1-edge: #9fd9b0;
+  --bar-ink: #3d4b69;
+  --shadow: 0 1px 2px rgba(16, 24, 40, .05), 0 1px 3px rgba(16, 24, 40, .07);
+  --shadow-lg: 0 12px 40px rgba(12, 27, 51, .22);
+  --font: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Consolas, monospace;
+  --r-sm: 3px; --r: 5px; --r-lg: 8px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0a101e; --surface: #111a2b; --surface-2: #162036; --surface-3: #1f2a43;
+    --border: #253049; --border-strong: #35425f;
+    --fg: #e8ecf7; --fg-2: #c5cde2; --muted: #8f9bb8;
+    --nav: #050a15; --nav-2: #17233c; --nav-fg: #f2f5fb; --nav-muted: #8d9dbf;
+    --accent: #df402e; --accent-hover: #ef5745; --accent-soft: #3b1613; --accent-fg: #ffffff; --accent-text: #ff8b7a;
+    --ok: #74de94; --ok-soft: #0f2f1b; --ok-strong: #3fc56d;
+    --warn: #f4bd5f; --warn-soft: #31230b; --warn-strong: #e9a33a;
+    --bad: #ff9283; --bad-soft: #3a1512; --bad-strong: #f0604c;
+    --info: #a3baff; --info-soft: #17254a;
+    --l1: #113220; --l1-edge: #2a6b41;
+    --bar-ink: #7d8db0;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .35);
+    --shadow-lg: 0 12px 40px rgba(0, 0, 0, .55);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0a101e; --surface: #111a2b; --surface-2: #162036; --surface-3: #1f2a43;
+  --border: #253049; --border-strong: #35425f;
+  --fg: #e8ecf7; --fg-2: #c5cde2; --muted: #8f9bb8;
+  --nav: #050a15; --nav-2: #17233c; --nav-fg: #f2f5fb; --nav-muted: #8d9dbf;
+  --accent: #df402e; --accent-hover: #ef5745; --accent-soft: #3b1613; --accent-fg: #ffffff; --accent-text: #ff8b7a;
+  --ok: #74de94; --ok-soft: #0f2f1b; --ok-strong: #3fc56d;
+  --warn: #f4bd5f; --warn-soft: #31230b; --warn-strong: #e9a33a;
+  --bad: #ff9283; --bad-soft: #3a1512; --bad-strong: #f0604c;
+  --info: #a3baff; --info-soft: #17254a;
+  --l1: #113220; --l1-edge: #2a6b41;
+  --bar-ink: #7d8db0;
+  --shadow: 0 1px 2px rgba(0, 0, 0, .35);
+  --shadow-lg: 0 12px 40px rgba(0, 0, 0, .55);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { background: var(--bg); color: var(--fg); }
+body { font-family: var(--font); font-size: 14px; line-height: 1.45; -webkit-font-smoothing: antialiased; }
+h1, h2, h3, h4 { margin: 0; text-wrap: balance; color: var(--fg); }
+p { margin: 0; }
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.num, .tnum { font-variant-numeric: tabular-nums; }
+.mono { font-family: var(--mono); }
+.muted { color: var(--muted); }
+.caps { font-size: 11px; line-height: 16px; letter-spacing: .06em; font-weight: 600; text-transform: uppercase; color: var(--muted); }
+.ms { font-family: 'Material Symbols Outlined'; font-weight: normal; font-style: normal; font-size: 18px; line-height: 1; width: 1em; height: 1em; overflow: hidden; display: inline-block; flex: none; letter-spacing: normal; text-transform: none; white-space: nowrap; direction: ltr; -webkit-font-feature-settings: 'liga'; font-feature-settings: 'liga'; vertical-align: -0.2em; }
+.ms.fill { font-variation-settings: 'FILL' 1; }
+.ms.sm { font-size: 16px; }
+.ms.lg { font-size: 20px; }
+.wrap { max-width: 1480px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* App bar */
+.appbar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 40; box-shadow: 0 1px 8px rgba(0, 0, 0, .06); }
+.bar-top { background: var(--nav); color: var(--nav-fg); }
+.bar-top-in { min-height: 56px; display: flex; align-items: center; gap: 16px; }
+.brand { display: flex; align-items: center; gap: 10px; flex: none; font-weight: 700; letter-spacing: -.01em; font-size: 16px; color: var(--nav-fg); }
+.brand svg { width: 28px; height: 28px; flex: none; }
+.brand b { color: var(--bad-strong); font-weight: 700; }
+.crumb { display: flex; align-items: center; gap: 8px; min-width: 0; flex: 1; color: var(--nav-fg); }
+.crumb .sep { color: var(--nav-muted); }
+.crumb .tag { font-size: 10.5px; letter-spacing: .07em; font-weight: 600; text-transform: uppercase; background: var(--nav-2); color: var(--nav-muted); padding: 2px 6px; border-radius: var(--r-sm); flex: none; }
+.crumb .ev { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.search { position: relative; flex: 0 1 280px; min-width: 0; }
+.search .ms { position: absolute; left: 9px; top: 50%; transform: translateY(-50%); color: var(--nav-muted); }
+.search input { width: 100%; background: var(--nav-2); border: 1px solid transparent; color: var(--nav-fg); border-radius: var(--r); padding: 7px 10px 7px 32px; font-size: 13px; }
+.search input::placeholder { color: var(--nav-muted); }
+.search input:focus { outline: none; border-color: var(--nav-muted); }
+.iconbtn { position: relative; display: inline-grid; place-items: center; width: 34px; height: 34px; border-radius: var(--r); border: 0; background: transparent; color: var(--nav-muted); }
+.iconbtn:hover { background: var(--nav-2); color: var(--nav-fg); }
+.iconbtn .dot { position: absolute; top: 4px; right: 3px; min-width: 15px; height: 15px; padding: 0 3px; border-radius: 8px; background: var(--bad-strong); color: #fff; font-size: 10px; font-weight: 700; line-height: 15px; }
+.who { display: flex; align-items: center; gap: 10px; flex: none; padding-left: 12px; border-left: 1px solid var(--nav-2); }
+.avatar { width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; font-weight: 700; font-size: 12px; background: var(--nav-2); color: var(--nav-fg); box-shadow: inset 0 0 0 1px var(--nav-muted); }
+.who .nm { display: grid; line-height: 1.15; }
+.who .nm span { font-size: 13px; font-weight: 600; }
+.who .nm small { font-size: 10.5px; color: var(--nav-muted); letter-spacing: .05em; text-transform: uppercase; font-weight: 600; }
+.bar-tabs { background: var(--surface); border-bottom: 1px solid var(--border); }
+.bar-tabs-in { display: flex; align-items: stretch; justify-content: space-between; gap: 16px; min-height: 46px; }
+.tabs { display: flex; gap: 28px; overflow-x: auto; scrollbar-width: none; }
+.tabs::-webkit-scrollbar { display: none; }
+.tab { display: inline-flex; align-items: center; gap: 6px; border: 0; background: none; padding: 0; color: var(--muted); border-bottom: 2px solid transparent; white-space: nowrap; font-size: 14px; }
+.tab:hover { color: var(--fg); }
+.tab[aria-selected="true"] { color: var(--accent-text); border-bottom-color: var(--accent); font-weight: 600; }
+.tab .badge { font-size: 10.5px; font-weight: 700; background: var(--bad-soft); color: var(--bad); border-radius: 9px; padding: 0 6px; }
+.bar-meta { display: flex; align-items: center; gap: 12px; flex: none; font-size: 12.5px; color: var(--muted); }
+.bar-meta strong { color: var(--fg); }
+.stage { font-size: 11px; letter-spacing: .06em; font-weight: 600; text-transform: uppercase; padding: 3px 8px; border-radius: var(--r-sm); background: var(--surface-3); color: var(--fg); }
+
+/* Page heads */
+.pagehead { background: var(--surface-2); border-bottom: 1px solid var(--border); }
+.pagehead-in { display: flex; align-items: center; justify-content: space-between; gap: 12px 20px; flex-wrap: wrap; padding-block: 12px; }
+.ph-title { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; min-width: 0; }
+.ph-title h1 { font-size: 17px; font-weight: 600; letter-spacing: -.01em; }
+.ph-title .ico { width: 30px; height: 30px; border-radius: var(--r); display: grid; place-items: center; background: var(--accent); color: var(--accent-fg); flex: none; }
+.ph-sub { font-size: 12px; color: var(--muted); }
+.ph-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.live { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); }
+.live::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--ok-strong); }
+.content { padding-block: 20px 32px; display: grid; gap: 20px; }
+
+/* Cards, chips, buttons */
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); box-shadow: var(--shadow); min-width: 0; }
+.card-h { display: flex; align-items: center; justify-content: space-between; gap: 10px 16px; flex-wrap: wrap; padding: 14px 16px; border-bottom: 1px solid var(--border); }
+.card-h h2, .card-h h3 { font-size: 15px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+.card-h h2 .ms, .card-h h3 .ms { color: var(--muted); }
+.card-b { padding: 16px; }
+.card-f { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; padding: 10px 16px; border-top: 1px solid var(--border); background: var(--surface-2); border-radius: 0 0 var(--r-lg) var(--r-lg); font-size: 12px; color: var(--muted); }
+.chip { display: inline-flex; align-items: center; gap: 4px; font-size: 10.5px; line-height: 16px; letter-spacing: .05em; font-weight: 700; text-transform: uppercase; padding: 1px 6px; border-radius: var(--r-sm); white-space: nowrap; background: var(--surface-3); color: var(--fg-2); }
+.chip .ms { font-size: 13px; }
+.chip.ok { background: var(--ok-soft); color: var(--ok); }
+.chip.warn { background: var(--warn-soft); color: var(--warn); }
+.chip.bad { background: var(--bad-soft); color: var(--bad); }
+.chip.info { background: var(--info-soft); color: var(--info); }
+.chip.dark { background: var(--nav); color: var(--nav-fg); }
+.chip.accent { background: var(--accent); color: var(--accent-fg); }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; border: 1px solid var(--border); background: var(--surface); color: var(--fg); padding: 7px 12px; border-radius: var(--r); font-size: 13px; font-weight: 500; white-space: nowrap; line-height: 18px; }
+.btn:hover { background: var(--surface-2); border-color: var(--border-strong); }
+.btn.soft { background: var(--surface-3); border-color: transparent; }
+.btn.soft:hover { background: var(--border); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-fg); font-weight: 600; }
+.btn.primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+.btn.dark { background: var(--nav); border-color: var(--nav); color: var(--nav-fg); font-weight: 600; }
+.btn.dark:hover { background: var(--nav-2); }
+.btn.ghost { background: transparent; border-color: transparent; color: var(--fg-2); }
+.btn.ghost:hover { background: var(--surface-3); }
+.btn.sm { padding: 4px 8px; font-size: 12px; }
+.btn.lg { padding: 10px 18px; font-size: 14.5px; }
+.btn.block { width: 100%; }
+.btn:disabled, .btn[aria-disabled="true"] { opacity: .5; cursor: not-allowed; }
+.linkbtn { border: 0; background: none; padding: 0; color: var(--accent-text); font-weight: 500; font-size: 12.5px; display: inline-flex; align-items: center; gap: 4px; }
+.linkbtn:hover { text-decoration: underline; }
+.x { border: 0; background: none; color: var(--muted); padding: 2px; border-radius: var(--r-sm); display: inline-grid; place-items: center; }
+.x:hover { color: var(--bad); background: var(--bad-soft); }
+.field { display: grid; gap: 5px; min-width: 0; }
+.field > span { font-size: 12.5px; font-weight: 600; color: var(--fg-2); }
+.input, .select, .textarea { width: 100%; background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--r); padding: 7px 10px; font-size: 13.5px; color: var(--fg); min-width: 0; }
+.input:focus, .select:focus, .textarea:focus { outline: none; border-color: var(--info); box-shadow: 0 0 0 3px var(--info-soft); background: var(--surface); }
+.textarea { resize: vertical; line-height: 1.55; }
+.input.bare { background: transparent; border-color: transparent; padding: 3px 6px; }
+.input.bare:hover { border-color: var(--border); }
+.input.bare:focus { background: var(--surface); }
+.switch { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; cursor: pointer; user-select: none; }
+.switch input { appearance: none; width: 34px; height: 20px; border-radius: 10px; background: var(--border-strong); position: relative; margin: 0; cursor: pointer; transition: background .15s; flex: none; }
+.switch input::after { content: ""; position: absolute; top: 3px; left: 3px; width: 14px; height: 14px; border-radius: 50%; background: #fff; transition: transform .15s; }
+.switch input:checked { background: var(--nav); }
+:root[data-theme="dark"] .switch input:checked { background: var(--info); }
+.switch input:checked::after { transform: translateX(14px); }
+.note { display: flex; gap: 8px; align-items: flex-start; padding: 10px 12px; border-radius: var(--r); font-size: 12.5px; background: var(--info-soft); color: var(--info); }
+.note.warn { background: var(--warn-soft); color: var(--warn); }
+.note.bad { background: var(--bad-soft); color: var(--bad); }
+.note.ok { background: var(--ok-soft); color: var(--ok); }
+
+/* Tables */
+.tblwrap { overflow-x: auto; }
+.tbl { width: 100%; border-collapse: collapse; font-size: 13px; }
+.tbl th { text-align: left; font-size: 10.5px; letter-spacing: .06em; text-transform: uppercase; font-weight: 600; color: var(--muted); background: var(--surface-2); padding: 9px 12px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+.tbl td { padding: 11px 12px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+.tbl tr:last-child td { border-bottom: 0; }
+.tbl .r { text-align: right; }
+.tbl .c { text-align: center; }
+.item-name { font-weight: 600; color: var(--fg); }
+.item-spec { font-size: 12px; color: var(--muted); margin-top: 2px; max-width: 46ch; }
+.flash { animation: flash 2.2s ease-out; }
+@keyframes flash { 0%, 30% { background: var(--warn-soft); } 100% { background: transparent; } }
+
+/* Grids */
+.g-rfx { display: grid; grid-template-columns: minmax(300px, 380px) minmax(0, 1fr); gap: 20px; align-items: start; }
+.g-side { display: grid; grid-template-columns: minmax(0, 1fr) minmax(300px, 400px); gap: 20px; align-items: start; }
+.stack { display: grid; gap: 20px; min-width: 0; }
+.kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.kpi { background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--r); padding: 12px; display: grid; gap: 6px; align-content: space-between; min-height: 92px; }
+.kpi .v { font-size: 26px; font-weight: 700; letter-spacing: -.02em; line-height: 1.1; }
+.kpi .v small { font-size: 12.5px; font-weight: 500; color: var(--muted); letter-spacing: 0; margin-left: 4px; }
+.kpi .v.accent { color: var(--accent-text); }
+
+/* Chat */
+.chat { display: flex; flex-direction: column; max-height: calc(100vh - 150px); min-height: 520px; position: sticky; top: calc(env(safe-area-inset-top, 0px) + 118px); overflow: hidden; }
+.chat-h { background: var(--nav); color: var(--nav-fg); padding: 12px 14px; display: flex; align-items: center; gap: 10px; border-radius: var(--r-lg) var(--r-lg) 0 0; }
+.chat-h .ico { width: 32px; height: 32px; border-radius: var(--r); background: var(--accent); color: #fff; display: grid; place-items: center; flex: none; }
+.chat-h b { display: block; font-size: 14.5px; }
+.chat-h small { color: var(--nav-muted); font-size: 11.5px; }
+.chat-sub { display: flex; justify-content: space-between; gap: 8px; padding: 6px 14px; border-bottom: 1px solid var(--border); background: var(--surface-2); font-size: 11px; }
+.chat-log { flex: 1; overflow-y: auto; padding: 14px; display: grid; gap: 14px; align-content: start; }
+.msg { display: grid; gap: 4px; max-width: 92%; min-width: 0; }
+.msg .who-l { font-size: 11.5px; font-weight: 600; color: var(--fg-2); display: flex; gap: 6px; align-items: baseline; }
+.msg .who-l time { color: var(--muted); font-weight: 400; }
+.msg .bub { padding: 10px 12px; border-radius: var(--r-lg); font-size: 13.5px; line-height: 1.55; overflow-wrap: anywhere; }
+.msg.user { justify-self: end; }
+.msg.user .who-l { justify-content: flex-end; }
+.msg.user .bub { background: var(--info-soft); color: var(--fg); }
+.msg.ai .who-l { color: var(--accent-text); }
+.msg.ai .bub { background: var(--surface); border: 1px solid var(--border); }
+.msg.err .bub { background: var(--bad-soft); color: var(--bad); border-color: transparent; }
+.bub p + p, .bub p + ul, .bub ul + p, .bub p + ol, .bub ol + p { margin-top: 8px; }
+.bub ul, .bub ol { margin: 0; padding-left: 18px; display: grid; gap: 3px; }
+.bub .meta { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 6px; }
+.thinking { display: inline-flex; align-items: center; gap: 8px; color: var(--muted); font-size: 13px; }
+.thinking i { width: 6px; height: 6px; border-radius: 50%; background: var(--muted); animation: pulse 1.2s infinite ease-in-out; }
+.thinking i:nth-child(2) { animation-delay: .15s; }
+.thinking i:nth-child(3) { animation-delay: .3s; }
+@keyframes pulse { 0%, 80%, 100% { opacity: .25; } 40% { opacity: 1; } }
+.chat-in { border-top: 1px solid var(--border); padding: 10px 12px 12px; display: grid; gap: 8px; background: var(--surface); border-radius: 0 0 var(--r-lg) var(--r-lg); }
+.chat-in textarea { min-height: 64px; max-height: 160px; }
+.chat-in-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.sugs { display: flex; flex-wrap: wrap; gap: 6px; }
+.sug { border: 1px solid var(--border); background: var(--surface-2); border-radius: var(--r); padding: 4px 9px; font-size: 12px; color: var(--fg-2); text-align: left; }
+.sug:hover { border-color: var(--info); color: var(--info); }
+.sug:disabled { opacity: .5; cursor: not-allowed; border-color: var(--border); color: var(--fg-2); }
+.ai-off { font-size: 12px; color: var(--muted); display: flex; gap: 6px; align-items: flex-start; }
+
+/* RFx sections */
+.spec-head { background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--r); padding: 14px 16px; display: flex; justify-content: space-between; gap: 12px 20px; flex-wrap: wrap; }
+.spec-head .t { display: grid; gap: 6px; min-width: 0; flex: 1 1 360px; }
+.spec-head input.title { font-size: 22px; font-weight: 700; letter-spacing: -.02em; line-height: 1.25; }
+.sec-h { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
+.sec-h h3 { font-size: 16px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+.sec-h h3 .ms { color: var(--accent-text); }
+.qty-in { width: 104px; text-align: right; }
+.clauses { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.clause { border: 1px solid var(--border); border-radius: var(--r); background: var(--surface-2); padding: 12px; display: grid; gap: 8px; align-content: start; }
+.clause .q { font-weight: 600; font-size: 13.5px; }
+.clause .d { font-size: 12px; color: var(--muted); }
+.terms { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.term { border: 1px solid var(--border); border-radius: var(--r); background: var(--surface-2); padding: 12px; display: grid; gap: 6px; }
+.dispatch { display: flex; align-items: center; justify-content: space-between; gap: 12px 16px; flex-wrap: wrap; border: 1px solid var(--border); background: var(--surface-2); border-radius: var(--r); padding: 14px 16px; }
+.dispatch b { display: block; font-size: 15px; }
+.vgrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.vcard { display: flex; gap: 12px; align-items: center; border: 1px solid var(--border); border-radius: var(--r); padding: 10px 12px; background: var(--surface); min-width: 0; }
+.vcard .vi { width: 36px; height: 36px; border-radius: var(--r); background: var(--surface-3); display: grid; place-items: center; font-weight: 700; font-size: 12px; color: var(--fg-2); flex: none; }
+.vcard .vt { flex: 1; min-width: 0; font-size: 12px; color: var(--muted); }
+.vcard .vt b { color: var(--fg); font-size: 13.5px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.vcard .vt div { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* Vendor analyser */
+.intake { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+.icard, .acard, .clause, .term, .kpi { grid-template-columns: minmax(0, 1fr); }
+.icard { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); padding: 14px; display: grid; gap: 10px; align-content: start; box-shadow: var(--shadow); min-width: 0; }
+.icard.bad { background: var(--bad-soft); border-color: transparent; }
+.icard .top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+.icard .top b { font-size: 14.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+.icard .src { font-size: 12.5px; color: var(--muted); display: flex; gap: 6px; align-items: center; }
+.icard .st { font-size: 12.5px; display: flex; gap: 6px; align-items: flex-start; }
+.icard .st::before { content: ""; width: 7px; height: 7px; border-radius: 50%; margin-top: 6px; flex: none; background: var(--muted); }
+.icard .st.ok::before { background: var(--ok-strong); }
+.icard .st.warn::before { background: var(--warn-strong); }
+.icard .st.bad::before { background: var(--bad-strong); }
+.icard .tot { background: var(--surface-2); border-radius: var(--r); padding: 8px 10px; }
+.icard.bad .tot { background: var(--surface); }
+.icard .tot .v { font-size: 19px; font-weight: 600; }
+.icard .tot .v.na { font-style: italic; color: var(--muted); font-weight: 500; font-size: 16px; }
+.filters { display: flex; align-items: center; gap: 12px 20px; flex-wrap: wrap; padding: 12px 16px; }
+.filters .grow { flex: 1; }
+.mx th.vh { text-align: right; min-width: 132px; font-size: 13px; letter-spacing: 0; text-transform: none; color: var(--fg); }
+.mx th.vh .chip { margin-top: 3px; }
+.mx td.cell { text-align: right; white-space: nowrap; border-left: 1px solid var(--border); }
+.mx td.cell.l1 { background: var(--l1); }
+.mx td.cell.sel { box-shadow: inset 0 0 0 2px var(--info); }
+.mx td.cell.clickable { cursor: pointer; }
+.mx td.cell.clickable:hover { background: var(--surface-3); }
+.mx td.cell.flag-low { background: var(--bad-soft); }
+.rate { font-weight: 600; font-size: 14px; }
+.cf { display: inline-flex; align-items: center; gap: 3px; font-size: 10.5px; font-weight: 600; padding: 1px 5px; border-radius: var(--r-sm); margin-left: 6px; vertical-align: 1px; }
+.cf::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.cf.high { background: var(--ok-soft); color: var(--ok); }
+.cf.medium { background: var(--warn-soft); color: var(--warn); }
+.cf.low { background: var(--bad-soft); color: var(--bad); }
+.cf.verified { background: var(--info-soft); color: var(--info); }
+.l1b { display: inline-block; font-size: 10px; font-weight: 700; background: var(--ok); color: var(--surface); border-radius: 2px; padding: 0 3px; margin-left: 4px; vertical-align: 2px; }
+.lr { display: inline-block; font-size: 10px; font-weight: 700; background: var(--surface-3); color: var(--fg-2); border-radius: 2px; padding: 0 3px; margin-left: 4px; vertical-align: 2px; }
+.fxb { display: inline-block; font-size: 9.5px; font-weight: 700; letter-spacing: .04em; color: var(--info); background: var(--info-soft); border-radius: 2px; padding: 0 3px; margin-left: 4px; vertical-align: 2px; cursor: help; }
+.mx th.l1h { background: var(--l1); color: var(--ok); border-left: 2px solid var(--l1-edge); border-right: 2px solid var(--l1-edge); }
+.mx td.l1c { background: var(--l1); border-left: 2px solid var(--l1-edge); border-right: 2px solid var(--l1-edge); white-space: nowrap; min-width: 150px; font-size: 12.5px; }
+.mx td.l1c b { font-size: 13px; }
+.drop { border: 1.5px dashed var(--border-strong); border-radius: var(--r); padding: 16px; display: grid; gap: 4px; justify-items: center; text-align: center; background: var(--surface-2); cursor: pointer; }
+.drop:hover, .drop.over { border-color: var(--info); background: var(--info-soft); }
+.drop .ms { font-size: 28px; color: var(--muted); }
+.drop b { font-size: 13.5px; }
+.fxrow { display: flex; gap: 10px; flex-wrap: wrap; align-items: end; }
+.fxrow .field { flex: 1 1 110px; }
+.vlist { display: grid; gap: 8px; }
+.vrow { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; border: 1px solid var(--border); border-radius: var(--r); padding: 10px 12px; }
+.vrow .vm { min-width: 0; display: grid; gap: 2px; }
+.vrow .vm b { font-size: 14px; overflow-wrap: anywhere; }
+.vrow .vm small { color: var(--muted); font-size: 12px; }
+.vrow .va { display: flex; gap: 6px; flex-wrap: wrap; }
+.legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: 12px; color: var(--muted); }
+.legend span { display: inline-flex; gap: 5px; align-items: center; }
+.legend i { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+.audit-h { background: var(--nav); color: var(--nav-fg); padding: 12px 14px; border-radius: var(--r-lg) var(--r-lg) 0 0; display: flex; justify-content: space-between; gap: 8px; align-items: flex-start; }
+.audit-h small { color: var(--nav-muted); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; font-weight: 600; display: block; }
+.audit-h b { font-size: 15px; }
+.scan { background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--r); padding: 10px; font-family: var(--mono); font-size: 12px; line-height: 1.6; white-space: pre-wrap; overflow-wrap: anywhere; color: var(--fg-2); }
+.scan .hl { display: block; background: var(--bad-soft); color: var(--bad); border-left: 3px solid var(--bad-strong); padding: 2px 6px; margin: 4px 0; }
+.kv { display: flex; justify-content: space-between; gap: 12px; font-size: 13px; padding: 4px 0; }
+.kv span:first-child { color: var(--muted); }
+.kv span:last-child { font-weight: 600; text-align: right; }
+.form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.form-grid .full { grid-column: 1 / -1; }
+
+/* Decision maker */
+.bars { display: grid; gap: 14px; }
+.bar-row { display: grid; gap: 6px; }
+.bar-row .lab { display: flex; justify-content: space-between; gap: 10px; font-size: 13px; }
+.bar-row .lab b { font-variant-numeric: tabular-nums; }
+.bar-track { height: 14px; background: var(--surface-3); border-radius: 2px; overflow: hidden; }
+.bar-fill { height: 100%; background: var(--bar-ink); border-radius: 2px; }
+.bar-fill.best { background: var(--ok-strong); }
+.bar-fill.split { background: var(--ok); }
+.bar-row.hero { background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--r); padding: 12px; }
+.bar-row.hero .lab { font-size: 14.5px; font-weight: 600; color: var(--ok); }
+.alloc { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 12px; }
+.acard { border: 1px solid var(--border); background: var(--surface-2); border-radius: var(--r); padding: 12px; display: grid; gap: 8px; align-content: start; }
+.acard .h { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; }
+.acard .h b { font-size: 14.5px; }
+.acard ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 4px; font-size: 12.5px; color: var(--fg-2); }
+.acard ul li { display: flex; justify-content: space-between; gap: 8px; }
+.acard .sub { display: flex; justify-content: space-between; border-top: 1px solid var(--border); padding-top: 8px; font-size: 12px; }
+.acard .sub b { font-size: 14px; }
+.recbox { display: flex; gap: 12px; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; background: var(--info-soft); border-radius: var(--r); padding: 14px; }
+.recbox b { font-size: 15px; }
+.recbox .big { font-size: 20px; font-weight: 700; color: var(--ok); }
+.meter { display: inline-block; width: 90px; height: 7px; background: var(--surface-3); border-radius: 4px; overflow: hidden; vertical-align: middle; margin-right: 8px; }
+.meter i { display: block; height: 100%; background: var(--ok-strong); }
+.meter i.mid { background: var(--bar-ink); }
+.meter i.lo { background: var(--warn-strong); }
+.opts { display: grid; gap: 8px; }
+.opt { display: flex; gap: 10px; align-items: flex-start; border: 1px solid var(--border); border-radius: var(--r); padding: 10px 12px; cursor: pointer; background: var(--surface); }
+.opt:has(input:checked) { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+.opt input { margin-top: 3px; accent-color: var(--accent); }
+.opt .ot { display: grid; gap: 2px; font-size: 12.5px; color: var(--muted); }
+.opt .ot b { color: var(--fg); font-size: 13.5px; }
+.gov { display: grid; gap: 8px; }
+.gov-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 8px 10px; background: var(--surface-2); border-radius: var(--r); font-size: 13px; }
+
+/* Email */
+.ehead { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 10px 14px; align-items: center; padding: 16px; }
+.ehead > label, .ehead > .lbl { font-size: 11px; letter-spacing: .06em; text-transform: uppercase; font-weight: 600; color: var(--muted); }
+.ebox { background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--r); padding: 6px 8px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; min-height: 38px; min-width: 0; }
+.pill { display: inline-flex; align-items: center; gap: 6px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-sm); padding: 2px 4px 2px 8px; font-size: 12.5px; max-width: 100%; }
+.pill span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ebox input { border: 0; background: transparent; min-width: 140px; flex: 1; padding: 3px 4px; font-size: 13px; }
+.ebox input:focus { outline: none; }
+.subject { font-size: 16px; font-weight: 600; }
+.etool { display: flex; align-items: center; gap: 8px 12px; flex-wrap: wrap; padding: 8px 16px; background: var(--surface-2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.etool .grow { flex: 1; }
+.ebody { padding: 16px; display: grid; gap: 16px; }
+.ebody textarea { min-height: 340px; background: var(--surface); font-size: 14px; line-height: 1.65; }
+.esum { background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--r); padding: 14px 16px; display: grid; gap: 12px; }
+.esum .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 20px; }
+.esum .grid div { display: grid; gap: 3px; font-size: 13.5px; }
+.rtabs { display: flex; gap: 6px; flex-wrap: wrap; }
+.rtab { border: 1px solid var(--border); background: var(--surface); border-radius: var(--r); padding: 6px 10px; font-size: 12.5px; display: inline-flex; gap: 6px; align-items: center; }
+.rtab[aria-pressed="true"] { border-color: var(--accent); color: var(--accent-text); font-weight: 600; box-shadow: 0 0 0 1px var(--accent); }
+.attach { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.att { border: 1px solid var(--border); border-radius: var(--r); padding: 10px; display: flex; gap: 10px; align-items: center; background: var(--surface); min-width: 0; }
+.att .fi { width: 34px; height: 34px; border-radius: var(--r); display: grid; place-items: center; flex: none; }
+.att .ft { min-width: 0; font-size: 12px; color: var(--muted); }
+.att .ft b { display: block; color: var(--fg); font-size: 12.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.prof { display: flex; gap: 12px; align-items: center; }
+.prof .mono-badge { width: 46px; height: 46px; border-radius: var(--r); background: var(--accent-soft); color: var(--accent-text); font-weight: 700; font-size: 17px; display: grid; place-items: center; flex: none; font-family: var(--font); }
+.stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; background: var(--surface-2); border-radius: var(--r); padding: 12px; }
+.stats div { display: grid; gap: 2px; }
+.stats b { font-size: 17px; }
+.checks { display: grid; gap: 8px; }
+.check { display: flex; gap: 10px; align-items: flex-start; padding: 9px 10px; background: var(--surface-2); border-radius: var(--r); font-size: 13px; }
+.check .ms { color: var(--ok-strong); }
+.check.pending .ms { color: var(--warn-strong); }
+.check small { display: block; color: var(--muted); font-size: 12px; }
+.steps { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.steps li { display: flex; gap: 10px; align-items: center; font-size: 13px; }
+.steps li i { width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; font-style: normal; font-weight: 700; font-size: 12px; background: var(--surface-3); color: var(--fg-2); flex: none; }
+.steps li.done i { background: var(--ok-strong); color: #fff; }
+.steps li.now i { background: var(--accent); color: #fff; }
+.efoot { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; padding: 12px 16px; background: var(--surface-2); border-top: 1px solid var(--border); border-radius: 0 0 var(--r-lg) var(--r-lg); }
+.efoot .r { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+
+/* Footer, modal, toast */
+.foot { background: var(--surface-2); border-top: 1px solid var(--border); }
+.foot-in { display: flex; justify-content: space-between; gap: 10px 20px; flex-wrap: wrap; padding-block: 16px; font-size: 12px; color: var(--muted); }
+.foot-in .caps { color: var(--muted); }
+.modal-bg { position: fixed; inset: 0; z-index: 80; background: rgba(6, 12, 24, .55); display: grid; place-items: center; padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
+.modal { width: min(640px, 100%); max-height: 100%; overflow: auto; background: var(--surface); border-radius: var(--r-lg); box-shadow: var(--shadow-lg); border: 1px solid var(--border); display: flex; flex-direction: column; }
+.modal-h { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 14px 16px; border-bottom: 1px solid var(--border); }
+.modal-h h2 { font-size: 16px; font-weight: 600; }
+.modal-b { padding: 16px; display: grid; gap: 14px; }
+.modal-f { display: flex; justify-content: flex-end; gap: 8px; flex-wrap: wrap; padding: 12px 16px; border-top: 1px solid var(--border); background: var(--surface-2); }
+.toasts { position: fixed; z-index: 90; right: max(16px, env(safe-area-inset-right, 0px)); bottom: calc(16px + env(safe-area-inset-bottom, 0px)); display: grid; gap: 8px; width: min(380px, calc(100vw - 32px)); }
+.toast { background: var(--nav); color: var(--nav-fg); border-radius: var(--r); padding: 11px 14px; font-size: 13px; box-shadow: var(--shadow-lg); display: flex; gap: 10px; align-items: flex-start; animation: tin .2s ease-out; }
+.toast .ms { color: var(--ok-strong); }
+.toast.err .ms { color: var(--bad-strong); }
+@keyframes tin { from { transform: translateY(8px); opacity: 0; } to { transform: none; opacity: 1; } }
+.log { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
+.log li { display: grid; grid-template-columns: 88px minmax(0, 1fr); gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+.log li time { color: var(--muted); font-size: 12px; font-variant-numeric: tabular-nums; }
+.log li small { color: var(--muted); display: block; }
+
+@media (max-width: 1180px) {
+  .g-rfx, .g-side { grid-template-columns: minmax(0, 1fr); }
+  .chat { position: static; max-height: 640px; min-height: 0; }
+}
+@media (max-width: 900px) {
+  .search, .who .nm, .crumb .tag { display: none; }
+  .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .terms, .attach { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 640px) {
+  .clauses, .vgrid, .form-grid, .esum .grid, .stats { grid-template-columns: minmax(0, 1fr); }
+  .ehead { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+  .ehead > label, .ehead > .lbl { margin-top: 6px; }
+  .bar-meta .cl { display: none; }
+  .crumb .sep, .crumb .ev { display: none; }
+  .bar-tabs-in { flex-wrap: wrap; gap: 0 12px; }
+  .tabs { gap: 20px; min-height: 44px; }
+  .bar-meta { padding-bottom: 8px; }
+  .spec-head input.title { font-size: 18px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+</style>
+
+<header class="appbar">
+  <div class="bar-top">
+    <div class="wrap bar-top-in">
+      <div class="brand">
+        <svg viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="5" fill="#d93829"/><path d="M8.5 8.5l11 11M19.5 8.5l-11 11" stroke="#fff" stroke-width="3.2" stroke-linecap="round"/></svg>
+        <span>PROCURE<b>-X</b></span>
+      </div>
+      <div class="crumb">
+        <span class="sep">/</span>
+        <span class="tag">Active event</span>
+        <span class="ev" id="crumb-ev">Event</span>
+      </div>
+      <label class="search">
+        <span class="ms">search</span>
+        <span class="sr">Search line items and vendors</span>
+        <input id="global-search" type="search" placeholder="Search line items, vendors…" autocomplete="off">
+      </label>
+      <button class="iconbtn" type="button" data-action="goto-flag" id="notif-btn" title="Open extraction flags"><span class="ms lg">notifications</span><span class="dot" id="notif-dot" hidden>0</span></button>
+      <button class="iconbtn" type="button" data-action="views-open" title="Saved views"><span class="ms lg">bookmarks</span></button>
+      <button class="iconbtn" type="button" data-action="open-log" title="Revision and audit log"><span class="ms lg">history</span></button>
+      <div class="who">
+        <div class="avatar" aria-hidden="true">AJ</div>
+        <div class="nm"><span>Avinash J</span><small>Lead Buyer</small></div>
+      </div>
+    </div>
+  </div>
+  <div class="bar-tabs">
+    <div class="wrap bar-tabs-in">
+      <nav class="tabs" role="tablist" aria-label="RFx workflow">
+        <button class="tab" role="tab" id="tab-btn-rfx" data-tab="rfx" aria-controls="tab-rfx">RFx Creator</button>
+        <button class="tab" role="tab" id="tab-btn-vendors" data-tab="vendors" aria-controls="tab-vendors">Vendor Analyser <span class="badge" id="tab-flag-count" hidden></span></button>
+        <button class="tab" role="tab" id="tab-btn-decision" data-tab="decision" aria-controls="tab-decision">Decision Maker</button>
+        <button class="tab" role="tab" id="tab-btn-email" data-tab="email" aria-controls="tab-email">Email Compose</button>
+      </nav>
+      <div class="bar-meta">
+        <span class="cl">Closing in: <strong class="tnum" id="closing">—</strong></span>
+        <span class="stage" id="stage-pill">Status</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section id="tab-rfx" role="tabpanel" aria-labelledby="tab-btn-rfx"></section>
+  <section id="tab-vendors" role="tabpanel" aria-labelledby="tab-btn-vendors" hidden></section>
+  <section id="tab-decision" role="tabpanel" aria-labelledby="tab-btn-decision" hidden></section>
+  <section id="tab-email" role="tabpanel" aria-labelledby="tab-btn-email" hidden></section>
+</main>
+
+<footer class="foot">
+  <div class="wrap foot-in">
+    <span><span class="caps">Procure-X Governance Suite</span> · Prototype with example data. Nothing in this page sends email or contacts vendors.</span>
+    <span>AI features run on Claude through your own Claude account.</span>
+  </div>
+</footer>
+
+<div class="modal-bg" id="modal" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-h"><h2 id="modal-title">Dialog</h2><button class="x" type="button" data-action="close-modal" aria-label="Close"><span class="ms">close</span></button></div>
+    <div class="modal-b" id="modal-body"></div>
+    <div class="modal-f" id="modal-foot"></div>
+  </div>
+</div>
+<div class="toasts" id="toasts" aria-live="polite"></div>
+
+<script>
+'use strict';
+/* ---------- Helpers ---------- */
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const icon = (n, cls = '') => `<span class="ms ${cls}" aria-hidden="true">${n}</span>`;
+const inr = n => '₹' + Math.round(n).toLocaleString('en-IN');
+const rateFmt = n => '₹' + Number(n).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const lakh = n => '₹' + (n / 1e5).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' L';
+const pct = n => (n * 100).toFixed(1) + '%';
+const IST = 'Asia/Kolkata';
+const fmtDT = iso => new Date(iso).toLocaleString('en-IN', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false, timeZone: IST }) + ' IST';
+const fmtDate = iso => new Date(iso).toLocaleDateString('en-IN', { day: '2-digit', month: 'long', year: 'numeric', timeZone: IST });
+const fmtTime = iso => new Date(iso).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: IST });
+const toISTInput = iso => new Date(new Date(iso).getTime() + 330 * 6e4).toISOString().slice(0, 16);
+const fromISTInput = v => new Date(v + ':00+05:30').toISOString();
+const initials = name => name.split(/[\s&]+/).filter(Boolean).slice(0, 2).map(w => w[0]).join('').toUpperCase();
+const plural = (n, w) => `${n} ${w}${n === 1 ? '' : 's'}`;
+const clone = o => JSON.parse(JSON.stringify(o));
+
+/* Minimal, safe Markdown for AI answers: paragraphs, bullets, numbers, bold. */
+function md(text) {
+  const inline = s => esc(s).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>').replace(/`([^`]+)`/g, '<code>$1</code>');
+  const out = []; let list = null;
+  for (const raw of String(text).split('\n')) {
+    const line = raw.trimEnd();
+    const b = line.match(/^\s*[-*•]\s+(.*)$/), n = line.match(/^\s*\d+[.)]\s+(.*)$/);
+    if (b || n) {
+      const type = b ? 'ul' : 'ol';
+      if (!list || list.type !== type) { if (list) out.push(`</${list.type}>`); list = { type }; out.push(`<${type}>`); }
+      out.push(`<li>${inline((b || n)[1])}</li>`);
+      continue;
+    }
+    if (list) { out.push(`</${list.type}>`); list = null; }
+    if (!line.trim()) continue;
+    const h = line.match(/^#{1,6}\s+(.*)$/);
+    out.push(`<p>${h ? `<strong>${inline(h[1])}</strong>` : inline(line)}</p>`);
+  }
+  if (list) out.push(`</${list.type}>`);
+  return out.join('');
+}
+
+/* Reference FX rates (INR per unit). Default: USD/INR market close on 16 Oct 2026.
+   The page can't reach live rate feeds, so the buyer updates these to the day's value. */
+const FX_DEFAULT = { rates: { USD: 94.95 }, asOf: '2026-10-16', note: 'USD/INR market close' };
+const todayIST = () => new Date(Date.now() + 330 * 6e4).toISOString().slice(0, 10);
+const CUR_SYM = { INR: '₹', USD: '$', EUR: '€', GBP: '£', AED: 'AED ', SGD: 'S$', JPY: '¥', CNY: 'CN¥' };
+
+/* ---------- Seed data (example event) ---------- */
+function seed() {
+  const now = Date.now();
+  const yr = new Date().getFullYear();
+  const deadline = new Date(now + (4 * 24 + 8) * 36e5); deadline.setMinutes(0, 0, 0);
+  const ago = mins => new Date(now - mins * 6e4).toISOString();
+  const q = (rates, conf = {}) => Object.fromEntries(Object.entries(rates).map(([k, v]) => [k, { rate: v, conf: conf[k] || 'high' }]));
+  const s = {
+    v: 1,
+    tab: 'rfx',
+    stage: 'evaluation',
+    eventId: `RFX-${yr}-089`,
+    rfx: {
+      title: 'Corrugated Packaging Supply',
+      summary: 'Strategic sourcing package for North and South distribution hubs, FY H2 volumes.',
+      ref: `PROC-PKG-${yr}-V2`,
+      revision: 4,
+      dirty: false,
+      currency: 'INR',
+      validityDays: 90,
+      budget: 10100000,
+      deadline: deadline.toISOString(),
+      lines: [
+        { id: 'L01', name: 'Heavy-duty master shipping box', spec: '5-ply, 600×400×400 mm, Kraft 180 GSM, bursting strength > 14 kg/cm²', uom: 'Units', qty: 45000, site: 'Bhiwandi Central DC' },
+        { id: 'L02', name: 'Standard e-commerce shipper box', spec: '3-ply, 350×250×150 mm, Flute B, crush resistance > 250 N', uom: 'Units', qty: 120000, site: 'Bangalore Fulfilment Hub' },
+        { id: 'L03', name: 'Die-cut cushioning tray', spec: '3-ply E-flute, 280×180×80 mm, anti-abrasive inner liner', uom: 'Units', qty: 80000, site: 'Manesar Hub' },
+        { id: 'L04', name: 'Heavy-duty pallet container sleeve', spec: '5-ply double wall, 1200×1000×900 mm, moisture-repellent wax coat', uom: 'Units', qty: 12000, site: 'Chennai Plant' },
+        { id: 'L05', name: 'Printed mailer box', spec: '3-ply E-flute, 300×220×80 mm, 2-colour flexo print', uom: 'Units', qty: 60000, site: 'Bangalore Fulfilment Hub' },
+        { id: 'L06', name: 'Corrugated partition insert', spec: '2-ply, 12-cell, 250×250×200 mm', uom: 'Sets', qty: 30000, site: 'Bhiwandi Central DC' },
+        { id: 'L07', name: 'Edge protector board', spec: 'Laminated kraft, 50×50×5 mm, 1000 mm length', uom: 'Units', qty: 25000, site: 'Chennai Plant' },
+        { id: 'L08', name: 'Export carton', spec: '7-ply, 800×600×600 mm, ISPM-15 pallet compatible', uom: 'Units', qty: 6000, site: 'Bhiwandi Central DC' }
+      ],
+      clauses: [
+        { id: 'C01', category: 'Quality standards', question: 'ISO 9001:2015 and ISO 14001 certification proof upload required?', detail: 'Vendors must attach valid UKAS or NABCB accredited certificates. Strict pass/fail gate.', mandatory: true, expected: 'Yes, mandatory' },
+        { id: 'C02', category: 'Quality defect threshold', question: 'Maximum allowable batch rejection rate?', detail: 'Measured against delivery lot acceptance sampling (AQL 0.65, General Inspection II).', mandatory: true, expected: '< 0.8% with tolerance notes' },
+        { id: 'C03', category: 'Supply chain SLA', question: 'Committed dispatch lead time for recurring replenishment POs?', detail: 'From electronic ERP PO transmission to warehouse dock arrival.', mandatory: true, expected: '7 calendar days' },
+        { id: 'C04', category: 'Treasury & AP policy', question: 'Standard commercial payment terms?', detail: 'Corporate treasury default is Net 60 days following physical GRN.', mandatory: true, expected: 'Net 60 days from GRN date' }
+      ]
+    },
+    vendors: [
+      { id: 'V1', name: 'Packwell Industries', email: 'sales@packwell.co.in', contact: 'Anita Rao (Head of Sales)', vendorId: 'VEND-IND-08221', tier: 1, iso: true, source: 'Excel (.xlsx)', srcIcon: 'table', paymentDays: 45, esg: 'FSC certified' },
+      { id: 'V2', name: 'Horizon Containers', email: 'bid@horizonpack.com', contact: 'Suresh Menon (Key Accounts)', vendorId: 'VEND-IND-04192', tier: 1, iso: true, source: 'PDF (scanned)', srcIcon: 'picture_as_pdf', paymentDays: 30, esg: 'ISO 14001' },
+      { id: 'V3', name: 'Delta Paper & Board', email: 'bids@deltapaper.in', contact: 'Rajesh Verma (Managing Director)', vendorId: 'VEND-IND-09114', tier: 2, iso: true, source: 'Email quote (.eml)', srcIcon: 'mail', paymentDays: 60, esg: 'FSC certified' },
+      { id: 'V4', name: 'Apex Packaging', email: 'rfq@apexpack.com', contact: 'Farhan Qureshi (Sales Manager)', vendorId: 'VEND-IND-06440', tier: 1, iso: false, source: 'Photo / scan (.jpeg)', srcIcon: 'photo_camera', paymentDays: 30, esg: 'Not declared' },
+      { id: 'V5', name: 'Sterling Corrugators', email: 'tenders@sterlingcorr.in', contact: 'Meera Iyer (Tender Desk)', vendorId: 'VEND-IND-07735', tier: 2, iso: null, source: 'Awaiting file', srcIcon: 'hourglass_top', paymentDays: null, esg: 'Pending' }
+    ],
+    invited: ['V1', 'V2', 'V3', 'V4', 'V5'],
+    quotes: {
+      V1: q({ L01: 42.5, L02: 18.2, L03: 12.4, L04: 210, L05: 15.2, L06: 9.1, L07: 6.2, L08: 96 }),
+      V2: q({ L01: 44, L02: 19.5, L03: 11.9, L04: 205, L05: 14.6, L06: 9.4, L07: 5.9, L08: 99.5 }, { L04: 'medium' }),
+      V3: q({ L01: 39.8, L02: 18.9, L03: 12.1, L04: 198, L05: 15.8, L06: 8.7, L07: 6.4, L08: 92 }),
+      V4: q({ L01: 41.2, L02: 18.6, L03: 14, L04: 240, L05: 14.9, L06: 9 }, { L04: 'low' })
+    },
+    flags: [
+      { id: 'F1', vendor: 'V4', line: 'L04', severity: 'low', status: 'open', file: 'Apex_Quote_Img_094.jpg', confidence: 68,
+        raw: 'ITEM 04 | PALLET CONT. SLEEVE | QTY: 12,000 | UOM: PC\n>>RATE: ₹240.00 / pc (handwritten: includes delivery?)\n*Taxes extra as applicable at 18% GST',
+        reason: 'Handwritten footnote does not say whether the unit price includes freight to Chennai Plant or is ex-works. OCR confidence 68% is below the 85% threshold.' },
+      { id: 'F2', vendor: 'V2', line: 'L04', severity: 'medium', status: 'open', file: 'Horizon_RFQ_Response.pdf', confidence: 81,
+        raw: '4   Pallet sleeve 5-ply DW 1200x1000x900   12000   >>2?5.00\n    Wax coat incl. | Delivery: Chennai',
+        reason: 'Middle digit of the rate is smudged in the scan. Read as ₹205.00; ₹265.00 is also possible. Confidence 81%.' }
+    ],
+    rawQuotes: {
+      V5: `STERLING CORRUGATORS PVT LTD
+Plot 14, MIDC Taloja, Navi Mumbai 410208 | GSTIN 27AABCS4417K1Z3
+Quotation No. SC/Q/${String(yr).slice(2)}11/0457
+Ref: ${'RFX-' + yr + '-089'} Corrugated packaging
+
+S.No  Description                                Qty        Rate (Rs/unit)
+1     Master shipping box 5ply 600x400x400       45,000     40.90
+2     E-com shipper 3ply B-flute 350x250x150     1,20,000   18.40
+3     Cushion tray die-cut E-flute 280x180x80    80,000     12.00
+4     Pallet sleeve 5ply DW 1200x1000x900 (wax)  12,000     201.00 + freight Rs 6/pc to Chennai
+5     Printed mailer E-flute 300x220x80 2C       60,000     14.40
+6     Partition insert 12-cell                   30,000     8.90 per set
+7     Edge protector 50x50x5 x 1000mm            25,000     6.00
+8     Export carton 7ply 800x600x600             6,000      94.50
+
+Prices ex-works Taloja, GST 18% extra. Freight included except where noted.
+Payment: 45 days from GRN. Validity: 60 days.
+ISO 9001:2015 and ISO 14001:2015 certified (certificate copies attached).`
+    },
+    approvals: { cpo: { ok: true, by: 'Vivek Nair (CPO)', at: ago(190) }, fin: { ok: false, by: 'Kavita Desai (Finance Controller)', at: null } },
+    award: null,
+    awardChoice: 'single',
+    chat: {
+      rfx: [
+        { role: 'user', text: 'I need corrugated packaging: 8 line items, 5-ply and 3-ply boxes, quotes by Friday. Ask vendors about ISO certification.', at: ago(220), example: true },
+        { role: 'assistant', text: 'Here is your draft RFx. I grouped **8 line items** by ply rating, set the submission deadline, and added **4 mandatory compliance clauses**, including ISO 9001/14001 proof.', at: ago(219), example: true, meta: ['Specification synthesised'] },
+        { role: 'user', text: 'Send it to Packwell, Horizon, Delta Paper, Apex and Sterling.', at: ago(216), example: true },
+        { role: 'assistant', text: 'Added **5 vendors** to the distribution list. All have GSTIN on file and supplier-portal access.', at: ago(215), example: true, meta: ['5 vendors added'] }
+      ],
+      analyst: []
+    },
+    clar: { vendor: 'V4', line: 'L04', text: '' },
+    email: { recipient: null, tone: 'Formal', cc: ['avinash.j@enterprisecorp.com', 'legal-procurement@enterprisecorp.com', 'finance-ap@enterprisecorp.com'], drafts: {} },
+    ui: { selFlag: 'F1', qualifiedOnly: false, completeOnly: false, filter: '', showAllLines: false },
+    fx: clone(FX_DEFAULT),
+    audit: [
+      { at: ago(220), who: 'Avinash J', what: 'Created RFx draft with the AI co-pilot' },
+      { at: ago(214), who: 'Avinash J', what: 'Sent RFx to 5 vendors (revision 1)' },
+      { at: ago(190), who: 'Vivek Nair (CPO)', what: 'Approved spend delegation above ₹25 L' },
+      { at: ago(150), who: 'Extraction engine', what: 'Ingested 4 quotations; 2 lines flagged for review' }
+    ]
+  };
+  s.rfx.issued = issuedSnapshot(s.rfx);
+  return s;
+}
+/* What vendors were last sent. Vendor Analyser, Decision Maker and Email Compose read this;
+   RFx Creator edits the draft until the amendment is issued. */
+function issuedSnapshot(rfx) { return { lines: clone(rfx.lines), deadline: rfx.deadline, revision: rfx.revision }; }
+
+/* ---------- State ---------- */
+const LS_KEY = 'procurex-rfx-manager-v2';
+const LS_KEY_V1 = 'procurex-rfx-manager-v1';
+let S = null;
+const RT = { busy: {}, ctl: {}, flashLines: new Set(), modalHandlers: {} };
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(LS_KEY) || localStorage.getItem(LS_KEY_V1);
+    if (raw) { const o = migrate(JSON.parse(raw)); if (o) return o; }
+  } catch (e) { /* storage blocked: start fresh */ }
+  return seed();
+}
+/* Brings older saved state (and saved views) up to the current shape. */
+function migrate(o) {
+  if (!o || o.v !== 1 || !o.rfx) return null;
+  o = JSON.parse(JSON.stringify(o).replace(/Priya Sharma/g, 'Avinash J').replace(/priya\.sharma@/g, 'avinash.j@'));
+  if (!o.fx || !o.fx.rates) o.fx = clone(FX_DEFAULT);
+  if (!o.rfx.issued) {
+    // Unissued draft edits stay in the draft: only lines some vendor has quoted count as issued.
+    const quoted = id => Object.values(o.quotes || {}).some(q => q && q[id] && q[id].rate != null);
+    o.rfx.issued = issuedSnapshot(o.rfx);
+    if (o.rfx.dirty) o.rfx.issued.lines = o.rfx.issued.lines.filter(l => quoted(l.id));
+  }
+  return o;
+}
+function save() { try { localStorage.setItem(LS_KEY, JSON.stringify(S)); } catch (e) { /* ignore */ } }
+function log(what, who = 'Avinash J') { S.audit.push({ at: new Date().toISOString(), who, what }); }
+
+const vendorById = id => S.vendors.find(v => v.id === id);
+const issuedLines = () => S.rfx.issued.lines;
+const lineById = id => issuedLines().find(l => l.id === id);
+const draftLineById = id => S.rfx.lines.find(l => l.id === id);
+/* Line changes between the draft and the issued revision, for RFx Creator and the other tabs' notices. */
+function draftChanges() {
+  const was = new Map(issuedLines().map(l => [l.id, JSON.stringify(l)]));
+  const now = new Map(S.rfx.lines.map(l => [l.id, JSON.stringify(l)]));
+  const added = S.rfx.lines.filter(l => !was.has(l.id));
+  const removed = issuedLines().filter(l => !now.has(l.id));
+  const edited = S.rfx.lines.filter(l => was.has(l.id) && was.get(l.id) !== now.get(l.id));
+  const other = S.rfx.deadline !== S.rfx.issued.deadline;
+  const parts = [added.length && `${plural(added.length, 'line')} added`, edited.length && `${plural(edited.length, 'line')} edited`, removed.length && `${plural(removed.length, 'line')} removed`, other && 'deadline moved'].filter(Boolean);
+  return { added, removed, edited, any: parts.length > 0, text: parts.join(', ') };
+}
+const invitedVendors = () => S.invited.map(vendorById).filter(Boolean);
+const usable = c => c && c.rate != null && c.conf !== 'low';
+
+/* ---------- Evaluation engine ---------- */
+function vendorStatus(v) {
+  const q = S.quotes[v.id] || {};
+  const n = issuedLines().filter(l => q[l.id] && q[l.id].rate != null).length;
+  const open = S.flags.filter(f => f.vendor === v.id && f.status === 'open' && lineById(f.line));
+  if (!n) return { key: 'pending', n, text: 'Awaiting submission', tone: '' };
+  if (open.some(f => f.severity === 'low')) return { key: 'flagged', n, text: `Low confidence on line ${open.map(f => f.line.slice(1)).join(', ')}`, tone: 'bad' };
+  if (open.length) return { key: 'review', n, text: `Needs review (line ${open.map(f => f.line.slice(1)).join(', ')})`, tone: 'warn' };
+  return { key: 'extracted', n, text: `Extracted · ${n}/${issuedLines().length} lines`, tone: 'ok' };
+}
+
+function evaluate() {
+  const allLines = issuedLines();
+  const quotedBy = id => allLines.some(l => (S.quotes[id] || {})[l.id]?.rate != null);
+  const qualifiedIds = invitedVendors().filter(v => v.iso === true && quotedBy(v.id)).map(v => v.id);
+  const awaiting = allLines.filter(l => !qualifiedIds.some(id => (S.quotes[id] || {})[l.id]?.rate != null));
+  const lines = allLines.filter(l => !awaiting.includes(l));
+  const rows = invitedVendors().map(v => {
+    const q = S.quotes[v.id] || {};
+    let total = 0, count = 0;
+    for (const l of lines) { const c = q[l.id]; if (c && c.rate != null) { total += c.rate * l.qty; count++; } }
+    const pending = count === 0;
+    return { v, total, count, pending, complete: lines.length > 0 && count === lines.length, qualified: v.iso === true && !pending };
+  });
+  const eligible = rows.filter(r => r.qualified && r.complete).sort((a, b) => a.total - b.total);
+  const best = eligible[0] || null;
+  const l1 = {};
+  // Per-line ranks among qualified vendors' reviewed rates: L1 = lowest, L2 = next, ties share a rank.
+  const ranks = {};
+  for (const l of lines) {
+    const valid = rows.filter(r => r.qualified).map(r => ({ id: r.v.id, c: (S.quotes[r.v.id] || {})[l.id] })).filter(x => usable(x.c)).sort((a, b) => a.c.rate - b.c.rate);
+    const m = ranks[l.id] = {}; let rank = 0, prev = null;
+    valid.forEach((x, i) => { if (x.c.rate !== prev) { rank = i + 1; prev = x.c.rate; } m[x.id] = rank; });
+  }
+  const alloc = lines.map(l => {
+    let bestV = null, bestRate = Infinity;
+    for (const r of rows) {
+      if (!r.qualified) continue;
+      const c = (S.quotes[r.v.id] || {})[l.id];
+      if (usable(c) && c.rate < bestRate) { bestRate = c.rate; bestV = r.v; }
+    }
+    if (bestV) l1[l.id] = bestV.id;
+    return { line: l, vendor: bestV, rate: bestV ? bestRate : null, amount: bestV ? bestRate * l.qty : 0 };
+  });
+  const splitTotal = alloc.reduce((s, a) => s + a.amount, 0);
+  const unallocated = alloc.filter(a => !a.vendor);
+  const splitVendors = [...new Set(alloc.filter(a => a.vendor).map(a => a.vendor.id))];
+  const minTotal = best ? best.total : null;
+  const scored = rows.map(r => {
+    const wc = wcScore(r.v.paymentDays);
+    const score = r.pending ? null : Math.round(((minTotal && r.total ? Math.min(1, minTotal / r.total) : 0) * 60 * (r.complete ? 1 : r.count / lines.length) + (r.v.iso ? 20 : 0) + wc / 100 * 20) * 10) / 10;
+    return { ...r, wc, score };
+  });
+  return { lines, allLines, awaiting, rows: scored, eligible, best, alloc, l1, ranks, splitTotal, unallocated, splitVendors, splitSavings: best ? best.total - splitTotal : null };
+}
+/* Working-capital score: longer credit terms free up cash. Net 30 → 64, Net 45 → 76, Net 60 → 88. */
+function wcScore(days) { if (days == null) return 0; return Math.max(20, Math.min(100, Math.round(40 + days * 0.8))); }
+
+function currentAward(ev) {
+  if (S.award) return S.award;
+  ev = ev || evaluate();
+  return proposedAward(ev, S.awardChoice);
+}
+function proposedAward(ev, choice) {
+  if (choice === 'split' && ev.splitVendors.length && !ev.unallocated.length) {
+    const byVendor = {};
+    for (const a of ev.alloc) (byVendor[a.vendor.id] ||= []).push({ line: a.line.id, rate: a.rate, amount: a.amount });
+    return { mode: 'split', vendorIds: ev.splitVendors, lines: byVendor, total: ev.splitTotal, provisional: true };
+  }
+  if (!ev.best) return null;
+  const q = S.quotes[ev.best.v.id];
+  const lines = { [ev.best.v.id]: ev.lines.map(l => ({ line: l.id, rate: q[l.id].rate, amount: q[l.id].rate * l.qty })) };
+  return { mode: 'single', vendorIds: [ev.best.v.id], lines, total: ev.best.total, provisional: true };
+}
+function remaining(iso = S.rfx.issued.deadline) {
+  const ms = new Date(iso) - Date.now();
+  if (ms <= 0) return null;
+  return { d: Math.floor(ms / 864e5), h: Math.floor(ms % 864e5 / 36e5), m: Math.floor(ms % 36e5 / 6e4) };
+}
+const remainingText = () => { const r = remaining(); return r ? `${r.d}d ${String(r.h).padStart(2, '0')}h` : 'Closed'; };
+const STAGES = { draft: 'Draft', published: 'Sourcing', evaluation: 'Evaluation', awarded: 'Awarded', notified: 'Notified' };
+
+/* ---------- AI availability ---------- */
+const AI = { sample: null, ready: false, off: false, images: false, maxImages: 0, downloads: null };
+const sampleP = (async () => {
+  try { AI.sample = (await window.claude?.use?.('sample')) ?? null; } catch (e) { AI.sample = null; }
+  try { const lim = AI.sample ? await AI.sample.limits() : null; AI.images = !!lim?.images; AI.maxImages = lim?.images?.maxCount || 0; } catch (e) { AI.images = false; }
+  AI.ready = true;
+  if (S) render();
+  return AI.sample;
+})();
+(async () => { try { AI.downloads = (await window.claude?.use?.('downloads')) ?? null; } catch (e) { AI.downloads = null; } if (S) render(); })();
+const aiUsable = () => !AI.off && (!AI.ready || !!AI.sample);
+function aiNotice() {
+  if (aiUsable()) return '';
+  return `<p class="ai-off">${icon('info', 'sm')}<span>Claude isn't available in this view. Open this page on claude.ai and allow Claude when asked to use AI features. Everything else works without it.</span></p>`;
+}
+function aiErrorText(e) {
+  switch (e && e.code) {
+    case 'cancelled': return '';
+    case 'not_granted': return "Claude access wasn't allowed for this page. Allow it from the artifact's permissions menu to use AI features.";
+    case 'sampling_disabled': case 'not_declared': case 'capability_disabled': case 'capability_removed': return "Claude isn't available for this account in this view.";
+    case 'rate_limited': return 'Claude is busy or your usage limit was reached. Try again in a few minutes.';
+    case 'session_expired': return 'Your Claude session expired. Sign in again, then retry.';
+    case 'refused': return 'Claude declined this request. Rephrase it and try again.';
+    case 'invalid_json': return "Claude's answer couldn't be read as structured data. Try again, or ask for a smaller change.";
+    case 'prompt_too_large': return 'That is too much text for one request. Shorten it and try again.';
+    case 'image_rejected': return "That image couldn't be used. Try a JPEG or PNG under 20 MB.";
+    case 'empty_completion': return 'Claude returned an empty answer. Try rephrasing the request.';
+    default: return "Claude couldn't finish this request. Try again.";
+  }
+}
+function aiFail(e) {
+  if (e && ['not_granted', 'sampling_disabled', 'not_declared', 'capability_disabled', 'capability_removed'].includes(e.code)) AI.off = true;
+}
+async function getSample() {
+  const s = await sampleP;
+  if (!s || AI.off) { toast("Claude isn't available in this view.", true); render(); return null; }
+  return s;
+}
+const thinking = (label = 'Thinking') => `<span class="thinking"><i></i><i></i><i></i> ${esc(label)}…</span>`;
+
+/* ---------- Header ---------- */
+function renderHeader(ev) {
+  $('#crumb-ev').textContent = `Event #${S.eventId}: ${S.rfx.title}`;
+  $('#closing').textContent = remainingText();
+  $('#stage-pill').textContent = 'Status: ' + STAGES[S.stage];
+  const open = S.flags.filter(f => f.status === 'open' && lineById(f.line) && S.invited.includes(f.vendor)).length;
+  const dot = $('#notif-dot'); dot.hidden = !open; dot.textContent = open;
+  const badge = $('#tab-flag-count'); badge.hidden = !open; badge.textContent = open;
+  for (const t of $$('.tab')) t.setAttribute('aria-selected', String(t.dataset.tab === S.tab));
+  for (const id of ['rfx', 'vendors', 'decision', 'email']) $('#tab-' + id).hidden = S.tab !== id;
+}
+
+function pageHead({ ico, title, chips = '', sub = '', actions = '' }) {
+  return `<div class="pagehead"><div class="wrap pagehead-in">
+    <div class="ph-title"><span class="ico">${icon(ico)}</span><div><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><h1>${title}</h1>${chips}</div>${sub ? `<p class="ph-sub">${sub}</p>` : ''}</div></div>
+    <div class="ph-actions">${actions}</div>
+  </div></div>`;
+}
+
+/* ---------- RFx Creator ---------- */
+function renderChatLog(list, kind) {
+  if (!list.length) return '';
+  return list.map(m => {
+    if (m.role === 'user') return `<div class="msg user"><div class="who-l">Avinash J <time>${fmtTime(m.at)}</time></div><div class="bub">${esc(m.text)}</div></div>`;
+    const meta = (m.meta || []).map(x => `<span class="chip ${m.error ? 'bad' : 'ok'}">${icon(m.error ? 'error' : 'check_circle')}${esc(x)}</span>`).join('');
+    return `<div class="msg ai ${m.error ? 'err' : ''}"><div class="who-l">${icon('auto_awesome', 'sm')} Claude <time>${fmtTime(m.at)}</time></div><div class="bub" ${m.streamId ? `id="${m.streamId}"` : ''}>${m.pending ? thinking() : md(m.text)}${meta ? `<div class="meta">${meta}</div>` : ''}</div></div>`;
+  }).join('');
+}
+
+function renderRfx(ev) {
+  const r = S.rfx, lines = r.lines;
+  const was = new Map(r.issued.lines.map(l => [l.id, JSON.stringify(l)]));
+  const dc = draftChanges();
+  const busy = RT.busy.copilot;
+  const shown = S.ui.showAllLines ? lines : lines.slice(0, 5);
+  const rem = remaining(r.deadline);
+  const mand = r.clauses.filter(c => c.mandatory).length;
+  const isDraft = S.stage === 'draft';
+  const recipients = invitedVendors();
+  const hasExample = S.chat.rfx.some(m => m.example);
+  const sugg = ['Add a line for 5-ply export cartons, 4,000 units to Chennai Plant', 'Tighten the batch rejection rate to 0.5%', 'Extend the deadline by 3 days', 'Add a clause asking for recycled-content percentage'];
+
+  return pageHead({
+    ico: 'edit_document', title: 'Specification Builder & Distribution',
+    chips: `<span class="chip info">AI-assisted</span>${r.dirty ? '<span class="chip warn">Unpublished changes</span>' : ''}`,
+    sub: 'Describe what you need in plain language; the co-pilot updates the formal RFx on the right.',
+    actions: `<span class="live">Draft saved in this browser</span><button class="btn" type="button" data-action="open-log">${icon('history', 'sm')} Revision log (v1.${r.revision})</button>`
+  }) + `<div class="wrap content"><div class="g-rfx">
+    <aside class="card chat" aria-label="AI co-pilot">
+      <div class="chat-h"><span class="ico">${icon('smart_toy')}</span><div style="flex:1;min-width:0"><b>AI Co-Pilot</b><small>Claude · edits this RFx for you</small></div>
+        ${S.chat.rfx.length ? `<button class="iconbtn" type="button" data-action="copilot-clear" title="Clear conversation">${icon('restart_alt')}</button>` : ''}</div>
+      <div class="chat-sub"><span class="caps">${hasExample ? 'Example session' : 'Conversation'}</span><span class="muted tnum">${plural(S.chat.rfx.filter(m => m.role === 'user').length, 'request')}</span></div>
+      <div class="chat-log" id="copilot-log">${renderChatLog(S.chat.rfx, 'rfx') || `<p class="muted" style="font-size:13px">Ask for changes like "add 2 lines for printed mailers" or "move the deadline to next Tuesday 5 pm". The co-pilot edits the draft and tells you what changed.</p>`}</div>
+      <form class="chat-in" data-form="copilot">
+        <div class="sugs">${sugg.map(s => `<button class="sug" type="button" data-action="copilot-suggest" data-text="${esc(s)}">${esc(s)}</button>`).join('')}</div>
+        <label class="sr" for="copilot-input">Ask the co-pilot</label>
+        <textarea class="textarea" id="copilot-input" placeholder="Ask the co-pilot to adjust lines, update the questionnaire or change terms…" ${busy ? 'disabled' : ''}></textarea>
+        ${aiNotice()}
+        <div class="chat-in-row"><span class="muted" style="font-size:11.5px">Ctrl + Enter to send</span>
+          ${busy ? `<button class="btn" type="button" data-action="copilot-stop">${icon('stop_circle', 'sm')} Stop</button>` : `<button class="btn primary" type="submit" ${aiUsable() ? '' : 'disabled'}>${icon('send', 'sm')} Send</button>`}</div>
+      </form>
+    </aside>
+
+    <div class="card"><div class="card-b stack">
+      <div class="spec-head">
+        <div class="t">
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><span class="chip ${isDraft ? 'ok' : 'info'}">${isDraft ? 'Draft · inline editable' : `Issued · revision ${r.revision}`}</span><span class="muted" style="font-size:12px">Spec ref: ${esc(r.ref)}</span></div>
+          <label class="sr" for="rfx-title">RFx title</label>
+          <input class="input bare title" id="rfx-title" data-bind="rfx.title" value="${esc(r.title)}">
+          <label class="sr" for="rfx-summary">Summary</label>
+          <input class="input bare" id="rfx-summary" data-bind="rfx.summary" value="${esc(r.summary)}" style="font-size:13px;color:var(--muted)">
+        </div>
+        <div style="display:flex;gap:8px;align-items:flex-start;flex-wrap:wrap"><span class="chip dark">RFP ${esc(S.eventId)}</span></div>
+      </div>
+
+      <div class="kpis">
+        <div class="kpi"><span class="caps">Total line scope</span><div class="v tnum">${lines.length}<small>active SKUs</small></div></div>
+        <div class="kpi"><span class="caps">Compliance clauses</span><div class="v tnum" style="color:var(--ok)">${mand}<small>mandatory</small></div></div>
+        <div class="kpi"><span class="caps">Base currency</span><div class="v">${esc(r.currency)}<small>${r.currency === 'INR' ? '₹ Indian rupee' : ''}</small></div></div>
+        <div class="kpi"><span class="caps">Submission window</span><div class="v accent tnum">${rem ? `${rem.d}d ${String(rem.h).padStart(2, '0')}h<small>remaining</small>` : 'Closed'}</div></div>
+      </div>
+
+      <section>
+        <div class="sec-h"><h3>${icon('format_list_numbered')} Section 1: Bill of quantities & specifications</h3><button class="linkbtn" type="button" data-action="line-add">${icon('add', 'sm')} Add line item</button></div>
+        <div class="tblwrap card" style="box-shadow:none"><table class="tbl">
+          <thead><tr><th>Sl#</th><th>Item description & technical grade</th><th>UoM</th><th class="r">Qty</th><th>Delivery location</th><th class="c">Actions</th></tr></thead>
+          <tbody>${shown.map((l, i) => `<tr class="${RT.flashLines.has(l.id) ? 'flash' : ''}">
+            <td class="muted tnum">${String(i + 1).padStart(2, '0')}</td>
+            <td><div class="item-name">${esc(l.name)}${S.stage === 'draft' ? '' : !was.has(l.id) ? ' <span class="chip warn">Not issued yet</span>' : was.get(l.id) !== JSON.stringify(l) ? ' <span class="chip warn">Edited, not issued</span>' : ''}</div><div class="item-spec">${esc(l.spec)}</div></td>
+            <td class="muted">${esc(l.uom)}</td>
+            <td class="r"><label class="sr" for="qty-${l.id}">Quantity for ${esc(l.name)}</label><input class="input bare qty-in tnum" id="qty-${l.id}" inputmode="numeric" data-line-qty="${l.id}" value="${l.qty.toLocaleString('en-IN')}"></td>
+            <td style="white-space:nowrap">${icon('warehouse', 'sm')} ${esc(l.site)}</td>
+            <td class="c"><button class="x" type="button" data-action="line-remove" data-id="${l.id}" title="Remove line">${icon('delete')}</button></td>
+          </tr>`).join('') || `<tr><td colspan="6" class="muted">No line items yet. Add one, or ask the co-pilot.</td></tr>`}</tbody>
+        </table>
+        ${lines.length > 5 ? `<div class="card-f"><span>Showing ${shown.length} of ${lines.length} line items</span><button class="linkbtn" type="button" data-action="toggle-lines">${S.ui.showAllLines ? 'Show fewer' : `+ ${lines.length - 5} more line items`} ${icon(S.ui.showAllLines ? 'expand_less' : 'expand_more', 'sm')}</button></div>` : ''}
+        </div>
+      </section>
+
+      <section>
+        <div class="sec-h"><h3>${icon('fact_check')} Section 2: Questionnaire (vendor compliance)</h3><span class="chip info">${mand} of ${r.clauses.length} mandatory</span></div>
+        <div class="clauses">${r.clauses.map((c, i) => `<div class="clause">
+          <div style="display:flex;justify-content:space-between;gap:8px;align-items:center"><span class="caps">Clause ${String(i + 1).padStart(2, '0')} · ${esc(c.category)}</span>
+            <label class="switch" title="Mandatory"><input type="checkbox" id="mand-${c.id}" data-clause-mand="${c.id}" ${c.mandatory ? 'checked' : ''}><span class="sr">Mandatory</span></label></div>
+          <div class="q">${esc(c.question)}</div>
+          <div class="d">${esc(c.detail)}</div>
+          <label class="field"><span class="caps" style="font-size:10.5px">Expected response</span><input class="input" id="exp-${c.id}" data-clause-exp="${c.id}" value="${esc(c.expected)}"></label>
+        </div>`).join('')}</div>
+      </section>
+
+      <section>
+        <div class="sec-h"><h3>${icon('gavel')} Section 3: Commercial & bidding protocols</h3></div>
+        <div class="terms">
+          <label class="term"><span class="caps">Response deadline (IST)</span><input class="input" type="datetime-local" id="rfx-deadline" data-deadline value="${toISTInput(r.deadline)}"><span style="font-size:12px;color:${rem ? 'var(--accent-text)' : 'var(--muted)'}">${icon('schedule', 'sm')} ${rem ? `${plural(rem.d, 'day')} remaining` : 'Deadline has passed'}</span></label>
+          <label class="term"><span class="caps">Base bidding currency</span><select class="select" id="rfx-currency" data-bind="rfx.currency">${['INR', 'USD', 'EUR'].map(c => `<option ${c === r.currency ? 'selected' : ''}>${c}</option>`).join('')}</select><span class="muted" style="font-size:12px">Exchange hedging not applicable</span></label>
+          <label class="term"><span class="caps">Minimum quote validity (days)</span><input class="input tnum" id="rfx-validity" inputmode="numeric" data-bind-num="rfx.validityDays" value="${r.validityDays}"><span style="font-size:12px;color:var(--ok)">${icon('verified', 'sm')} Firm pricing required</span></label>
+        </div>
+      </section>
+
+      <div class="dispatch">
+        <div><b>${isDraft ? 'Ready to send the RFx?' : r.dirty ? 'Issue these changes as an amendment?' : 'RFx issued to vendors'}</b><span class="muted" style="font-size:12.5px">${isDraft ? 'All mandatory fields are filled. Vendors get a supplier-portal invitation.' : r.dirty ? `${dc.any ? esc(dc.text[0].toUpperCase() + dc.text.slice(1)) + '. ' : ''}Vendor Analyser, Decision Maker and Email Compose keep using revision ${r.revision} until you issue revision ${r.revision + 1} to ${plural(recipients.length, 'vendor')}.` : `Revision ${r.revision} · last issued to ${plural(recipients.length, 'vendor')}.`}</span></div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn" type="button" data-action="save-draft">${icon('save', 'sm')} Save draft</button>
+          <button class="btn primary lg" type="button" data-action="dispatch" ${(!isDraft && !r.dirty) || !recipients.length || !lines.length ? 'disabled' : ''}>${icon('send')} ${isDraft ? `Send RFx to ${plural(recipients.length, 'vendor')}` : `Issue amendment to ${plural(recipients.length, 'vendor')}`}</button>
+        </div>
+      </div>
+
+      <section>
+        <div class="sec-h"><h3>${icon('groups')} Vendor distribution list <span class="chip">${recipients.length}</span></h3><button class="linkbtn" type="button" data-action="vendor-add">${icon('person_add', 'sm')} Add vendor</button></div>
+        <div class="vgrid">${recipients.map(v => `<div class="vcard"><span class="vi">${esc(initials(v.name))}</span><div class="vt"><b>${esc(v.name)} <span class="chip">Tier ${v.tier}</span></b><div>${esc(v.email)}</div><div>ID: ${esc(v.vendorId)}</div></div><button class="x" type="button" data-action="vendor-remove" data-id="${v.id}" title="Remove from distribution">${icon('close')}</button></div>`).join('') || '<p class="muted">No vendors yet.</p>'}</div>
+      </section>
+    </div>
+    <div class="card-f"><span>${icon('lock', 'sm')} Every issued revision is recorded in the audit log.</span><span>Sourcing policy 4.19 · Category benchmark specs</span></div>
+    </div>
+  </div></div>`;
+}
+
+/* ---------- Vendor Analyser ---------- */
+/* Shown on tabs that read the issued revision while RFx Creator holds unissued changes. */
+function draftNotice() {
+  const dc = draftChanges();
+  if (!dc.any || S.stage === 'draft') return '';
+  return `<div class="note">${icon('info', 'sm')}<span><b>RFx Creator has changes not yet issued to vendors</b> (${esc(dc.text)}). This view uses revision ${S.rfx.issued.revision} until you issue the amendment. <button class="linkbtn" type="button" data-tab="rfx">Review changes</button></span></div>`;
+}
+const CONF_LABEL = { high: 'High', medium: 'OCR var', low: 'Low', verified: 'Verified' };
+
+/* The L1 column: who holds the lowest valid rate on this line, its line value, and the gap to L2. */
+function l1Cell(ev, l) {
+  const vid = ev.l1[l.id];
+  if (!vid) return ev.awaiting.includes(l) ? '<td class="l1c muted">Awaiting quotes<br>Added by amendment</td>' : '<td class="l1c muted">No valid rate yet</td>';
+  const rate = S.quotes[vid][l.id].rate;
+  const r = ev.ranks[l.id] || {};
+  const l2 = Object.keys(r).filter(id => r[id] > 1).map(id => S.quotes[id][l.id].rate).sort((a, b) => a - b)[0];
+  const tied = Object.keys(r).filter(id => r[id] === 1).length > 1;
+  return `<td class="l1c"><span class="l1b" style="margin:0 4px 0 0">L1</span><b>${esc(vendorById(vid).name.split(' ')[0])}${tied ? ' (tie)' : ''}</b>
+    <div class="tnum">${rateFmt(rate)} <span class="muted">· ${inr(rate * l.qty)}</span></div>
+    ${l2 != null ? `<div class="muted tnum" style="font-size:11.5px">${rateFmt(l2 - rate)} below L2</div>` : '<div class="muted" style="font-size:11.5px">Only valid rate</div>'}</td>`;
+}
+
+function renderVendors(ev) {
+  const lines = issuedLines();
+  const f = S.ui.filter.trim().toLowerCase();
+  const rows = ev.rows.filter(r => (!S.ui.qualifiedOnly || r.qualified) && (!S.ui.completeOnly || r.complete));
+  // A filter that names a vendor narrows the columns; otherwise it narrows the line items.
+  const vendorMatch = f ? rows.filter(r => r.v.name.toLowerCase().includes(f)) : [];
+  const cols = vendorMatch.length ? vendorMatch : rows;
+  const shownLines = vendorMatch.length || !f ? lines : lines.filter(l => (l.name + ' ' + l.spec + ' ' + l.site).toLowerCase().includes(f));
+  const openFlags = S.flags.filter(x => x.status === 'open' && lineById(x.line) && S.invited.includes(x.vendor));
+  const sel = S.flags.find(x => x.id === S.ui.selFlag && lineById(x.line)) || openFlags[0] || null;
+
+  const intake = ev.rows.map(r => {
+    const st = vendorStatus(r.v);
+    const bad = st.key === 'flagged';
+    return `<div class="icard ${bad ? 'bad' : ''}">
+      <div class="top"><b title="${esc(r.v.name)}">${esc(r.v.name)}</b>${st.key === 'pending' ? `<span class="chip">${icon('hourglass_top')}Pending</span>` : `<span class="chip ok">${icon('check')}Received</span>`}</div>
+      <div class="src">${icon(r.v.srcIcon || 'description', 'sm')} ${esc(r.v.source)}${r.v.quoteCur && r.v.quoteCur !== 'INR' ? ` · ${esc(r.v.quoteCur)} at ₹${r.v.fxUsed}` : ''}</div>
+      <div class="st ${st.tone}">${esc(st.key === 'pending' ? `Awaiting file (${remainingText()} left)` : st.text)}</div>
+      <div class="tot"><span class="caps">Quote total${r.complete || r.pending ? '' : ` · ${r.count}/${lines.length} lines`}</span><div class="v tnum ${r.pending ? 'na' : ''}">${r.pending ? 'Awaiting submission' : inr(r.total)}</div></div>
+      <button class="btn ${bad || st.key === 'pending' ? 'primary' : 'soft'} block" type="button" data-action="upload" data-id="${r.v.id}">${icon(st.key === 'pending' ? 'upload_file' : 'refresh', 'sm')} ${st.key === 'pending' ? 'Add quote' : 'Re-extract quote'}</button>
+    </div>`;
+  }).join('');
+
+  const head = cols.map(r => `<th class="vh">${esc(r.v.name.split(' ')[0])}<br>${r.pending ? '<span class="chip">Pending</span>' : r.qualified ? `<span class="chip ok">${icon('verified')}Qualified</span>` : `<span class="chip bad">${icon('block')}${r.v.iso === false ? 'No ISO' : 'Unverified'}</span>`}</th>`).join('');
+  const body = shownLines.map((l, i) => `<tr>
+    <td class="muted tnum">${String(lines.indexOf(l) + 1).padStart(2, '0')}</td>
+    <td><div class="item-name">${esc(l.name)}${ev.awaiting.includes(l) ? ' <span class="chip warn">Awaiting quotes</span>' : ''}${S.flags.some(x => x.line === l.id && x.status === 'open' && S.invited.includes(x.vendor)) ? ' <span class="chip bad">Audit</span>' : ''}</div><div class="item-spec">${esc(l.spec)}</div></td>
+    <td class="r tnum muted">${l.qty.toLocaleString('en-IN')} <small>${esc(l.uom)}</small></td>
+    ${l1Cell(ev, l)}
+    ${cols.map(r => {
+      const c = (S.quotes[r.v.id] || {})[l.id];
+      if (!c || c.rate == null) return `<td class="cell muted">—</td>`;
+      const flag = S.flags.find(x => x.vendor === r.v.id && x.line === l.id && lineById(x.line));
+      const rank = (ev.ranks[l.id] || {})[r.v.id];
+      const isL1 = rank === 1;
+      const fxb = c.orig ? `<span class="fxb" title="Quoted ${esc((CUR_SYM[c.orig.cur] || c.orig.cur + ' ') + c.orig.rate)} × ₹${c.orig.fx} per ${esc(c.orig.cur)}">${esc(c.orig.cur)}</span>` : '';
+      const cls = ['cell', isL1 ? 'l1' : '', flag ? 'clickable' : '', flag && flag.status === 'open' && flag.severity === 'low' ? 'flag-low' : '', sel && flag && sel.id === flag.id ? 'sel' : ''].join(' ');
+      return `<td class="${cls}" ${flag ? `data-action="select-flag" data-id="${flag.id}" tabindex="0" title="Open extraction audit"` : ''}>${flag && flag.status === 'open' ? icon('warning', 'sm') + ' ' : ''}<span class="rate tnum">${rateFmt(c.rate)}</span>${rank ? `<span class="${isL1 ? 'l1b' : 'lr'}">L${rank}</span>` : ''}${fxb}<span class="cf ${c.conf}">${CONF_LABEL[c.conf] || c.conf}</span></td>`;
+    }).join('')}
+  </tr>`).join('');
+
+  const v = sel ? vendorById(sel.vendor) : null, sl = sel ? lineById(sel.line) : null;
+  const cur = sel ? (S.quotes[sel.vendor] || {})[sel.line] : null;
+  const rawHtml = sel ? esc(sel.raw).split('\n').map(x => x.startsWith('&gt;&gt;') ? `<span class="hl">${x.slice(8)}</span>` : x).join('\n') : '';
+  const audit = sel ? `<div class="card">
+      <div class="audit-h"><div><small>${icon('troubleshoot', 'sm')} Extraction audit</small><b>${esc(v.name)} · Line ${esc(sel.line.slice(1))}</b></div><span class="chip ${sel.status === 'open' ? 'bad' : sel.status === 'approved' ? 'ok' : 'info'}">${sel.status === 'open' ? `Flag ${esc(sel.id)}` : sel.status === 'approved' ? 'Resolved' : 'Clarification sent'}</span></div>
+      <div class="card-b stack" style="gap:14px">
+        <div class="kv"><span>Target item</span><span>${esc(sl.name)}</span></div>
+        <div><div class="sec-h" style="margin-bottom:6px"><span class="caps">Source inspection</span><span class="muted" style="font-size:12px">${icon('attach_file', 'sm')} ${esc(sel.file)}</span></div><div class="scan">${rawHtml}</div></div>
+        <div class="kv"><span>Normalised extraction</span><span class="tnum" style="color:var(--accent-text)">${rateFmt(cur?.rate ?? 0)} / ${esc(sl.uom === 'Units' ? 'pc' : sl.uom.toLowerCase())}</span></div>
+        <div class="kv"><span>OCR confidence</span><span class="tnum">${sel.confidence}% <span class="muted" style="font-weight:400">(threshold 85%)</span></span></div>
+        <div class="note ${sel.severity === 'low' ? 'bad' : 'warn'}">${icon('error', 'sm')}<span><b>${sel.severity === 'low' ? 'Low' : 'Medium'} confidence.</b> ${esc(sel.reason)}</span></div>
+        ${sel.status === 'open' ? `<div class="field"><span>Corrected rate (₹ per ${esc(sl.uom === 'Units' ? 'unit' : sl.uom.toLowerCase())})</span><div style="display:flex;gap:8px"><input class="input tnum" id="flag-rate" inputmode="decimal" value="${cur?.rate ?? ''}"><button class="btn" type="button" data-action="flag-approve" data-id="${sel.id}">${icon('done_all', 'sm')} Approve value</button></div></div>
+        <button class="btn dark block" type="button" data-action="flag-clarify" data-id="${sel.id}">${icon('forward_to_inbox', 'sm')} Request vendor clarification</button>` : `<p class="muted" style="font-size:12.5px">${sel.status === 'approved' ? 'Value approved by the buyer and now counts in the evaluation.' : 'Waiting for the vendor to reply. The low-confidence value stays out of the evaluation.'}</p><button class="btn soft" type="button" data-action="flag-reopen" data-id="${sel.id}">${icon('undo', 'sm')} Reopen flag</button>`}
+      </div>
+    </div>` : `<div class="card"><div class="card-b"><p class="note ok">${icon('task_alt', 'sm')}<span>No extraction flags. Every received line is above the confidence threshold.</span></p></div></div>`;
+
+  const cv = vendorById(S.clar.vendor), cl = lineById(S.clar.line);
+  const clarBusy = RT.busy.clar;
+  const clar = `<div class="card" id="clar-card">
+    <div class="card-h" style="background:var(--surface-2)"><h2>${icon('help')} Request vendor clarification ${openFlags.length ? `<span class="chip bad">${plural(openFlags.length, 'unresolved flag')}</span>` : ''}</h2><span class="muted" style="font-size:12.5px">Standard SLA: 24 h response</span></div>
+    <div class="card-b"><div class="form-grid">
+      <label class="field"><span>Target vendor</span><select class="select" id="clar-vendor" data-clar="vendor">${invitedVendors().map(x => `<option value="${x.id}" ${x.id === S.clar.vendor ? 'selected' : ''}>${esc(x.name)} (${esc(x.vendorId)})</option>`).join('')}</select></label>
+      <label class="field"><span>Disputed line item</span><select class="select" id="clar-line" data-clar="line">${lines.map(l => `<option value="${l.id}" ${l.id === S.clar.line ? 'selected' : ''}>Line ${l.id.slice(1)}: ${esc(l.name)}</option>`).join('')}</select></label>
+      <label class="field full"><span style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap">Clarification message <span class="muted" style="font-weight:400">Logged to the RFx evaluation audit trail</span></span>
+        <textarea class="textarea" id="clar-text" rows="7" data-clar="text" placeholder="Write the question for the vendor, or let Claude draft it from the flag.">${esc(S.clar.text)}</textarea></label>
+    </div>${aiNotice()}</div>
+    <div class="efoot"><span class="muted" style="font-size:12px">${icon('lock', 'sm')} Prototype: logging records the request here; no email is sent.</span>
+      <div class="r">
+        ${clarBusy ? `<button class="btn" type="button" data-action="clar-stop">${icon('stop_circle', 'sm')} Stop</button>` : `<button class="btn" type="button" data-action="clar-draft" ${aiUsable() ? '' : 'disabled'}>${icon('auto_awesome', 'sm')} Draft with Claude</button>`}
+        <button class="btn ghost" type="button" data-action="clar-copy">${icon('content_copy', 'sm')} Copy</button>
+        <button class="btn dark" type="button" data-action="clar-log" ${clarBusy ? 'disabled' : ''}>${icon('send', 'sm')} Log clarification request</button>
+      </div></div>
+  </div>`;
+
+  return pageHead({
+    ico: 'query_stats', title: 'Vendor Analyser',
+    chips: `<span class="chip info">Automated matrix</span>`,
+    sub: `Quotation intake, extraction confidence and a normalised line-item comparison for ${plural(ev.rows.length, 'invited vendor')}.`,
+    actions: `<button class="btn" type="button" data-action="views-open">${icon('bookmarks', 'sm')} Saved views${VIEWS.list.length ? ` (${VIEWS.list.length})` : ''}</button>
+      <button class="btn dark" type="button" data-action="view-save" ${ev.rows.some(r => !r.pending) ? '' : 'disabled title="Extract at least one vendor quote first"'}>${icon('bookmark_add', 'sm')} Save view</button>`
+  }) + `<div class="wrap content">${draftNotice()}
+    <div><div class="sec-h"><div><span class="caps" style="color:var(--accent-text)">Intake pipeline</span><h2 style="font-size:19px;font-weight:700;letter-spacing:-.01em">Vendor quotation intake & extraction</h2></div></div>
+    <div class="intake">${intake}</div></div>
+
+    <div class="card filters">
+      <label class="switch"><input type="checkbox" id="f-qual" data-ui-toggle="qualifiedOnly" ${S.ui.qualifiedOnly ? 'checked' : ''}> Qualified vendors only</label>
+      <label class="switch"><input type="checkbox" id="f-comp" data-ui-toggle="completeOnly" ${S.ui.completeOnly ? 'checked' : ''}> Complete quotes only</label>
+      <span class="grow"></span>
+      <label class="search" style="flex:0 1 260px"><span class="ms" style="color:var(--muted)">search</span><span class="sr">Filter line items</span><input id="mx-filter" type="search" data-ui-filter placeholder="Filter line items, specs…" value="${esc(S.ui.filter)}" style="background:var(--surface-2);color:var(--fg);border-color:var(--border)"></label>
+      ${AI.downloads ? `<button class="btn soft" type="button" data-action="export-csv">${icon('download', 'sm')} Export CSV</button>` : ''}
+    </div>
+
+    <div class="g-side">
+      <div class="card">
+        <div class="card-h"><h2>${icon('table_view')} Normalised line-item matrix <span class="muted" style="font-weight:400;font-size:13px">${plural(shownLines.length, 'line')}</span></h2><span class="legend"><span><span class="l1b" style="margin:0">L1</span> lowest valid rate</span><span><span class="lr" style="margin:0">L2</span><span class="lr" style="margin:0">L3</span> next lowest</span><span><span class="fxb" style="margin:0">USD</span> converted to ₹</span></span></div>
+        <div class="tblwrap"><table class="tbl mx">
+          <thead><tr><th>Sl#</th><th>Item description & spec</th><th class="r">Qty</th><th class="l1h">L1 · lowest valid</th>${head}</tr></thead>
+          <tbody>${body || `<tr><td colspan="${4 + cols.length}" class="muted">No line items match "${esc(S.ui.filter)}".</td></tr>`}</tbody>
+        </table></div>
+        <div class="card-f"><span class="legend"><span><i style="background:var(--ok-strong)"></i>High confidence</span><span><i style="background:var(--warn-strong)"></i>OCR variance</span><span><i style="background:var(--bad-strong)"></i>Low, excluded until reviewed</span><span><i style="background:var(--info)"></i>Buyer verified</span></span><span>Rates in ₹ per unit, ex-GST. L-ranks compare qualified vendors' reviewed rates on each line.</span></div>
+      </div>
+      ${audit}
+    </div>
+    ${clar}
+  </div>`;
+}
+
+/* ---------- Decision Maker ---------- */
+function renderDecision(ev) {
+  const lines = ev.lines, budget = S.rfx.budget;
+  const waitNote = ev.awaiting.length ? `<div class="note warn">${icon('schedule', 'sm')}<span><b>${plural(ev.awaiting.length, 'line')} added by amendment ${ev.awaiting.length === 1 ? 'has' : 'have'} no quotes yet:</b> ${ev.awaiting.map(l => esc(l.name)).join(', ')}. ${ev.awaiting.length === 1 ? 'It is' : 'They are'} left out of this award; award separately once quotes arrive.</span></div>` : '';
+  const best = ev.best;
+  const quoted = ev.rows.filter(r => !r.pending);
+  const sorted = [...quoted].sort((a, b) => (b.qualified - a.qualified) || (b.complete - a.complete) || (a.total - b.total));
+  const summary = sorted.map(r => {
+    let rec;
+    if (!r.qualified) rec = `<span style="color:var(--bad)">Not eligible</span>`;
+    else if (!r.complete) rec = `<span class="muted">Partial quote</span>`;
+    else if (best && r.v.id === best.v.id) rec = `<span class="chip accent">${icon('star', 'fill')}Recommended</span>`;
+    else rec = `<span class="muted">+${pct(r.total / best.total - 1)} over lowest</span>`;
+    return `<tr>
+      <td class="c">${(() => { const k = ev.eligible.findIndex(e => e.v.id === r.v.id) + 1; return k ? `<span class="${k === 1 ? 'l1b' : 'lr'}" style="margin:0">L${k}</span>` : '<span class="muted">—</span>'; })()}</td>
+      <td><div class="item-name" style="${r.qualified ? '' : 'color:var(--muted)'}">${esc(r.v.name)}</div><div class="item-spec">${esc(r.v.vendorId)}</div></td>
+      <td class="r tnum" style="font-weight:600;${r.qualified ? '' : 'color:var(--bad)'}">${r.qualified ? inr(r.total) : 'Disqualified'}</td>
+      <td class="c tnum">${r.count}/${lines.length} <span class="muted">(${Math.round(r.count / lines.length * 100)}%)</span></td>
+      <td>${r.qualified ? `<span class="chip ok">${icon('verified')}Qualified</span>` : `<span class="chip bad">${icon('cancel')}${r.v.iso === false ? 'Missing ISO' : 'Unverified'}</span>`}</td>
+      <td class="r tnum">${r.score != null ? r.score.toFixed(1) : '—'}</td>
+      <td class="r">${rec}</td>
+    </tr>`;
+  }).join('');
+
+  const barRows = quoted.filter(r => r.qualified && r.complete).sort((a, b) => a.total - b.total);
+  const maxT = Math.max(1, ...barRows.map(r => r.total), ev.splitTotal, budget);
+  const canSplit = ev.splitVendors.length > 1 && !ev.unallocated.length;
+  const bars = `${canSplit ? `<div class="bar-row hero"><div class="lab"><span>${icon('auto_awesome', 'sm')} Split award (${ev.splitVendors.map(id => esc(vendorById(id).name.split(' ')[0])).join(' + ')})</span><b>${lakh(ev.splitTotal)}</b></div><div class="bar-track"><div class="bar-fill split" style="width:${ev.splitTotal / maxT * 100}%"></div></div>${best ? `<span class="chip ok" style="justify-self:start">${pct(ev.splitSavings / best.total)} below best single source</span>` : ''}</div>` : ''}
+    ${barRows.map((r, i) => `<div class="bar-row"><div class="lab"><span>${esc(r.v.name)} ${i === 0 ? '<span class="muted">(lowest single source)</span>' : ''}</span><b>${lakh(r.total)}</b></div><div class="bar-track"><div class="bar-fill ${i === 0 ? 'best' : ''}" style="width:${r.total / maxT * 100}%"></div></div></div>`).join('')}
+    <div class="bar-row"><div class="lab"><span class="muted">Benchmark budget (prior-half PO mean)</span><b class="muted">${lakh(budget)}</b></div><div class="bar-track"><div class="bar-fill" style="width:${budget / maxT * 100}%;opacity:.35"></div></div></div>`;
+
+  const groups = {};
+  for (const a of ev.alloc) if (a.vendor) (groups[a.vendor.id] ||= []).push(a);
+  const alloc = Object.entries(groups).map(([vid, items]) => `<div class="acard"><div class="h"><b>${esc(vendorById(vid).name)}</b><span class="chip">${plural(items.length, 'line')}</span></div>
+    <ul>${items.map(a => `<li><span>${esc(a.line.id.slice(1))} · ${esc(a.line.name)}</span><span class="tnum">${rateFmt(a.rate)}</span></li>`).join('')}</ul>
+    <div class="sub"><span class="caps">Allocated subtotal</span><b class="tnum">${inr(items.reduce((s, a) => s + a.amount, 0))}</b></div></div>`).join('');
+
+  const terms = quoted.filter(r => r.v.paymentDays != null).sort((a, b) => b.wc - a.wc).map(r => `<tr><td class="item-name">${esc(r.v.name)}</td><td>Net ${r.v.paymentDays} days</td><td class="tnum"><span class="meter"><i class="${r.wc >= 85 ? '' : r.wc >= 70 ? 'mid' : 'lo'}" style="width:${r.wc}%"></i></span>${r.wc} / 100</td><td class="r">${r.wc >= 85 ? '<span class="chip ok">Optimal liquidity</span>' : r.wc >= 70 ? '<span class="chip">Acceptable</span>' : '<span class="chip warn">Sub-optimal</span>'}</td></tr>`).join('');
+
+  const busy = RT.busy.analyst;
+  const chips = ['Who is cheapest overall?', 'Split the order by cheapest per line (qualified only)', 'Compare payment terms', 'Which vendors quoted all lines?', 'What is the risk of single-sourcing?'];
+  const award = S.award;
+  const proposal = award || proposedAward(ev, S.awardChoice);
+  const needsDual = (proposal?.total || 0) > 2500000;
+  const approvalsOk = !needsDual || (S.approvals.cpo.ok && S.approvals.fin.ok);
+  const fin = S.approvals.fin;
+
+  return pageHead({
+    ico: 'balance', title: 'Executive procurement analytics & award scenarios',
+    chips: `<span class="chip dark">#${esc(S.eventId)}</span>`,
+    sub: `${esc(S.rfx.title)} · ${plural(quoted.length, 'quote')} received · scoring weights 60% price, 20% compliance, 20% payment terms`,
+    actions: `<span class="live">Evaluation recalculates as quotes change</span><button class="btn" type="button" data-action="open-log">${icon('receipt_long', 'sm')} Decision log</button>`
+  }) + `<div class="wrap content">${draftNotice()}<div class="g-side">
+    <div class="stack">
+      <div class="card">
+        <div class="card-h"><h2>${icon('table_chart')} Evaluated vendor quotations</h2><span class="muted" style="font-size:12px">Rank = L1, L2… by total among complete, qualified quotes · updated ${fmtTime(new Date().toISOString())} IST</span></div>
+        <div class="tblwrap"><table class="tbl"><thead><tr><th class="c" title="Rank by total among complete, qualified quotes">Rank</th><th>Vendor</th><th class="r">Total cost</th><th class="c">Lines quoted</th><th>Qualified?</th><th class="r">Score</th><th class="r">Recommendation</th></tr></thead><tbody>${summary || '<tr><td colspan="7" class="muted">No quotes received yet.</td></tr>'}</tbody></table></div>
+      </div>
+
+      <div class="card">
+        <div class="card-h"><h2>${icon('bar_chart')} Total cost comparison by scenario</h2><span class="muted" style="font-size:12px">Bars start at ₹0</span></div>
+        <div class="card-b bars">${barRows.length ? bars : '<p class="muted">No complete, qualified quote yet.</p>'}</div>
+        <div class="card-f"><span class="caps">Benchmark ${lakh(budget)}</span>${best ? `<span class="caps" style="color:var(--ok)">Best single source is ${pct(1 - best.total / budget)} under benchmark</span>` : ''}</div>
+      </div>
+
+      <div class="card">
+        <div class="card-h"><h2>${icon('call_split')} Line-by-line optimal allocation</h2><span class="muted" style="font-size:12px">Cheapest qualified, reviewed rate per line</span></div>
+        <div class="card-b stack" style="gap:14px">
+          ${canSplit && best ? `<div class="recbox"><div style="display:flex;gap:10px">${icon('shield', 'lg')}<div><b>Split award ${ev.splitSavings > 0 ? 'saves more' : 'does not save more'} than single sourcing</b><p class="muted" style="font-size:12.5px">Spreads volume across ${plural(ev.splitVendors.length, 'qualified supplier')} for supply-risk hedging.</p></div></div><div style="text-align:right"><span class="caps" style="color:var(--ok)">Net incremental savings</span><div class="big tnum">${inr(ev.splitSavings)}</div></div></div>` : ''}
+          ${ev.unallocated.length ? `<div class="note warn">${icon('warning', 'sm')}<span>${plural(ev.unallocated.length, 'line')} ha${ev.unallocated.length === 1 ? 's' : 've'} no qualified, reviewed rate yet: ${ev.unallocated.map(a => esc(a.line.name)).join(', ')}.</span></div>` : ''}
+          <div class="alloc">${alloc || '<p class="muted">No allocations yet.</p>'}</div>
+          <div class="kv" style="font-size:15px;border-top:1px solid var(--border);padding-top:12px"><span>Combined net award value</span><span class="tnum" style="font-size:19px">${inr(ev.splitTotal)}</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-h"><h2>${icon('account_balance')} Payment terms & working-capital impact</h2></div>
+        <div class="tblwrap"><table class="tbl"><thead><tr><th>Vendor</th><th>Credit terms</th><th>Working-capital score</th><th class="r">Cash-flow index</th></tr></thead><tbody>${terms}</tbody></table></div>
+      </div>
+    </div>
+
+    <div class="stack">
+      <div class="card" style="display:flex;flex-direction:column">
+        <div class="chat-h"><span class="ico">${icon('psychology')}</span><div style="flex:1"><b>Ask the AI analyst</b><small>Claude · answers from this event's evaluation data</small></div>${S.chat.analyst.length ? `<button class="iconbtn" type="button" data-action="analyst-clear" title="Clear conversation">${icon('restart_alt')}</button>` : ''}</div>
+        <div class="card-b" style="padding:10px 14px;border-bottom:1px solid var(--border)"><div class="sugs">${chips.map(c => `<button class="sug" type="button" data-action="analyst-suggest" data-text="${esc(c)}" ${busy || !aiUsable() ? 'disabled' : ''}>${esc(c)}</button>`).join('')}</div></div>
+        <div class="chat-log" id="analyst-log" style="max-height:480px;min-height:160px">${renderChatLog(S.chat.analyst, 'analyst') || `<p class="muted" style="font-size:13px">Pick a question above or ask your own. Claude sees the quotes, compliance status, allocation and payment terms on this page.</p>`}</div>
+        <form class="chat-in" data-form="analyst">
+          <label class="sr" for="analyst-input">Ask a procurement question</label>
+          <div style="display:flex;gap:8px"><input class="input" id="analyst-input" placeholder="Ask any procurement analytics question…" autocomplete="off" ${busy ? 'disabled' : ''}>
+          ${busy ? `<button class="btn" type="button" data-action="analyst-stop">${icon('stop_circle', 'sm')} Stop</button>` : `<button class="btn primary" type="submit" ${aiUsable() ? '' : 'disabled'}>${icon('send', 'sm')} Send</button>`}</div>
+          ${aiNotice()}
+        </form>
+      </div>
+
+      <div class="card">
+        <div class="card-h"><h2>${icon('gavel')} Award execution</h2><span class="caps">Step 3 of 4</span></div>
+        <div class="card-b stack" style="gap:12px">
+          ${award ? `<div class="note ok">${icon('task_alt', 'sm')}<span><b>Award finalised ${fmtDT(award.at)}.</b> ${award.mode === 'split' ? `Split across ${plural(award.vendorIds.length, 'vendor')}` : esc(vendorById(award.vendorIds[0]).name)} for ${inr(award.total)}.</span></div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn primary" type="button" data-tab="email">${icon('mail', 'sm')} Compose award notices</button><button class="btn ghost" type="button" data-action="award-undo">${icon('undo', 'sm')} Reopen evaluation</button></div>` : `
+          ${waitNote}
+          <div class="opts">
+            <label class="opt"><input type="radio" name="award-choice" id="aw-single" value="single" data-award-choice ${S.awardChoice === 'single' ? 'checked' : ''} ${best ? '' : 'disabled'}><span class="ot"><b>Single source${best ? `: ${esc(best.v.name)}` : ''}</b>${best ? `${inr(best.total)} · one contract, one supplier` : 'No complete, qualified quote yet'}</span></label>
+            <label class="opt"><input type="radio" name="award-choice" id="aw-split" value="split" data-award-choice ${S.awardChoice === 'split' ? 'checked' : ''} ${canSplit ? '' : 'disabled'}><span class="ot"><b>Split award (${plural(ev.splitVendors.length, 'vendor')})</b>${canSplit ? `${inr(ev.splitTotal)} · cheapest qualified rate per line` : 'Needs a qualified rate on every line'}</span></label>
+          </div>
+          <button class="btn primary lg block" type="button" data-action="award" ${proposal && approvalsOk ? '' : 'disabled'}>${icon('gavel')} Award ${proposal ? inr(proposal.total) : ''}</button>
+          <p class="muted" style="font-size:12px">${!proposal ? 'Pick a scenario that has quotes.' : approvalsOk ? 'Awarding locks the evaluation and prepares award and regret notices.' : 'Waiting for dual approval before the award can be executed.'}</p>`}
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-h"><h2>${icon('policy')} Governance directives</h2><span class="muted" style="font-size:12px">Award value above ₹25 L needs dual approval</span></div>
+        <div class="card-b gov">
+          <div class="gov-row"><span>${icon('verified_user', 'sm')} CPO spend delegation<br><small class="muted">${esc(S.approvals.cpo.by)} · ${fmtTime(S.approvals.cpo.at)} IST</small></span><span class="chip ok">Approved</span></div>
+          <div class="gov-row"><span>${icon('account_balance_wallet', 'sm')} Finance approval<br><small class="muted">${esc(fin.by)}${fin.ok ? ` · ${fmtTime(fin.at)} IST` : ''}</small></span>${fin.ok ? '<span class="chip ok">Approved</span>' : `<button class="btn sm" type="button" data-action="approve-fin">Record approval</button>`}</div>
+          ${fin.ok ? '' : '<p class="muted" style="font-size:12px">Prototype: "Record approval" stands in for the finance controller signing off in their own queue.</p>'}
+        </div>
+      </div>
+    </div>
+  </div></div>`;
+}
+
+/* ---------- Email Compose ---------- */
+const FROM = 'procurement-ops@enterprisecorp.com';
+const TOKENS = [
+  ['{{vendor.name}}', 'Vendor name'], ['{{vendor.contact}}', 'Vendor contact'], ['{{award.value}}', 'Award value'],
+  ['{{rfx.id}}', 'RFx ID'], ['{{rfx.title}}', 'RFx title'], ['{{start.date}}', 'Fulfilment start date']
+];
+
+function emailContext(ev) {
+  ev = ev || evaluate();
+  const award = currentAward(ev);
+  if (!award) return null;
+  const winners = award.vendorIds;
+  const others = ev.rows.filter(r => !r.pending && !winners.includes(r.v.id)).map(r => r.v.id);
+  const list = [...winners.map(id => ({ id, kind: 'award' })), ...others.map(id => ({ id, kind: 'regret' }))];
+  let sel = list.find(x => x.id === S.email.recipient) || list[0];
+  return { ev, award, list, sel };
+}
+function contactName(v) { return v.contact.split(' (')[0]; }
+function startDate() { return new Date(new Date(S.rfx.issued.deadline).getTime() + 12 * 864e5).toISOString(); }
+function recipientFacts(ctx, vid) {
+  const { ev, award } = ctx;
+  const v = vendorById(vid), row = ev.rows.find(r => r.v.id === vid);
+  const mine = award.lines[vid] || [];
+  const value = mine.reduce((s, x) => s + x.amount, 0);
+  const sites = [...new Set(mine.map(x => lineById(x.line)?.site).filter(Boolean))];
+  const ranked = ev.eligible.map(r => r.v.id);
+  return { v, row, mine, value, sites, rank: ranked.indexOf(vid) + 1 || null };
+}
+function templateDraft(ctx, item) {
+  const id = S.eventId, t = S.rfx.title;
+  const f = recipientFacts(ctx, item.id), v = f.v;
+  const sign = `Regards,\nAvinash J\nLead Buyer, Procurement Operations\nEnterprise Corp`;
+  if (item.kind === 'award') {
+    const split = ctx.award.mode === 'split';
+    return {
+      subject: `Award notification: ${id}, ${t}`,
+      body: `Dear ${contactName(v)} and the ${v.name} team,
+
+We are pleased to inform you that ${v.name} has been selected as the awarded vendor for ${id} (${t}) following technical and commercial evaluation.
+
+Award scope: ${plural(f.mine.length, 'line item')}${split ? ' under a split award; your allocated lines are listed in the award summary' : ' (complete package)'}
+Contract value: ${inr(f.value)} (exclusive of GST)
+Delivery: DDP to ${f.sites.join(' and ')}
+Payment terms: Net ${v.paymentDays} days from Goods Receipt Note
+Fulfilment starts: ${fmtDate(startDate())}
+
+Next steps:
+1. Review and countersign the attached award letter and purchase agreement within three business days.
+2. Submit your performance bank guarantee and vendor safety declarations through the supplier portal.
+
+${sign}`
+    };
+  }
+  const r = f.row;
+  const reason = v.iso === false
+    ? 'Your quotation did not include the mandatory ISO 9001/14001 certification required under clause 01, so it could not be considered for award.'
+    : !r.complete ? `Your quotation covered ${r.count} of ${ctx.ev.lines.length} line items, and this event required a complete response.`
+    : `Your quoted total of ${inr(r.total)} was above the awarded commercial position.`;
+  return {
+    subject: `Outcome of ${id}: ${t}`,
+    body: `Dear ${contactName(v)} and the ${v.name} team,
+
+Thank you for responding to ${id} (${t}). After technical and commercial evaluation, we have awarded this requirement to another supplier.
+
+${reason}
+
+We value your participation and will keep ${v.name} on our preferred panel for future corrugated packaging events. A debrief call can be arranged on request.
+
+${sign}`
+  };
+}
+function draftKey(ctx, item) { return `${ctx.award.mode}:${ctx.award.provisional ? 'p' : 'f'}:${item.id}`; }
+function getDraft(ctx, item) {
+  const k = draftKey(ctx, item);
+  if (!S.email.drafts[k]) S.email.drafts[k] = { ...templateDraft(ctx, item), status: 'draft', by: 'template' };
+  return S.email.drafts[k];
+}
+function resolveTokens(text, ctx, item) {
+  const f = recipientFacts(ctx, item.id);
+  const map = { '{{vendor.name}}': f.v.name, '{{vendor.contact}}': contactName(f.v), '{{award.value}}': inr(f.value), '{{rfx.id}}': S.eventId, '{{rfx.title}}': S.rfx.title, '{{start.date}}': fmtDate(startDate()) };
+  return text.replace(/\{\{[a-z.]+\}\}/g, m => map[m] ?? m);
+}
+
+function renderEmail(ev) {
+  const ctx = emailContext(ev);
+  if (!ctx) return pageHead({ ico: 'mail', title: 'Email Compose', sub: 'Award and regret notices' }) + `<div class="wrap content"><div class="card"><div class="card-b"><p class="note warn">${icon('info', 'sm')}<span>No award scenario is available yet. Complete the evaluation in Decision Maker first.</span></p><div style="margin-top:12px"><button class="btn" type="button" data-tab="decision">${icon('arrow_back', 'sm')} Go to Decision Maker</button></div></div></div></div>`;
+  const { award, list, sel } = ctx;
+  const d = getDraft(ctx, sel);
+  const f = recipientFacts(ctx, sel.id), v = f.v;
+  const isAward = sel.kind === 'award';
+  const busy = RT.busy.email;
+  const final = !award.provisional;
+  const approvals = [
+    { ok: S.approvals.cpo.ok, t: 'CPO spend delegation cleared', s: `Authorised by ${S.approvals.cpo.by}` },
+    { ok: S.approvals.fin.ok, t: 'Finance approval recorded', s: S.approvals.fin.ok ? `${S.approvals.fin.by} · ${fmtTime(S.approvals.fin.at)} IST` : 'Pending in Decision Maker' },
+    { ok: true, t: 'Budget allocation reserved', s: 'SAP cost centre CC-IND-MUM-7701' },
+    { ok: true, t: 'Legal master terms synchronised', s: 'Standard Master Goods Agreement v4.2' }
+  ];
+  const passed = approvals.filter(a => a.ok).length;
+  const sentCount = list.filter(x => S.email.drafts[draftKey(ctx, x)]?.status === 'sent').length;
+
+  const header = pageHead({
+    ico: 'forward_to_inbox', title: 'Award transmission console',
+    chips: final ? `<span class="chip ok">${icon('check_circle')}Award finalised</span>` : `<span class="chip warn">Provisional</span>`,
+    sub: `Triggered by award decision · Event #${esc(S.eventId)} · ${sentCount} of ${list.length} notices logged`,
+    actions: `<span class="muted" style="font-size:12.5px">Drafts save in this browser</span>`
+  });
+
+  return header + `<div class="wrap content">
+    ${final ? '' : `<div class="note warn">${icon('info', 'sm')}<span><b>The award isn't finalised yet.</b> These drafts preview the ${award.mode === 'split' ? 'split award' : 'single-source'} scenario. Logging a notice as sent unlocks after you award in Decision Maker.</span></div>`}
+    <div class="rtabs" role="group" aria-label="Notices">${list.map(x => {
+      const dd = S.email.drafts[draftKey(ctx, x)];
+      return `<button class="rtab" type="button" data-action="email-recipient" data-id="${x.id}" aria-pressed="${x.id === sel.id}">${icon(x.kind === 'award' ? 'emoji_events' : 'mail', 'sm')} ${esc(vendorById(x.id).name)} <span class="chip ${x.kind === 'award' ? 'ok' : ''}">${x.kind === 'award' ? 'Award' : 'Regret'}</span>${dd?.status === 'sent' ? `<span class="chip info">Logged</span>` : ''}</button>`;
+    }).join('')}</div>
+    <div class="g-side">
+      <div class="card">
+        <div class="card-h" style="background:var(--surface-2)"><h2>${icon('outgoing_mail')} ${isAward ? 'Award notice' : 'Regret notice'}</h2><span class="caps">Encryption: TLS 1.3</span></div>
+        <div class="ehead">
+          <span class="lbl">From</span><div class="ebox">${icon('shield', 'sm')} <span>${FROM}</span> <span class="muted" style="font-size:12px">(Procure-X · Avinash J)</span></div>
+          <span class="lbl">To (vendor)</span><div class="ebox"><span class="pill"><span>${esc(v.name)} &lt;${esc(v.email)}&gt;</span></span>${isAward ? `<span class="chip ok">Award winner${f.rank === 1 ? ' · L1 commercial' : ''}</span>` : ''}</div>
+          <label class="lbl" for="cc-add">Internal CC</label><div class="ebox">${S.email.cc.map((c, i) => `<span class="pill"><span>${esc(c)}</span><button class="x" type="button" data-action="cc-remove" data-i="${i}" aria-label="Remove ${esc(c)}">${icon('close', 'sm')}</button></span>`).join('')}<input id="cc-add" type="email" placeholder="+ Add stakeholder email, press Enter" data-cc-add></div>
+          <label class="lbl" for="email-subject">Subject</label><input class="input subject" id="email-subject" data-email="subject" value="${esc(d.subject)}" ${busy ? 'disabled' : ''}>
+        </div>
+        <div class="etool">
+          <label class="sr" for="merge-token">Insert merge token</label>
+          <select class="select" id="merge-token" style="width:auto" data-merge><option value="">{ } Merge token</option>${TOKENS.map(([k, l]) => `<option value="${k}">${l}</option>`).join('')}</select>
+          <label class="sr" for="email-tone">Tone</label>
+          <select class="select" id="email-tone" style="width:auto" data-email-tone>${['Formal', 'Concise', 'Warm'].map(t => `<option ${t === S.email.tone ? 'selected' : ''}>${t}</option>`).join('')}</select>
+          ${busy ? `<button class="btn" type="button" data-action="email-stop">${icon('stop_circle', 'sm')} Stop</button>` : `<button class="btn" type="button" data-action="email-ai" ${aiUsable() ? '' : 'disabled'}>${icon('auto_awesome', 'sm')} ${d.by === 'claude' ? 'Redraft' : 'Draft'} with Claude</button>`}
+          <button class="btn ghost" type="button" data-action="email-reset" ${busy ? 'disabled' : ''}>${icon('restart_alt', 'sm')} Template</button>
+          <span class="grow"></span><span class="muted tnum" style="font-size:12px" id="email-count">${d.body.length.toLocaleString('en-IN')} characters</span>
+        </div>
+        <div class="ebody">
+          ${aiNotice()}
+          <label class="sr" for="email-body">Email body</label>
+          <textarea class="textarea" id="email-body" data-email="body" ${busy ? 'readonly' : ''}>${esc(d.body)}</textarea>
+          ${isAward ? `<div class="esum">
+            <div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;align-items:center"><b style="display:flex;gap:8px;align-items:center">${icon('assignment_turned_in')} Executive award summary</b><span class="chip">Contract ref: CTR-PKG-${S.eventId.split('-')[1]}-441</span></div>
+            <div class="grid">
+              <div><span class="caps">Total awarded scope</span><b>${plural(f.mine.length, 'line item')}${award.mode === 'split' ? ' (split award)' : ' (complete package)'}</b></div>
+              <div><span class="caps">Total contract value</span><b style="color:var(--accent-text);font-size:17px" class="tnum">${inr(f.value)} <small class="muted" style="font-weight:400;font-size:12px">excl. GST</small></b></div>
+              <div><span class="caps">Logistics & delivery</span><span>DDP (${esc(f.sites.join(', '))})</span></div>
+              <div><span class="caps">Payment terms</span><span>Net ${v.paymentDays} days from GRN</span></div>
+              <div><span class="caps">Fulfilment commencement</span><span style="color:var(--ok);font-weight:600">${icon('event', 'sm')} ${fmtDate(startDate())}</span></div>
+              <div><span class="caps">Allocated lines</span><span class="muted" style="font-size:12.5px">${f.mine.map(x => esc(lineById(x.line)?.name || x.line)).join(', ')}</span></div>
+            </div>
+          </div>
+          <div><div class="sec-h"><b style="display:flex;gap:8px;align-items:center">${icon('attach_file')} Pre-attached legal & commercial artifacts <span class="chip">3 files</span></b></div>
+          <div class="attach">${[['picture_as_pdf', 'var(--accent-soft)', 'var(--accent-text)', 'Official memo', `${S.eventId}_Award_Letter.pdf`, 'Generated PDF'], ['description', 'var(--warn-soft)', 'var(--warn)', 'Technical schedule', 'Corrugated_Packaging_Spec.pdf', 'Dual-signed spec'], ['table', 'var(--ok-soft)', 'var(--ok)', 'Commercial baseline', 'Line_Items_Pricing_Matrix.xlsx', 'Awarded rates']].map(([ic, bg, fg, k, n, s]) => `<div class="att"><span class="fi" style="background:${bg};color:${fg}">${icon(ic)}</span><div class="ft"><span class="caps" style="color:${fg}">${k}</span><b title="${esc(n)}">${esc(n)}</b>${s} · auto-attached</div></div>`).join('')}</div></div>` : `<p class="muted" style="font-size:12.5px">${icon('info', 'sm')} Regret notices go without attachments. The vendor can request a debrief.</p>`}
+        </div>
+        <div class="efoot">
+          <button class="btn ghost" type="button" data-tab="decision">${icon('arrow_back', 'sm')} Back to Decision Maker</button>
+          <div class="r">
+            <button class="btn" type="button" data-action="email-copy">${icon('content_copy', 'sm')} Copy email</button>
+            ${d.status === 'sent' ? `<span class="chip info">${icon('check')}Logged as sent</span>` : `<button class="btn primary lg" type="button" data-action="email-send" ${final && !busy ? '' : 'disabled'}>${icon('send')} Log as sent</button>`}
+          </div>
+        </div>
+      </div>
+
+      <div class="stack">
+        <div class="card"><div class="card-b stack" style="gap:14px">
+          <div style="display:flex;justify-content:space-between;gap:8px"><span class="caps">${isAward ? 'Award recipient profile' : 'Vendor profile'}</span>${isAward ? `<span class="chip ok">Tier-${v.tier} ${f.rank === 1 ? 'primary' : 'supplier'}</span>` : `<span class="chip">Tier-${v.tier}</span>`}</div>
+          <div class="prof"><span class="mono-badge">${esc(initials(v.name))}</span><div><b style="font-size:16px">${esc(v.name)}</b><div class="muted" style="font-size:12.5px">Reg ID: ${esc(v.vendorId)}</div></div></div>
+          <div class="stats">
+            <div><span class="caps">Evaluation score</span><b class="tnum" style="color:var(--ok)">${f.row?.score != null ? f.row.score.toFixed(1) : '—'} / 100</b></div>
+            <div><span class="caps">${isAward ? 'Award value' : 'Quoted total'}</span><b class="tnum">${isAward ? lakh(f.value) : f.row && !f.row.pending ? lakh(f.row.total) : '—'}</b></div>
+            <div><span class="caps">Commercial rank</span><b>${f.rank ? `Rank ${f.rank}` : 'Not ranked'}</b></div>
+            <div><span class="caps">ESG qualification</span><b style="color:${v.iso ? 'var(--ok)' : 'var(--bad)'}">${esc(v.esg)}</b></div>
+          </div>
+          <div><span class="caps">Authorised signatory</span><div>${esc(v.contact)}</div></div>
+        </div></div>
+        <div class="card">
+          <div class="card-h"><h3>${icon('verified')} Approval directives</h3><span class="chip ${passed === approvals.length ? 'ok' : 'warn'}">Passed (${passed}/${approvals.length})</span></div>
+          <div class="card-b checks">${approvals.map(a => `<div class="check ${a.ok ? '' : 'pending'}">${icon(a.ok ? 'check_circle' : 'pending')}<div>${esc(a.t)}<small>${esc(a.s)}</small></div></div>`).join('')}</div>
+        </div>
+        <div class="card"><div class="card-b stack" style="gap:12px">
+          <span class="caps">After sending (outside this prototype)</span>
+          <ol class="steps">
+            <li class="${d.status === 'sent' ? 'done' : 'now'}"><i>1</i>Vendor receives the ${isAward ? 'locked award package' : 'outcome notice'}</li>
+            <li><i>2</i>${isAward ? 'E-signature request goes to the vendor signatory' : 'Vendor stays on the preferred panel'}</li>
+            <li><i>3</i>${isAward ? 'ERP raises the purchase order' : 'Debrief call if requested'}</li>
+          </ol>
+        </div></div>
+      </div>
+    </div>
+  </div>`;
+}
+
+/* ---------- Render loop ---------- */
+const RENDERERS = { rfx: renderRfx, vendors: renderVendors, decision: renderDecision, email: renderEmail };
+function render() {
+  if (!S) return;
+  const ev = evaluate();
+  const a = document.activeElement;
+  const focusId = a && a.id && a !== document.body ? a.id : null;
+  const selStart = focusId && 'selectionStart' in a ? safeSel(a) : null;
+  const logs = $$('.chat-log').map(el => [el.id, el.scrollTop, el.scrollHeight - el.scrollTop - el.clientHeight < 40]);
+  renderHeader(ev);
+  const host = $('#tab-' + S.tab);
+  host.innerHTML = RENDERERS[S.tab](ev);
+  for (const [id, top, atBottom] of logs) { const el = id && $('#' + id); if (el) el.scrollTop = atBottom ? el.scrollHeight : top; }
+  if (focusId) {
+    const el = document.getElementById(focusId);
+    if (el && !el.disabled) { el.focus({ preventScroll: true }); if (selStart && el.setSelectionRange) try { el.setSelectionRange(selStart[0], selStart[1]); } catch (e) { /* not a text input */ } }
+  }
+  RT.flashLines.clear();
+  save();
+}
+function safeSel(el) { try { return el.selectionStart == null ? null : [el.selectionStart, el.selectionEnd]; } catch (e) { return null; } }
+function scrollLog(id) { const el = $('#' + id); if (el) el.scrollTop = el.scrollHeight; }
+
+function setTab(tab) {
+  if (!RENDERERS[tab]) return;
+  S.tab = tab;
+  render();
+  window.scrollTo({ top: 0 });
+  try { history.replaceState(null, '', '#' + tab); } catch (e) { /* sandboxed */ }
+}
+
+/* ---------- Toasts & modal ---------- */
+function toast(msg, err = false) {
+  const t = document.createElement('div');
+  t.className = 'toast' + (err ? ' err' : '');
+  t.innerHTML = icon(err ? 'error' : 'check_circle') + `<span>${esc(msg)}</span>`;
+  $('#toasts').append(t);
+  setTimeout(() => t.remove(), 4200);
+}
+function openModal({ title, body, actions }) {
+  $('#modal-title').textContent = title;
+  $('#modal-body').innerHTML = body;
+  RT.modalHandlers = {};
+  $('#modal-foot').innerHTML = actions.map((a, i) => { RT.modalHandlers['m' + i] = a.run; return `<button class="btn ${a.cls || ''}" type="button" data-modal="m${i}" ${a.id ? `id="${a.id}"` : ''}>${a.label}</button>`; }).join('');
+  $('#modal').hidden = false;
+  const first = $('#modal-body input, #modal-body textarea, #modal-body select') || $('#modal-foot .btn:last-child');
+  first && first.focus();
+}
+function closeModal() { $('#modal').hidden = true; RT.modalHandlers = {}; RT.ctl.upload?.abort(); RT.upload = null; }
+const cancelBtn = { label: 'Cancel', cls: 'ghost', run: closeModal };
+
+/* ---------- Plain actions ---------- */
+const ACTIONS = {
+  'close-modal': closeModal,
+  'open-log': () => openModal({
+    title: 'Revision & audit log',
+    body: `<p class="muted" style="font-size:12.5px">Every change to the event, newest first. Kept in this browser.</p><ul class="log">${[...S.audit].reverse().map(a => `<li><time>${fmtTime(a.at)}<br>${new Date(a.at).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', timeZone: IST })}</time><div>${esc(a.what)}<small>${esc(a.who)}</small></div></li>`).join('')}</ul>`,
+    actions: [{ label: icon('restart_alt', 'sm') + ' Reset example data', cls: 'ghost', run: confirmReset }, { label: 'Close', cls: 'dark', run: closeModal }]
+  }),
+  'goto-flag': () => {
+    const f = S.flags.find(x => x.status === 'open' && lineById(x.line) && S.invited.includes(x.vendor));
+    if (f) S.ui.selFlag = f.id;
+    setTab('vendors');
+  },
+
+  // RFx creator
+  'toggle-lines': () => { S.ui.showAllLines = !S.ui.showAllLines; render(); },
+  'line-remove': el => {
+    const l = draftLineById(el.dataset.id); if (!l) return;
+    openModal({
+      title: 'Remove line item?',
+      body: `<p>Remove <b>${esc(l.name)}</b> (${l.qty.toLocaleString('en-IN')} ${esc(l.uom)}) from the RFx? Quotes already received for it stay on file but leave the evaluation.</p>`,
+      actions: [cancelBtn, { label: 'Remove line', cls: 'primary', run: () => { S.rfx.lines = S.rfx.lines.filter(x => x.id !== l.id); S.rfx.dirty = true; log(`Removed line ${l.id} (${l.name})`); closeModal(); render(); } }]
+    });
+  },
+  'line-add': () => openModal({
+    title: 'Add line item',
+    body: `<div class="form-grid">
+      <label class="field full"><span>Item name</span><input class="input" id="nl-name" placeholder="e.g. Corrugated roll, 2-ply"></label>
+      <label class="field full"><span>Specification</span><input class="input" id="nl-spec" placeholder="Ply, dimensions, GSM, strength"></label>
+      <label class="field"><span>Quantity</span><input class="input tnum" id="nl-qty" inputmode="numeric" placeholder="10,000"></label>
+      <label class="field"><span>Unit of measure</span><select class="select" id="nl-uom"><option>Units</option><option>Sets</option><option>Rolls</option><option>Kg</option></select></label>
+      <label class="field full"><span>Delivery location</span><select class="select" id="nl-site">${[...new Set(S.rfx.lines.map(l => l.site).concat(['Bhiwandi Central DC', 'Bangalore Fulfilment Hub', 'Manesar Hub', 'Chennai Plant']))].map(s => `<option>${esc(s)}</option>`).join('')}</select></label>
+    </div><p class="muted" id="nl-err" style="font-size:12.5px"></p>`,
+    actions: [cancelBtn, { label: 'Add line', cls: 'primary', run: () => {
+      const name = $('#nl-name').value.trim(), qty = parseInt($('#nl-qty').value.replace(/[^\d]/g, ''), 10);
+      if (!name || !qty) { $('#nl-err').textContent = 'Enter an item name and a quantity above zero.'; return; }
+      const id = nextLineId();
+      S.rfx.lines.push({ id, name, spec: $('#nl-spec').value.trim() || 'Specification to be confirmed', uom: $('#nl-uom').value, qty, site: $('#nl-site').value });
+      S.rfx.dirty = true; S.ui.showAllLines = true; RT.flashLines.add(id); log(`Added line ${id} (${name})`); closeModal(); render();
+    } }]
+  }),
+  'vendor-remove': el => { const v = vendorById(el.dataset.id); S.invited = S.invited.filter(x => x !== el.dataset.id); S.rfx.dirty = true; log(`Removed ${v.name} from distribution`); render(); },
+  'vendor-add': () => openModal({
+    title: 'Add vendor to distribution',
+    body: `<div class="form-grid">${S.vendors.filter(v => !S.invited.includes(v.id)).length ? `<label class="field full"><span>Previously invited vendor</span><select class="select" id="nv-existing"><option value="">Choose…</option>${S.vendors.filter(v => !S.invited.includes(v.id)).map(v => `<option value="${v.id}">${esc(v.name)}</option>`).join('')}</select></label><p class="full muted" style="font-size:12px">Or add a new vendor:</p>` : ''}
+      <label class="field"><span>Company name</span><input class="input" id="nv-name" placeholder="e.g. Kraftline Packaging"></label>
+      <label class="field"><span>Bid email</span><input class="input" id="nv-email" type="email" placeholder="tenders@example.in"></label></div><p class="muted" id="nv-err" style="font-size:12.5px"></p>`,
+    actions: [cancelBtn, { label: 'Add vendor', cls: 'primary', run: () => {
+      const ex = $('#nv-existing')?.value;
+      if (ex) { S.invited.push(ex); log(`Re-added ${vendorById(ex).name} to distribution`); }
+      else {
+        const name = $('#nv-name').value.trim(), email = $('#nv-email').value.trim();
+        if (!name || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { $('#nv-err').textContent = 'Enter a company name and a valid email address.'; return; }
+        addVendor({ name, email });
+      }
+      S.rfx.dirty = true; closeModal(); render();
+    } }]
+  }),
+  'save-draft': () => { save(); toast('Draft saved in this browser.'); },
+  'dispatch': () => {
+    const n = invitedVendors().length, isDraft = S.stage === 'draft';
+    openModal({
+      title: isDraft ? 'Send RFx to vendors?' : `Issue amendment ${S.rfx.revision + 1}?`,
+      body: `<p>${isDraft ? 'The RFx goes' : `Revision ${S.rfx.revision + 1} goes`} to ${plural(n, 'vendor')}: ${invitedVendors().map(v => esc(v.name)).join(', ')}.</p><p class="note">${icon('info', 'sm')}<span>Prototype: this records the dispatch in the audit log. No email or portal invitation is sent.</span></p>`,
+      actions: [cancelBtn, { label: icon('send', 'sm') + (isDraft ? ' Send RFx' : ' Issue amendment'), cls: 'primary', run: () => {
+        S.rfx.revision += 1; S.rfx.dirty = false;
+        const dc = draftChanges();
+        S.rfx.issued = issuedSnapshot(S.rfx);
+        if (!isDraft && dc.any) log(`Revision ${S.rfx.revision} applied to evaluation: ${dc.text}`);
+        if (isDraft) S.stage = 'published';
+        log(`${isDraft ? 'Sent RFx' : 'Issued amendment'} revision ${S.rfx.revision} to ${plural(n, 'vendor')}`);
+        closeModal(); render(); toast(`Revision ${S.rfx.revision} issued to ${plural(n, 'vendor')}. Every tab now uses it${dc.added.length ? `; ${plural(dc.added.length, 'new line')} await${dc.added.length === 1 ? 's' : ''} vendor quotes` : ''}.`);
+      } }]
+    });
+  },
+
+  // Vendor analyser
+  'select-flag': el => { S.ui.selFlag = el.dataset.id; const f = S.flags.find(x => x.id === el.dataset.id); if (f) { S.clar.vendor = f.vendor; S.clar.line = f.line; } render(); },
+  'flag-approve': el => {
+    const f = S.flags.find(x => x.id === el.dataset.id); if (!f) return;
+    const val = parseFloat(($('#flag-rate')?.value || '').replace(/[^\d.]/g, ''));
+    if (!(val > 0)) { toast('Enter a rate above zero to approve.', true); return; }
+    const c = S.quotes[f.vendor][f.line];
+    const changed = c.rate !== val;
+    c.rate = val; c.conf = 'verified'; f.status = 'approved';
+    log(`Approved ${vendorById(f.vendor).name} line ${f.line.slice(1)} at ${rateFmt(val)}${changed ? ' (corrected)' : ''}`);
+    render(); toast(`Line ${f.line.slice(1)} for ${vendorById(f.vendor).name} now counts at ${rateFmt(val)}.`);
+  },
+  'flag-reopen': el => { const f = S.flags.find(x => x.id === el.dataset.id); if (!f) return; f.status = 'open'; const c = S.quotes[f.vendor]?.[f.line]; if (c) c.conf = f.severity; log(`Reopened flag ${f.id}`); render(); },
+  'flag-clarify': el => {
+    const f = S.flags.find(x => x.id === el.dataset.id); if (!f) return;
+    S.clar.vendor = f.vendor; S.clar.line = f.line; render();
+    $('#clar-card')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    $('#clar-text')?.focus({ preventScroll: true });
+  },
+  'clar-copy': () => copyText(S.clar.text, 'Clarification copied.'),
+  'clar-log': () => {
+    if (!S.clar.text.trim()) { toast('Write or draft the message first.', true); return; }
+    const v = vendorById(S.clar.vendor), f = S.flags.find(x => x.vendor === S.clar.vendor && x.line === S.clar.line && x.status === 'open');
+    if (f) f.status = 'clarification';
+    log(`Logged clarification request to ${v.name} on line ${S.clar.line.slice(1)}`);
+    S.clar.text = '';
+    render(); toast(`Clarification to ${v.name} logged. No email was sent from this prototype.`);
+  },
+  'export-csv': async () => {
+    const ev = evaluate(), rows = ev.rows.filter(r => !r.pending);
+    const cell = s => `"${String(s).replace(/"/g, '""')}"`;
+    const csv = [['Line', 'Item', 'Spec', 'UoM', 'Qty', ...rows.map(r => r.v.name + ' (INR/unit)'), 'L1 vendor'].map(cell).join(',')]
+      .concat(issuedLines().map(l => [l.id, l.name, l.spec, l.uom, l.qty, ...rows.map(r => S.quotes[r.v.id]?.[l.id]?.rate ?? ''), ev.l1[l.id] ? vendorById(ev.l1[l.id]).name : ''].map(cell).join(','))).join('\r\n');
+    try { await AI.downloads.save({ filename: `${S.eventId}_line_item_matrix.csv`, data: csv }); toast('CSV saved.'); }
+    catch (e) { if (e?.code !== 'declined') toast("The CSV couldn't be saved in this view.", true); }
+  },
+
+  // Decision maker
+  'approve-fin': () => { S.approvals.fin = { ...S.approvals.fin, ok: true, at: new Date().toISOString() }; log('Recorded finance approval (simulated)', S.approvals.fin.by); render(); },
+  'award': () => {
+    const ev = evaluate(), p = proposedAward(ev, S.awardChoice); if (!p) return;
+    openModal({
+      title: 'Execute award?',
+      body: `<p>Award <b>${inr(p.total)}</b> ${p.mode === 'split' ? `across ${p.vendorIds.map(id => esc(vendorById(id).name)).join(', ')}` : `to <b>${esc(vendorById(p.vendorIds[0]).name)}</b>`}.</p><p class="muted" style="font-size:12.5px">This locks the evaluation and prepares ${plural(p.vendorIds.length, 'award notice')} and regret notices for the other bidders. You can reopen it from Decision Maker.</p>${ev.awaiting.length ? `<p class="note warn">${icon('schedule', 'sm')}<span>Not included: ${ev.awaiting.map(l => esc(l.name)).join(', ')} (awaiting quotes).</span></p>` : ''}`,
+      actions: [cancelBtn, { label: icon('gavel', 'sm') + ' Execute award', cls: 'primary', run: () => {
+        S.award = { ...p, provisional: false, at: new Date().toISOString() };
+        S.stage = 'awarded'; S.email.recipient = p.vendorIds[0];
+        log(`Executed ${p.mode === 'split' ? 'split' : 'single-source'} award for ${inr(p.total)}`);
+        closeModal(); setTab('email'); toast('Award executed. Review the notices.');
+      } }]
+    });
+  },
+  'award-undo': () => { S.award = null; S.stage = 'evaluation'; log('Reopened evaluation; award withdrawn'); render(); },
+
+  // Email
+  'email-recipient': el => { S.email.recipient = el.dataset.id; render(); },
+  'cc-remove': el => { S.email.cc.splice(+el.dataset.i, 1); render(); },
+  'email-reset': () => { const ctx = emailContext(); if (!ctx) return; S.email.drafts[draftKey(ctx, ctx.sel)] = { ...templateDraft(ctx, ctx.sel), status: 'draft', by: 'template' }; render(); },
+  'email-copy': () => {
+    const ctx = emailContext(); if (!ctx) return; const d = getDraft(ctx, ctx.sel), v = vendorById(ctx.sel.id);
+    copyText(`To: ${v.email}\nCc: ${S.email.cc.join(', ')}\nSubject: ${resolveTokens(d.subject, ctx, ctx.sel)}\n\n${resolveTokens(d.body, ctx, ctx.sel)}`, 'Email copied with merge tokens filled in.');
+  },
+  'email-send': () => {
+    const ctx = emailContext(); if (!ctx) return; const v = vendorById(ctx.sel.id);
+    openModal({
+      title: 'Log this notice as sent?',
+      body: `<p>Mark the ${ctx.sel.kind} notice to <b>${esc(v.name)}</b> &lt;${esc(v.email)}&gt; as sent.</p><p class="note">${icon('info', 'sm')}<span>Prototype: nothing leaves this page. Use <b>Copy email</b> to send it from your mail client, then log it here.</span></p>`,
+      actions: [cancelBtn, { label: icon('done', 'sm') + ' Log as sent', cls: 'primary', run: () => {
+        const d = getDraft(ctx, ctx.sel); d.status = 'sent'; d.sentAt = new Date().toISOString();
+        log(`Logged ${ctx.sel.kind} notice to ${v.name} as sent`);
+        if (ctx.list.every(x => S.email.drafts[draftKey(ctx, x)]?.status === 'sent')) { S.stage = 'notified'; log('All award and regret notices logged'); }
+        const next = ctx.list.find(x => S.email.drafts[draftKey(ctx, x)]?.status !== 'sent'); if (next) S.email.recipient = next.id;
+        closeModal(); render(); toast(`Notice to ${v.name} logged.`);
+      } }]
+    });
+  }
+};
+
+function confirmReset() {
+  openModal({
+    title: 'Reset example data?',
+    body: '<p>This clears your edits, extractions, chats and award in this browser and restores the example event.</p>',
+    actions: [cancelBtn, { label: 'Reset', cls: 'primary', run: () => { for (const k in RT.ctl) RT.ctl[k]?.abort(); S = seed(); closeModal(); render(); toast('Example data restored.'); } }]
+  });
+}
+function nextLineId() { let n = S.rfx.lines.reduce((m, l) => Math.max(m, parseInt(l.id.slice(1), 10) || 0), 0) + 1; return 'L' + String(n).padStart(2, '0'); }
+function addVendor({ name, email }) {
+  const id = 'V' + (S.vendors.reduce((m, v) => Math.max(m, parseInt(v.id.slice(1), 10) || 0), 0) + 1);
+  S.vendors.push({ id, name: name.slice(0, 80), email: email.slice(0, 120), contact: 'Tender desk', vendorId: 'VEND-NEW-' + String(Math.floor(Math.random() * 9e4) + 1e4), tier: 2, iso: null, source: 'Awaiting file', srcIcon: 'hourglass_top', paymentDays: null, esg: 'Pending' });
+  S.invited.push(id);
+  log(`Added ${name} to distribution`);
+  return id;
+}
+async function copyText(text, ok) {
+  try { await navigator.clipboard.writeText(text); toast(ok); }
+  catch (e) {
+    openModal({ title: 'Copy text', body: `<p class="muted" style="font-size:12.5px">Copying is blocked here. Select the text below and copy it.</p><textarea class="textarea" id="copy-fallback" rows="12" readonly>${esc(text)}</textarea>`, actions: [{ label: 'Done', cls: 'dark', run: closeModal }] });
+    $('#copy-fallback').select();
+  }
+}
+
+/* ---------- Claude: RFx co-pilot ---------- */
+async function copilotSend(text) {
+  text = text.trim(); if (!text || RT.busy.copilot) return;
+  const sample = await getSample(); if (!sample) return;
+  S.chat.rfx = S.chat.rfx.filter(m => !m.pending);
+  S.chat.rfx.push({ role: 'user', text, at: new Date().toISOString() });
+  const pending = { role: 'assistant', text: '', pending: true, at: new Date().toISOString() };
+  S.chat.rfx.push(pending);
+  RT.busy.copilot = true; const ctl = RT.ctl.copilot = new AbortController();
+  render(); scrollLog('copilot-log');
+  const draft = {
+    title: S.rfx.title, summary: S.rfx.summary, currency: S.rfx.currency, validityDays: S.rfx.validityDays,
+    deadline: toISTInput(S.rfx.deadline) + ':00+05:30',
+    lines: S.rfx.lines.map(({ id, name, spec, uom, qty, site }) => ({ id, name, spec, uom, qty, site })),
+    clauses: S.rfx.clauses.map(({ id, category, question, detail, mandatory, expected }) => ({ id, category, question, detail, mandatory, expected })),
+    vendors: invitedVendors().map(({ id, name, email }) => ({ id, name, email }))
+  };
+  const history = S.chat.rfx.filter(m => !m.pending && !m.error).slice(-7, -1).map(m => `${m.role === 'user' ? 'Buyer' : 'Co-pilot'}: ${m.text}`).join('\n') || '(none)';
+  const prompt = `You are the RFx co-pilot inside Procure-X, an enterprise sourcing tool. A lead buyer in India is editing a draft Request for Quotation (RFx). Today is ${fmtDate(new Date().toISOString())} (IST).
+
+Current RFx draft as JSON:
+${JSON.stringify(draft)}
+
+Recent conversation:
+${history}
+
+Buyer's new request:
+${text}
+
+Apply the request to the draft. Rules:
+- Keep the ids of existing lines (L01…), clauses (C01…) and vendors (V1…). New lines take the next free id (L09, L10…), new clauses the next free C id, new vendors the ids NEW1, NEW2….
+- Quantities are whole numbers. Units of measure are short labels such as Units, Sets, Rolls or Kg. Delivery sites should reuse existing site names unless the buyer names another.
+- Specs use the same terse technical style as the existing lines (ply, dimensions in mm, GSM, strength).
+- Deadlines are ISO 8601 date-times with the +05:30 offset.
+- If the request is unclear or not about this RFx, change nothing and ask one short question in "reply".
+
+Reply with only a JSON object:
+{"reply": "1–3 plain sentences telling the buyer what you changed", "lines": [...], "clauses": [...], "commercial": {"deadline": "...", "validityDays": 90, "currency": "INR"}, "vendors": [...]}
+Include "lines", "clauses", "commercial" or "vendors" only if that part changed. When you include one, give the complete updated list or object in the same shape as the draft.`;
+  try {
+    const res = await sample.json(prompt, { signal: ctl.signal, modelTier: 'default', cache: false });
+    if (!res || typeof res !== 'object') throw { code: 'invalid_json' };
+    const changes = applyCopilot(res);
+    Object.assign(pending, { pending: false, text: String(res.reply || 'Done.').slice(0, 1200), meta: changes.length ? changes : ['No changes'] });
+    if (changes.length) { S.rfx.dirty = true; log(`Co-pilot: ${changes.join(', ')}`, 'Claude (co-pilot)'); }
+  } catch (e) {
+    aiFail(e);
+    const msg = aiErrorText(e);
+    if (!msg) S.chat.rfx.splice(S.chat.rfx.indexOf(pending), 1);
+    else Object.assign(pending, { pending: false, error: true, text: msg });
+  } finally {
+    RT.busy.copilot = false; RT.ctl.copilot = null;
+    render(); scrollLog('copilot-log');
+  }
+}
+
+function applyCopilot(res) {
+  const changes = [];
+  const str = (v, max = 300) => typeof v === 'string' ? v.trim().slice(0, max) : '';
+  if (Array.isArray(res.lines)) {
+    const before = new Map(S.rfx.lines.map(l => [l.id, JSON.stringify(l)]));
+    const used = new Set();
+    const next = [];
+    for (const raw of res.lines.slice(0, 60)) {
+      if (!raw || typeof raw !== 'object') continue;
+      const name = str(raw.name, 120), qty = Math.round(Number(String(raw.qty).replace(/[^\d.]/g, '')));
+      if (!name || !(qty > 0)) continue;
+      let id = /^L\d{2,3}$/.test(raw.id) && !used.has(raw.id) ? raw.id : null;
+      if (!id) { id = nextLineIdFrom([...S.rfx.lines, ...next]); }
+      used.add(id);
+      next.push({ id, name, spec: str(raw.spec, 240) || 'Specification to be confirmed', uom: str(raw.uom, 16) || 'Units', qty, site: str(raw.site, 80) || S.rfx.lines[0]?.site || 'Bhiwandi Central DC' });
+    }
+    const added = next.filter(l => !before.has(l.id)).length;
+    const removed = [...before.keys()].filter(id => !next.some(l => l.id === id)).length;
+    const edited = next.filter(l => before.has(l.id) && before.get(l.id) !== JSON.stringify(l));
+    if (added || removed || edited.length) {
+      S.rfx.lines = next;
+      for (const l of next) if (!before.has(l.id) || before.get(l.id) !== JSON.stringify(l)) RT.flashLines.add(l.id);
+      if (added) changes.push(`${plural(added, 'line')} added`);
+      if (edited.length) changes.push(`${plural(edited.length, 'line')} edited`);
+      if (removed) changes.push(`${plural(removed, 'line')} removed`);
+      if (added) S.ui.showAllLines = true;
+    }
+  }
+  if (Array.isArray(res.clauses)) {
+    const before = JSON.stringify(S.rfx.clauses);
+    const next = res.clauses.slice(0, 20).filter(c => c && str(c.question)).map((c, i) => ({
+      id: /^C\d{2}$/.test(c.id) ? c.id : 'C' + String(i + 1).padStart(2, '0'),
+      category: str(c.category, 60) || 'General', question: str(c.question, 240), detail: str(c.detail, 300), mandatory: c.mandatory !== false, expected: str(c.expected, 120)
+    }));
+    if (next.length && JSON.stringify(next) !== before) { S.rfx.clauses = next; changes.push('Questionnaire updated'); }
+  }
+  if (res.commercial && typeof res.commercial === 'object') {
+    const c = res.commercial;
+    const d = c.deadline ? new Date(c.deadline) : null;
+    if (d && !isNaN(d) && d.toISOString() !== S.rfx.deadline) { S.rfx.deadline = d.toISOString(); changes.push('Deadline moved to ' + fmtDT(S.rfx.deadline)); }
+    const vd = Math.round(Number(c.validityDays));
+    if (vd > 0 && vd < 1000 && vd !== S.rfx.validityDays) { S.rfx.validityDays = vd; changes.push(`Validity ${vd} days`); }
+    if (['INR', 'USD', 'EUR'].includes(c.currency) && c.currency !== S.rfx.currency) { S.rfx.currency = c.currency; changes.push(`Currency ${c.currency}`); }
+  }
+  if (Array.isArray(res.vendors)) {
+    const keep = [];
+    for (const v of res.vendors.slice(0, 20)) {
+      if (!v || typeof v !== 'object') continue;
+      const known = S.vendors.find(x => x.id === v.id) || S.vendors.find(x => x.name.toLowerCase() === str(v.name).toLowerCase());
+      if (known) { keep.push(known.id); continue; }
+      const name = str(v.name, 80), email = str(v.email, 120);
+      if (name && /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { const id = addVendor({ name, email }); S.invited = S.invited.filter(x => x !== id); keep.push(id); changes.push(`${name} added`); }
+    }
+    const removed = S.invited.filter(id => !keep.includes(id));
+    if (removed.length) changes.push(`${plural(removed.length, 'vendor')} removed`);
+    if (keep.length) S.invited = [...new Set(keep)];
+  }
+  return changes;
+}
+function nextLineIdFrom(list) { const n = list.reduce((m, l) => Math.max(m, parseInt(l.id.slice(1), 10) || 0), 0) + 1; return 'L' + String(n).padStart(2, '0'); }
+
+/* ---------- Quote files: PDF, Excel, text and images are read in the page ---------- */
+const LIBS = {
+  xlsx: 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js',
+  pdf: 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js',
+  pdfWorker: 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js'
+};
+const scriptLoads = {};
+function loadScript(src) {
+  return scriptLoads[src] ||= new Promise((resolve, reject) => {
+    const s = document.createElement('script');
+    s.src = src; s.async = true;
+    s.onload = resolve;
+    s.onerror = () => { delete scriptLoads[src]; s.remove(); reject(new Error('reader_unavailable')); };
+    document.head.append(s);
+  });
+}
+const IMG_EXT = ['jpg', 'jpeg', 'png', 'webp', 'gif'];
+const SHEET_EXT = ['xlsx', 'xls', 'xlsm', 'xlsb', 'ods'];
+const TEXT_EXT = ['csv', 'tsv', 'txt', 'eml', 'md', 'json', 'xml', 'htm', 'html'];
+const MAX_TEXT = 60000;
+const fileSize = n => n < 1048576 ? Math.max(1, Math.round(n / 1024)) + ' KB' : (n / 1048576).toFixed(1) + ' MB';
+const extOf = name => (name.split('.').pop() || '').toLowerCase();
+
+async function readQuoteFile(file) {
+  const ext = extOf(file.name);
+  if (file.type.startsWith('image/') || IMG_EXT.includes(ext)) return { text: '', images: [file], summary: `${file.name} (${fileSize(file.size)}) will be sent to Claude as an image.` };
+  if (ext === 'pdf' || file.type === 'application/pdf') return readPdf(file);
+  if (SHEET_EXT.includes(ext)) return readSheet(file);
+  if (TEXT_EXT.includes(ext) || file.type.startsWith('text/')) {
+    let text = await file.text();
+    if (ext === 'htm' || ext === 'html') text = new DOMParser().parseFromString(text, 'text/html').body.textContent || '';
+    return { text, images: [], summary: `Read ${file.name}: ${plural(text.split('\n').filter(x => x.trim()).length, 'line')} of text.` };
+  }
+  throw new Error(`${file.name} isn't a supported file type. Use a PDF, Excel, CSV or text file, or a JPG or PNG image.`);
+}
+
+async function readSheet(file) {
+  await loadScript(LIBS.xlsx);
+  const wb = window.XLSX.read(await file.arrayBuffer(), { type: 'array' });
+  let rows = 0;
+  const parts = wb.SheetNames.slice(0, 8).map(n => {
+    const csv = window.XLSX.utils.sheet_to_csv(wb.Sheets[n], { blankrows: false }).replace(/,+$/gm, '');
+    rows += csv.split('\n').filter(x => x.replace(/,/g, '').trim()).length;
+    return `## Sheet: ${n}\n${csv}`;
+  });
+  return { text: parts.join('\n\n'), images: [], summary: `Read ${file.name}: ${plural(wb.SheetNames.length, 'sheet')}, ${plural(rows, 'row')}.` };
+}
+
+async function readPdf(file) {
+  await loadScript(LIBS.pdf);
+  // The worker script also loads on the page itself: artifact pages can't start a worker from a CDN.
+  await loadScript(LIBS.pdfWorker);
+  const lib = window.pdfjsLib;
+  lib.GlobalWorkerOptions.workerSrc = LIBS.pdfWorker;
+  const doc = await lib.getDocument({ data: new Uint8Array(await file.arrayBuffer()), isEvalSupported: false, disableFontFace: true }).promise;
+  const pages = Math.min(doc.numPages, 15);
+  const texts = [];
+  for (let i = 1; i <= pages; i++) {
+    const page = await doc.getPage(i);
+    texts.push(`## Page ${i}\n` + pdfLines((await page.getTextContent()).items));
+  }
+  const text = texts.join('\n\n');
+  const more = doc.numPages > pages ? ` (first ${pages} of ${doc.numPages})` : '';
+  if (text.replace(/## Page \d+/g, '').replace(/\s/g, '').length >= 30 * pages) return { text, images: [], summary: `Read ${file.name}: ${plural(pages, 'page')} of text${more}.` };
+  // A scanned PDF has no text layer: render its pages to images for Claude to read.
+  const n = Math.min(pages, AI.maxImages || 0, 5);
+  if (!n) throw new Error(`${file.name} is a scanned PDF with no text layer, and this view can't send images to Claude. Paste the quote text instead.`);
+  const images = [];
+  for (let i = 1; i <= n; i++) {
+    const page = await doc.getPage(i);
+    const vp = page.getViewport({ scale: Math.min(2.5, 1600 / page.getViewport({ scale: 1 }).width) });
+    const canvas = document.createElement('canvas');
+    canvas.width = Math.round(vp.width); canvas.height = Math.round(vp.height);
+    const ctx = canvas.getContext('2d');
+    ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+    await page.render({ canvasContext: ctx, viewport: vp }).promise;
+    images.push(await new Promise(r => canvas.toBlob(r, 'image/jpeg', 0.9)));
+  }
+  return { text: '', images, summary: `${file.name} is a scan: ${plural(n, 'page')} will be sent to Claude as images${doc.numPages > n ? ` (first ${n} of ${doc.numPages})` : ''}.` };
+}
+
+/* Rebuilds reading-order lines from pdf.js text items: group by baseline, then left to right. */
+function pdfLines(items) {
+  const rows = [];
+  for (const it of items) {
+    if (!it.str || !it.str.trim()) continue;
+    const x = it.transform[4], y = it.transform[5];
+    let row = rows.find(r => Math.abs(r.y - y) <= 3);
+    if (!row) rows.push(row = { y, cells: [] });
+    row.cells.push({ x, s: it.str, w: it.width || 0 });
+  }
+  rows.sort((a, b) => b.y - a.y);
+  return rows.map(r => {
+    r.cells.sort((a, b) => a.x - b.x);
+    let out = '', end = null;
+    for (const c of r.cells) { if (end != null) out += c.x - end > 12 ? '   ' : c.x - end > 1 ? ' ' : ''; out += c.s; end = c.x + c.w; }
+    return out.trim();
+  }).filter(Boolean).join('\n');
+}
+
+function sourceLabel(file) {
+  if (!file) return ['Pasted text', 'content_paste'];
+  const ext = extOf(file.name);
+  if (ext === 'pdf') return ['PDF (.pdf)', 'picture_as_pdf'];
+  if (SHEET_EXT.includes(ext)) return [`Excel (.${ext})`, 'table'];
+  if (ext === 'csv' || ext === 'tsv') return [`Spreadsheet (.${ext})`, 'table'];
+  if (ext === 'eml') return ['Email quote (.eml)', 'mail'];
+  if (IMG_EXT.includes(ext) || file.type.startsWith('image/')) return [`Photo / scan (.${ext})`, 'photo_camera'];
+  return [`Text file (.${ext})`, 'description'];
+}
+
+/* ---------- Currency conversion ---------- */
+function fxInputs() {
+  const extra = RT.upload?.needCur;
+  const codes = [...new Set(['USD', 'EUR', 'GBP', ...Object.keys(S.fx.rates), ...(extra ? [extra] : [])])].filter(c => c !== 'INR');
+  const stale = S.fx.asOf !== todayIST();
+  const when = fmtDate(S.fx.asOf + 'T12:00:00+05:30');
+  return `<div class="fxrow">${codes.map(c => `<label class="field"><span style="font-weight:500">₹ per 1 ${c}</span><input class="input tnum" id="fx-${c}" data-fx="${c}" inputmode="decimal" placeholder="Not set" value="${S.fx.rates[c] ?? ''}" ${c === extra ? 'style="border-color:var(--warn-strong)"' : ''}></label>`).join('')}</div>
+    <p class="note ${stale ? 'warn' : 'ok'}" style="margin-top:6px">${icon(stale ? 'schedule' : 'currency_exchange', 'sm')}<span>${stale
+      ? `Rates were last set on ${when}. Enter today's reference rate before extracting a foreign-currency quote.${S.fx.rates.USD ? ` <button class="linkbtn" type="button" data-action="fx-confirm">Keep ₹${S.fx.rates.USD} per USD for today</button>` : ''}`
+      : `Rates set for today, ${when}. Prices quoted in these currencies are converted to ₹ per unit.`}</span></p>`;
+}
+function refreshFx() { const el = $('#up-fx'); if (el) el.innerHTML = fxInputs(); }
+
+/* ---------- Claude: quote extraction ---------- */
+function openUpload(vid) {
+  const v = vendorById(vid);
+  const has = Object.keys(S.quotes[vid] || {}).length > 0;
+  const pre = S.rawQuotes[vid] || '';
+  RT.upload = { vid, images: [], file: null, needCur: null };
+  openModal({
+    title: `${has ? 'Re-extract quote' : 'Add quote'}: ${v.name}`,
+    body: `<p class="muted" style="font-size:12.5px">Upload the vendor's quotation or paste its text. Claude maps each price to your RFx lines, converts foreign-currency prices to ₹, and flags anything uncertain.${has ? " Re-extracting replaces this vendor's current rates." : ''}</p>
+      <label class="drop" id="up-drop" for="up-file">${icon('upload_file')}<b>Drop a quote file here, or click to browse</b><span class="muted" style="font-size:12px">PDF, Excel (.xlsx, .xls), CSV, text or email (.txt, .eml), or an image (JPG, PNG)</span></label>
+      <input type="file" id="up-file" class="sr" accept=".pdf,.xlsx,.xls,.xlsm,.xlsb,.ods,.csv,.tsv,.txt,.eml,.md,.json,.xml,.htm,.html,.png,.jpg,.jpeg,.webp,.gif,image/*,application/pdf">
+      <div id="up-file-status" aria-live="polite"></div>
+      ${pre ? `<p class="note">${icon('info', 'sm')}<span>${S.vendors.find(x => x.id === vid)?.quoteCur ? 'The text last extracted' : 'Example quotation text'} from ${esc(v.name)} is filled in. Upload a file to replace it.</span></p>` : ''}
+      <label class="field"><span>Quotation text <span class="muted" style="font-weight:400">· filled from the file, editable</span></span><textarea class="textarea mono" id="up-text" rows="10" style="font-size:12px" placeholder="Paste the quote table, terms and certification notes">${esc(pre)}</textarea></label>
+      <div class="field"><span>${icon('currency_exchange', 'sm')} Currency conversion</span><div id="up-fx">${fxInputs()}</div></div>
+      <div id="up-status" aria-live="polite"></div>${aiNotice()}`,
+    actions: [cancelBtn, { id: 'up-go', label: icon('auto_awesome', 'sm') + ' Extract with Claude', cls: 'primary', run: () => runExtraction(vid) }]
+  });
+}
+
+async function handleQuoteFile(file) {
+  const st = $('#up-file-status');
+  if (!st || !RT.upload || !file) return;
+  if (file.size > 25 * 1048576) { st.innerHTML = `<p class="note bad">${icon('error', 'sm')}<span>${esc(file.name)} is larger than 25 MB. Upload a smaller file or paste the quote text.</span></p>`; return; }
+  st.innerHTML = `<div class="note">${thinking('Reading ' + file.name)}</div>`;
+  $('#up-go') && ($('#up-go').disabled = true);
+  try {
+    const r = await readQuoteFile(file);
+    if (!RT.upload) return;
+    Object.assign(RT.upload, { images: r.images, file });
+    const ta = $('#up-text'); if (ta) ta.value = r.text.slice(0, MAX_TEXT);
+    st.innerHTML = `<p class="note ok">${icon('task_alt', 'sm')}<span>${esc(r.summary)}${r.text.length > MAX_TEXT ? ` Only the first ${MAX_TEXT.toLocaleString('en-IN')} characters are used.` : ''}</span></p>`
+      + (r.images.length && !AI.images ? `<p class="note warn" style="margin-top:6px">${icon('info', 'sm')}<span>This view can't send images to Claude. Open the page on claude.ai, or paste the quote text.</span></p>` : '');
+  } catch (e) {
+    const msg = e?.name === 'PasswordException' ? `${file.name} is password-protected. Remove the password, or paste the quote text.`
+      : e?.message === 'reader_unavailable' ? "The file reader couldn't load. Check your connection, or paste the quote text instead."
+      : e?.message && !/^[A-Z][a-zA-Z]+Exception/.test(e.name || '') ? e.message : `${file.name} couldn't be read. Try another format, or paste the quote text.`;
+    st.innerHTML = `<p class="note bad">${icon('error', 'sm')}<span>${esc(msg)}</span></p>`;
+  } finally { $('#up-go') && ($('#up-go').disabled = false); }
+}
+
+async function runExtraction(vid) {
+  const v = vendorById(vid);
+  const text = $('#up-text').value.trim().slice(0, MAX_TEXT);
+  const images = RT.upload?.images || [];
+  const file = RT.upload?.file || null;
+  const status = $('#up-status');
+  const say = (cls, msg, raw = false) => { status.innerHTML = `<p class="note ${cls}">${icon(cls === 'bad' ? 'error' : 'info', 'sm')}<span>${raw ? msg : esc(msg)}</span></p>`; };
+  if (!text && !images.length) { say('warn', 'Upload a quote file or paste the quotation text first.'); return; }
+  if (images.length && !text && !AI.images) { say('warn', "This view can't send images to Claude. Open the page on claude.ai, or paste the quote text."); return; }
+  const sample = await getSample(); if (!sample) return;
+  const go = $('#up-go'); go.disabled = true;
+  status.innerHTML = `<div class="note">${thinking('Claude is reading the quotation')}</div>`;
+  const ctl = RT.ctl.upload = new AbortController();
+  const lines = issuedLines().map(({ id, name, spec, uom, qty }) => ({ id, name, spec, uom, qty }));
+  const sendImages = AI.images ? images.slice(0, AI.maxImages || 1) : [];
+  const prompt = `You extract supplier quotations for Procure-X, a procurement tool used in India. Map the vendor's quoted unit prices onto the buyer's RFx line items.
+
+RFx line items (JSON):
+${JSON.stringify(lines)}
+
+Vendor: ${v.name}
+${text ? `Quotation${file ? ` (from ${file.name})` : ''}:\n"""\n${text}\n"""` : ''}${sendImages.length ? `\nThe quotation${text ? ' is also' : ' is'} attached as ${plural(sendImages.length, 'image')}.` : ''}
+
+Rules:
+- currency: the ISO 4217 code the prices are quoted in. ₹, Rs, Rs. and INR are "INR"; $ and US$ are "USD"; € is "EUR"; £ is "GBP". If no currency is shown, use "INR".
+- rate: the price for one unit of the RFx line's unit of measure, IN THE QUOTED CURRENCY, exactly as quoted (do not convert currencies), excluding GST or VAT. Read Indian digit grouping ("1,20,000") correctly. If the quote prices per 100 or per 1,000 units, divide to get the per-unit price.
+- Match by description and specification, not only by row order. Use null for a line the vendor did not quote.
+- confidence: "high" when the price and its match are unambiguous; "medium" when the buyer should check something (extra charges, unclear units, partial match); "low" when the value is a guess.
+- note: one short sentence for any medium or low line saying what to check; "" otherwise.
+
+Reply with only a JSON object:
+{"currency":"INR","lines":[{"lineId":"L01","rate":40.9,"confidence":"high","note":""}],"paymentTermsDays":45,"validityDays":60,"isoCertified":true,"summary":"one sentence"}
+Use null for paymentTermsDays, validityDays or isoCertified when the quotation doesn't say.`;
+  try {
+    const opts = { signal: ctl.signal, modelTier: 'default', cache: false };
+    if (sendImages.length) opts.images = sendImages;
+    const res = await sample.json(prompt, opts);
+    const cur = String(res?.currency || 'INR').trim().toUpperCase().slice(0, 3);
+    const fx = cur === 'INR' ? 1 : Number(S.fx.rates[cur]);
+    if (!(fx > 0) || (cur !== 'INR' && S.fx.asOf !== todayIST())) {
+      RT.upload.needCur = cur; refreshFx();
+      say('warn', !(fx > 0) ? `This quote is priced in ${cur}. Enter today's ₹ per 1 ${cur} rate above, then extract again.` : `This quote is priced in ${cur}. Confirm today's ₹ per 1 ${cur} rate above, then extract again.`);
+      go.disabled = false; return;
+    }
+    const got = Array.isArray(res?.lines) ? res.lines : [];
+    const q = {}; let n = 0; const newFlags = [];
+    for (const x of got) {
+      const l = lineById(x?.lineId); const r = Number(x?.rate);
+      if (!l || !(r > 0)) continue;
+      const conf = ['high', 'medium', 'low'].includes(x.confidence) ? x.confidence : 'medium';
+      q[l.id] = { rate: Math.round(r * fx * 100) / 100, conf };
+      if (cur !== 'INR') q[l.id].orig = { cur, rate: r, fx };
+      n++;
+      if (conf !== 'high') newFlags.push({ line: l.id, severity: conf, note: String(x.note || '').slice(0, 300), quoted: r });
+    }
+    if (!n) throw { code: 'empty_extraction' };
+    S.quotes[vid] = q;
+    S.flags = S.flags.filter(f => f.vendor !== vid);
+    let fi = S.flags.reduce((m, f) => Math.max(m, parseInt(f.id.slice(1), 10) || 0), 0);
+    for (const nf of newFlags) {
+      const l = lineById(nf.line);
+      // Show the source row that carries this rate, so the buyer can check it against the original.
+      const row = text ? text.split('\n').find(x => x.includes(nf.quoted.toFixed(2)) || x.includes(String(nf.quoted))) : null;
+      S.flags.push({ id: 'F' + (++fi), vendor: vid, line: nf.line, severity: nf.severity, status: 'open', file: file ? file.name : `${v.name.split(' ')[0]}_quote.txt`, confidence: nf.severity === 'low' ? 60 : 80,
+        raw: '>>' + (row ? row.trim() : file ? `[${file.name}] ${l.name}` : l.name),
+        reason: (nf.note || 'Claude marked this value for a buyer check.') + (cur !== 'INR' ? ` Quoted ${CUR_SYM[cur] || cur + ' '}${nf.quoted}, converted at ₹${fx}.` : '') });
+    }
+    if (typeof res.isoCertified === 'boolean') v.iso = res.isoCertified;
+    if (Number(res.paymentTermsDays) > 0) v.paymentDays = Math.round(Number(res.paymentTermsDays));
+    [v.source, v.srcIcon] = sourceLabel(file);
+    v.quoteCur = cur; v.fxUsed = cur === 'INR' ? null : fx;
+    if (v.esg === 'Pending') v.esg = v.iso ? 'ISO 14001' : 'Not declared';
+    if (text) S.rawQuotes[vid] = text.slice(0, 20000);
+    if (S.stage === 'published') S.stage = 'evaluation';
+    log(`Claude extracted ${n}/${issuedLines().length} lines from ${v.name}${file ? ` (${file.name})` : ''}${cur !== 'INR' ? `, ${cur} converted at ₹${fx}` : ''}${newFlags.length ? `; ${plural(newFlags.length, 'line')} flagged` : ''}`, 'Claude (extraction)');
+    RT.upload = null;
+    closeModal(); render();
+    toast(`${v.name}: ${n} of ${issuedLines().length} lines extracted${cur !== 'INR' ? ` and converted from ${cur}` : ''}${newFlags.length ? `, ${newFlags.length} flagged for review` : ''}.`);
+  } catch (e) {
+    aiFail(e);
+    const msg = e?.code === 'empty_extraction' ? "Claude couldn't match any prices to your line items. Check that this is the vendor's quote for this RFx." : aiErrorText(e);
+    if ($('#up-status')) { if (msg) say('bad', msg); else $('#up-status').innerHTML = ''; }
+    if ($('#up-go')) $('#up-go').disabled = false;
+  } finally { RT.ctl.upload = null; }
+}
+
+/* ---------- Claude: clarification draft ---------- */
+async function clarDraft() {
+  if (RT.busy.clar) return;
+  const sample = await getSample(); if (!sample) return;
+  const v = vendorById(S.clar.vendor), l = lineById(S.clar.line);
+  const f = S.flags.find(x => x.vendor === v.id && x.line === l.id);
+  const c = S.quotes[v.id]?.[l.id];
+  RT.busy.clar = true; const ctl = RT.ctl.clar = new AbortController();
+  render();
+  const box = $('#clar-text'); box.value = ''; box.placeholder = 'Claude is drafting…'; box.readOnly = true;
+  const prompt = `Write a short clarification email body from Avinash J, Lead Buyer at Enterprise Corp, to ${v.name} (${v.contact}) about their quotation for ${S.eventId} (${S.rfx.title}).
+Line ${l.id.slice(1)}: ${l.name}, ${l.spec}, ${l.qty.toLocaleString('en-IN')} ${l.uom}, delivery to ${l.site}.
+Their quoted rate as read: ${c ? rateFmt(c.rate) + ' per unit' : 'not quoted'}.
+${f ? `What is unclear: ${f.reason}\nSource text: ${f.raw.replace(/>>/g, '')}` : 'Ask them to confirm the rate, whether freight to the delivery site is included, and GST treatment.'}
+Ask precise questions they can answer in one reply, request a response within 24 hours, and state that the clarification is logged in the RFx evaluation audit trail. Plain text, no subject line, no Markdown, under 140 words, start with "Dear ${v.name} team," and end with the sign-off.`;
+  try {
+    const { text } = await sample(prompt, { signal: ctl.signal, modelTier: 'quick', cache: false, onText: ({ text }) => { const b = $('#clar-text'); if (b) { b.value = text; b.scrollTop = b.scrollHeight; } } });
+    S.clar.text = text.trim();
+  } catch (e) {
+    aiFail(e); if (e?.text) S.clar.text = e.text;
+    const msg = aiErrorText(e); if (msg) toast(msg, true);
+  } finally { RT.busy.clar = false; RT.ctl.clar = null; render(); }
+}
+
+/* ---------- Claude: analyst chat ---------- */
+function analystData() {
+  const ev = evaluate();
+  return {
+    event: { id: S.eventId, title: S.rfx.title, currency: 'INR', benchmarkBudget: S.rfx.budget, dualApprovalThreshold: 2500000, approvals: { cpo: S.approvals.cpo.ok, finance: S.approvals.fin.ok } },
+    lines: ev.lines.map(({ id, name, uom, qty, site }) => ({ id, name, uom, qty, site })),
+    linesAwaitingQuotes: ev.awaiting.map(l => l.name),
+    vendors: ev.rows.map(r => ({
+      name: r.v.name, isoCertified: r.v.iso, paymentTermsDays: r.v.paymentDays, workingCapitalScore: r.wc, evaluationScore: r.score,
+      quoteTotal: r.pending ? null : Math.round(r.total), linesQuoted: r.count, complete: r.complete, qualified: r.qualified,
+      rates: Object.fromEntries(ev.lines.map(l => { const c = S.quotes[r.v.id]?.[l.id]; return [l.id, c ? { rate: c.rate, confidence: c.conf } : null]; }))
+    })),
+    openFlags: S.flags.filter(f => f.status === 'open' && lineById(f.line)).map(f => ({ vendor: vendorById(f.vendor).name, line: f.line, severity: f.severity, reason: f.reason })),
+    recommendedSingleSource: ev.best ? { vendor: ev.best.v.name, total: Math.round(ev.best.total) } : null,
+    splitAward: { total: Math.round(ev.splitTotal), savingsVsBestSingle: ev.splitSavings != null ? Math.round(ev.splitSavings) : null, allocation: ev.alloc.map(a => ({ line: a.line.id, vendor: a.vendor?.name ?? null, rate: a.rate })) },
+    notes: 'Low-confidence rates are excluded from L1 and the split until a buyer approves them. Qualified means ISO certified with a received quote.'
+  };
+}
+async function analystAsk(q) {
+  q = q.trim(); if (!q || RT.busy.analyst) return;
+  const sample = await getSample(); if (!sample) return;
+  const prior = S.chat.analyst.filter(m => !m.error && !m.pending).slice(-8);
+  S.chat.analyst.push({ role: 'user', text: q, at: new Date().toISOString() });
+  const id = 'an-' + Date.now();
+  const pending = { role: 'assistant', text: '', pending: true, streamId: id, at: new Date().toISOString() };
+  S.chat.analyst.push(pending);
+  RT.busy.analyst = true; const ctl = RT.ctl.analyst = new AbortController();
+  render(); scrollLog('analyst-log');
+  const rules = `You are the procurement analyst inside Procure-X. Answer the lead buyer's questions about this RFx evaluation using only the data below. Amounts are INR: use ₹ with Indian digit grouping, and lakh (L) for large totals. Be direct: at most 160 words, short paragraphs or bullets, bold the key figure. Show the arithmetic briefly when you compare totals. If the data can't answer the question, say what is missing. Never invent vendors, rates or approvals.
+
+Evaluation data (JSON):
+${JSON.stringify(analystData())}`;
+  const turns = [{ role: 'user', content: rules }, ...prior.map(m => ({ role: m.role, content: m.text })), { role: 'user', content: q }];
+  try {
+    const { text, truncated } = await sample(turns, {
+      signal: ctl.signal, modelTier: 'default', cache: false,
+      onText: ({ text }) => { const el = document.getElementById(id); if (el) { el.innerHTML = md(text); scrollLog('analyst-log'); } }
+    });
+    Object.assign(pending, { pending: false, text: text + (truncated ? '\n\n(Answer cut short. Ask a narrower question.)' : '') });
+  } catch (e) {
+    aiFail(e);
+    const msg = aiErrorText(e);
+    if (e?.text) Object.assign(pending, { pending: false, text: e.text, meta: msg ? ['Interrupted'] : ['Stopped'] });
+    else if (!msg) S.chat.analyst.splice(S.chat.analyst.length - 2, 2);
+    else Object.assign(pending, { pending: false, error: true, text: msg });
+  } finally {
+    delete pending.streamId;
+    RT.busy.analyst = false; RT.ctl.analyst = null; render(); scrollLog('analyst-log');
+  }
+}
+
+/* ---------- Claude: email draft ---------- */
+async function emailDraft() {
+  if (RT.busy.email) return;
+  const ctx = emailContext(); if (!ctx) return;
+  const sample = await getSample(); if (!sample) return;
+  const item = ctx.sel, d = getDraft(ctx, item), f = recipientFacts(ctx, item.id), v = f.v;
+  const isAward = item.kind === 'award';
+  RT.busy.email = true; const ctl = RT.ctl.email = new AbortController();
+  render();
+  const facts = isAward ? {
+    type: 'award notice', awardMode: ctx.award.mode === 'split' ? 'split award (vendor gets some lines)' : 'single source (all lines)',
+    lines: f.mine.map(x => { const l = lineById(x.line); return `${l.name} — ${l.qty.toLocaleString('en-IN')} ${l.uom} at ${rateFmt(x.rate)} to ${l.site}`; }),
+    contractValue: inr(f.value) + ' excl. GST', paymentTerms: `Net ${v.paymentDays} days from GRN`, fulfilmentStart: fmtDate(startDate()),
+    nextSteps: ['Countersign the attached award letter and purchase agreement within 3 business days', 'Submit performance bank guarantee and vendor safety declarations through the supplier portal'],
+    attachments: ['Award letter (PDF)', 'Technical specification', 'Pricing matrix']
+  } : {
+    type: 'regret notice (vendor was not awarded)',
+    reason: v.iso === false ? 'Missing mandatory ISO 9001/14001 certification (clause 01)' : !f.row.complete ? `Quoted ${f.row.count} of ${ctx.ev.lines.length} lines; a complete response was required` : `Quoted total ${inr(f.row.total)} was above the awarded commercial position`,
+    keepOnPanel: true, offerDebrief: true
+  };
+  const prompt = `Write the body of a ${facts.type} email from Avinash J, Lead Buyer, Procurement Operations at Enterprise Corp, to ${v.name}. Address it to ${contactName(v)} and the ${v.name} team.
+RFx: ${S.eventId}, ${S.rfx.title}.
+Facts (use exactly these, invent nothing else):
+${JSON.stringify(facts, null, 1)}
+Tone: ${S.email.tone}. ${S.email.tone === 'Concise' ? 'Under 120 words.' : 'Under 220 words.'}
+Plain text only: no subject line, no Markdown symbols. Use a short numbered list for next steps where relevant. Do not reveal other vendors' names or prices. End with this sign-off on separate lines: Regards, / Avinash J / Lead Buyer, Procurement Operations / Enterprise Corp`;
+  const box = $('#email-body');
+  if (box) box.value = '';
+  try {
+    const { text } = await sample(prompt, { signal: ctl.signal, modelTier: 'quick', cache: false, onText: ({ text }) => { const b = $('#email-body'); if (b) { b.value = text; } const c = $('#email-count'); if (c) c.textContent = text.length.toLocaleString('en-IN') + ' characters'; } });
+    d.body = text.trim(); d.by = 'claude';
+    log(`Claude drafted the ${item.kind} notice to ${v.name} (${S.email.tone})`, 'Claude (drafting)');
+  } catch (e) {
+    aiFail(e); if (e?.text) d.body = e.text;
+    const msg = aiErrorText(e); if (msg) toast(msg, true);
+  } finally { RT.busy.email = false; RT.ctl.email = null; render(); }
+}
+
+/* ---------- Saved views: named snapshots of the evaluation, private to each person ---------- */
+const VIEWS = { list: [], mode: 'pending', db: null, uid: null, confirm: null };
+const VIEWS_LS = 'procurex-rfx-views-v1';
+const MAX_VIEW_BYTES = 240 * 1024;
+
+const viewsCol = () => VIEWS.db.doc('data/users/' + VIEWS.uid + '/procurex').collection('views');
+function loadLocalViews() {
+  try { const a = JSON.parse(localStorage.getItem(VIEWS_LS) || '[]'); VIEWS.list = Array.isArray(a) ? a : []; } catch (e) { VIEWS.list = []; }
+  VIEWS.list.sort((a, b) => String(b.savedAt).localeCompare(String(a.savedAt)));
+}
+/* A full browser store throws so the caller can say so; a browser that blocks storage keeps views for this visit. */
+function persistLocalViews() {
+  try { localStorage.setItem(VIEWS_LS, JSON.stringify(VIEWS.list)); }
+  catch (e) { if (e && e.name === 'QuotaExceededError') throw e; VIEWS.mode = 'session'; }
+}
+function refreshViews() {
+  const b = $('#views-body'); if (b) b.innerHTML = viewsListHtml();
+  if (S && S.tab === 'vendors' && !RT.busy.clar) render();
+}
+
+(async () => {
+  try {
+    const [db, user] = await Promise.all([window.claude?.use?.('db') ?? null, window.claude?.use?.('user') ?? null]);
+    const uid = user ? await user.id() : null;
+    if (db && uid) {
+      Object.assign(VIEWS, { db, uid, mode: 'account' });
+      viewsCol().orderBy('savedAt', 'desc').limit(100).onSnapshot(
+        snap => { VIEWS.list = snap.docs.map(d => ({ id: d.id, ...d.data() })); refreshViews(); },
+        () => { VIEWS.mode = 'local'; loadLocalViews(); refreshViews(); }
+      );
+      return;
+    }
+  } catch (e) { /* no account storage here: fall back to this browser */ }
+  VIEWS.mode = 'local'; loadLocalViews(); refreshViews();
+})();
+
+/* What a view keeps: everything that shapes the evaluation. Chats stay out to keep views small. */
+function viewSnapshot() {
+  const st = clone(S);
+  st.chat = { rfx: [], analyst: [] };
+  st.audit = st.audit.slice(-40);
+  const bytes = o => new TextEncoder().encode(JSON.stringify(o)).length;
+  if (bytes(st) > MAX_VIEW_BYTES) st.rawQuotes = {};
+  if (bytes(st) > MAX_VIEW_BYTES) st.email.drafts = {};
+  return bytes(st) > MAX_VIEW_BYTES ? null : st;
+}
+const whereViews = () => VIEWS.mode === 'account' ? 'Saved to your Claude account, private to you.'
+  : VIEWS.mode === 'local' ? 'Saved in this browser only. Open the page on claude.ai, signed in, to keep views in your account.'
+  : VIEWS.mode === 'session' ? 'This browser blocks storage here, so views last only until you close the page. Open it on claude.ai to keep them.' : 'Checking where views are stored…';
+
+function viewsListHtml() {
+  if (!VIEWS.list.length) return `<p class="muted" style="font-size:12.5px">${whereViews()}</p><p>No saved views yet. Once at least one vendor's quote is extracted, use <b>Save view</b> to keep this evaluation and come back to it later.</p>`;
+  return `<p class="muted" style="font-size:12.5px">${whereViews()}</p><div class="vlist">${VIEWS.list.map(v => {
+    const c = VIEWS.confirm;
+    const acts = c === v.id + ':open'
+      ? `<span class="muted" style="font-size:12px">Replace your current work?</span><button class="btn sm primary" type="button" data-action="view-load" data-id="${esc(v.id)}">Open view</button><button class="btn sm ghost" type="button" data-action="view-cancel">Cancel</button>`
+      : c === v.id + ':del'
+      ? `<span class="muted" style="font-size:12px">Delete this view?</span><button class="btn sm primary" type="button" data-action="view-delete" data-id="${esc(v.id)}">Delete</button><button class="btn sm ghost" type="button" data-action="view-cancel">Cancel</button>`
+      : `<button class="btn sm" type="button" data-action="view-ask" data-kind="open" data-id="${esc(v.id)}">${icon('folder_open', 'sm')} Open</button><button class="btn sm ghost" type="button" data-action="view-ask" data-kind="del" data-id="${esc(v.id)}" title="Delete view">${icon('delete', 'sm')}<span class="sr">Delete</span></button>`;
+    return `<div class="vrow"><div class="vm"><b>${esc(v.name)}</b><small>${v.savedAt ? fmtDT(v.savedAt) : ''} · ${plural(v.vendorsQuoted || 0, 'vendor')} quoted · ${plural(v.lineCount || 0, 'line')}${v.bestVendor ? ` · lowest ${esc(v.bestVendor)} ${lakh(v.bestTotal)}` : ''} · ${esc(STAGES[v.stage] || '')}</small></div><div class="va">${acts}</div></div>`;
+  }).join('')}</div>`;
+}
+
+async function saveView() {
+  const st = $('#view-save-status'), go = $('#view-save-go');
+  const name = (($('#view-name')?.value || '').trim() || 'Untitled view').slice(0, 80);
+  const snap = viewSnapshot();
+  if (!snap) { st.innerHTML = `<p class="note bad">${icon('error', 'sm')}<span>This evaluation is too large to save as one view. Remove long pasted quote texts and try again.</span></p>`; return; }
+  const ev = evaluate(), quoted = ev.rows.filter(r => !r.pending);
+  const doc = { name, savedAt: new Date().toISOString(), eventId: S.eventId, title: S.rfx.title, vendorsQuoted: quoted.length, vendorNames: quoted.map(r => r.v.name), lineCount: issuedLines().length, bestVendor: ev.best ? ev.best.v.name : null, bestTotal: ev.best ? Math.round(ev.best.total) : null, stage: S.stage, state: snap };
+  go.disabled = true;
+  try {
+    if (VIEWS.mode === 'account') await viewsCol().doc().set(doc);
+    else if (VIEWS.mode === 'pending') throw new Error('not_ready');
+    else { VIEWS.list.unshift({ id: 'v' + Date.now().toString(36), ...doc }); persistLocalViews(); }
+    log(`Saved view "${name}"`);
+    closeModal(); render(); toast(`View "${name}" saved.`);
+  } catch (e) {
+    if (VIEWS.mode === 'local') loadLocalViews();
+    if (e?.message === 'not_ready') { st.innerHTML = `<p class="note warn">${icon('info', 'sm')}<span>Still connecting to your saved views. Try again in a few seconds.</span></p>`; go.disabled = false; return; }
+    const msg = e?.code === 'quota_exceeded' ? 'Saved views are full. Delete a few old views, then save again.'
+      : e?.code === 'invalid_argument' ? "Your access to this page doesn't allow saving views."
+      : e?.name === 'QuotaExceededError' ? "This browser's storage is full. Delete a few old views, then save again."
+      : "The view couldn't be saved. Try again.";
+    st.innerHTML = `<p class="note bad">${icon('error', 'sm')}<span>${msg}</span></p>`;
+    go.disabled = false;
+  }
+}
+
+const VIEW_ACTIONS = {
+  'views-open': () => {
+    VIEWS.confirm = null;
+    openModal({
+      title: 'Saved views',
+      body: `<div id="views-body">${viewsListHtml()}</div>`,
+      actions: [{ label: icon('bookmark_add', 'sm') + ' Save current view', run: () => VIEW_ACTIONS['view-save']() }, { label: 'Close', cls: 'dark', run: closeModal }]
+    });
+  },
+  'view-save': () => {
+    const quoted = evaluate().rows.filter(r => !r.pending);
+    if (!quoted.length) { toast("Extract at least one vendor's quote before saving a view.", true); return; }
+    const def = `${S.eventId} · ${plural(quoted.length, 'vendor')} · ${new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'short', timeZone: IST })}`;
+    openModal({
+      title: 'Save view',
+      body: `<label class="field"><span>View name</span><input class="input" id="view-name" maxlength="80" value="${esc(def)}"></label>
+        <p class="muted" style="font-size:12.5px">Keeps the RFx, ${plural(quoted.length, 'vendor quote')}, flags, FX rates, approvals, award and email drafts. Chats aren't saved. ${whereViews()}</p>
+        <div id="view-save-status" aria-live="polite"></div>`,
+      actions: [cancelBtn, { id: 'view-save-go', label: icon('bookmark_add', 'sm') + ' Save view', cls: 'primary', run: saveView }]
+    });
+  },
+  'view-ask': el => { VIEWS.confirm = el.dataset.id + ':' + el.dataset.kind; $('#views-body').innerHTML = viewsListHtml(); },
+  'view-cancel': () => { VIEWS.confirm = null; $('#views-body').innerHTML = viewsListHtml(); },
+  'view-load': el => {
+    const v = VIEWS.list.find(x => x.id === el.dataset.id);
+    const st = v && migrate(clone(v.state));
+    if (!st) { toast("This view couldn't be opened. It may be from an older version.", true); return; }
+    for (const k in RT.ctl) RT.ctl[k]?.abort();
+    S = st; S.tab = 'vendors'; VIEWS.confirm = null;
+    log(`Opened saved view "${v.name}"`);
+    closeModal(); render(); toast(`Opened "${v.name}".`);
+  },
+  'view-delete': async el => {
+    const v = VIEWS.list.find(x => x.id === el.dataset.id); if (!v) return;
+    try {
+      if (VIEWS.mode === 'account') await viewsCol().doc(v.id).delete();
+      else { VIEWS.list = VIEWS.list.filter(x => x.id !== v.id); persistLocalViews(); }
+      VIEWS.confirm = null; refreshViews(); toast(`Deleted "${v.name}".`);
+    } catch (e) { toast("The view couldn't be deleted. Try again.", true); }
+  }
+};
+
+/* ---------- Event wiring ---------- */
+const AI_ACTIONS = {
+  'copilot-suggest': el => copilotSend(el.dataset.text),
+  'copilot-stop': () => RT.ctl.copilot?.abort(),
+  'copilot-clear': () => { RT.ctl.copilot?.abort(); S.chat.rfx = []; render(); },
+  'upload': el => openUpload(el.dataset.id),
+  'clar-draft': clarDraft,
+  'clar-stop': () => RT.ctl.clar?.abort(),
+  'analyst-suggest': el => analystAsk(el.dataset.text),
+  'analyst-stop': () => RT.ctl.analyst?.abort(),
+  'analyst-clear': () => { RT.ctl.analyst?.abort(); S.chat.analyst = []; render(); },
+  'email-ai': emailDraft,
+  'email-stop': () => RT.ctl.email?.abort(),
+  'fx-confirm': () => { S.fx.asOf = todayIST(); log(`Confirmed USD rate ₹${S.fx.rates.USD} for ${todayIST()}`); if (RT.upload) RT.upload.needCur = null; const st = $('#up-status'); if (st) st.innerHTML = ''; refreshFx(); save(); }
+};
+
+document.addEventListener('click', e => {
+  const m = e.target.closest('[data-modal]');
+  if (m) { RT.modalHandlers[m.dataset.modal]?.(); return; }
+  if (e.target === $('#modal')) { closeModal(); return; }
+  const t = e.target.closest('[data-tab]');
+  if (t) { setTab(t.dataset.tab); return; }
+  const a = e.target.closest('[data-action]');
+  if (!a || a.disabled) return;
+  const fn = ACTIONS[a.dataset.action] || AI_ACTIONS[a.dataset.action] || VIEW_ACTIONS[a.dataset.action];
+  if (fn) { e.preventDefault(); fn(a); }
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && !$('#modal').hidden) { closeModal(); return; }
+  const cell = e.target.closest?.('td[data-action]');
+  if (cell && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); ACTIONS[cell.dataset.action]?.(cell); return; }
+  if (e.target.id === 'copilot-input' && e.key === 'Enter' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); const v = e.target.value; e.target.value = ''; copilotSend(v); return; }
+  if (e.target.matches?.('[data-cc-add]') && e.key === 'Enter') {
+    e.preventDefault();
+    const v = e.target.value.trim();
+    if (/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v)) { if (!S.email.cc.includes(v)) S.email.cc.push(v); e.target.value = ''; render(); $('#cc-add')?.focus(); }
+    else toast('Enter a valid email address.', true);
+  }
+});
+document.addEventListener('submit', e => {
+  const f = e.target.closest('[data-form]'); if (!f) return;
+  e.preventDefault();
+  if (f.dataset.form === 'copilot') { const i = $('#copilot-input'); const v = i.value; i.value = ''; copilotSend(v); }
+  if (f.dataset.form === 'analyst') { const i = $('#analyst-input'); const v = i.value; i.value = ''; analystAsk(v); }
+});
+document.addEventListener('input', e => {
+  const el = e.target;
+  if (el.id === 'global-search') { S.ui.filter = el.value; if (S.tab !== 'vendors') { S.tab = 'vendors'; } render(); return; }
+  if (el.matches('[data-ui-filter]')) { S.ui.filter = el.value; $('#global-search').value = el.value; render(); return; }
+  if (el.matches('[data-clar]') && el.dataset.clar === 'text') { S.clar.text = el.value; save(); return; }
+  if (el.matches('[data-email]')) {
+    const ctx = emailContext(); if (!ctx) return;
+    getDraft(ctx, ctx.sel)[el.dataset.email] = el.value;
+    if (el.dataset.email === 'body') { const c = $('#email-count'); if (c) c.textContent = el.value.length.toLocaleString('en-IN') + ' characters'; }
+    save();
+  }
+});
+document.addEventListener('change', e => {
+  const el = e.target;
+  if (el.matches('[data-bind]')) {
+    const [obj, key] = el.dataset.bind.split('.');
+    const val = el.value.trim();
+    if (val && S[obj][key] !== val) { S[obj][key] = val; S.rfx.dirty = true; log(`Edited ${key === 'title' ? 'RFx title' : key}`); }
+    render(); return;
+  }
+  if (el.matches('[data-bind-num]')) {
+    const n = parseInt(el.value.replace(/[^\d]/g, ''), 10);
+    if (n > 0 && n !== S.rfx.validityDays) { S.rfx.validityDays = n; S.rfx.dirty = true; log(`Set quote validity to ${n} days`); }
+    render(); return;
+  }
+  if (el.matches('[data-deadline]')) {
+    if (el.value) { S.rfx.deadline = fromISTInput(el.value); S.rfx.dirty = true; log(`Moved deadline to ${fmtDT(S.rfx.deadline)}`); }
+    render(); return;
+  }
+  if (el.matches('[data-line-qty]')) {
+    const l = draftLineById(el.dataset.lineQty), n = parseInt(el.value.replace(/[^\d]/g, ''), 10);
+    if (l && n > 0 && n !== l.qty) { log(`Changed ${l.id} quantity from ${l.qty.toLocaleString('en-IN')} to ${n.toLocaleString('en-IN')}`); l.qty = n; S.rfx.dirty = true; RT.flashLines.add(l.id); }
+    render(); return;
+  }
+  if (el.matches('[data-clause-mand]')) { const c = S.rfx.clauses.find(x => x.id === el.dataset.clauseMand); c.mandatory = el.checked; S.rfx.dirty = true; render(); return; }
+  if (el.matches('[data-clause-exp]')) { const c = S.rfx.clauses.find(x => x.id === el.dataset.clauseExp); if (c.expected !== el.value.trim()) { c.expected = el.value.trim(); S.rfx.dirty = true; } render(); return; }
+  if (el.matches('[data-ui-toggle]')) { S.ui[el.dataset.uiToggle] = el.checked; render(); return; }
+  if (el.matches('[data-clar]') && el.dataset.clar !== 'text') { S.clar[el.dataset.clar] = el.value; render(); return; }
+  if (el.matches('[data-award-choice]')) { S.awardChoice = el.value; render(); return; }
+  if (el.matches('[data-email-tone]')) { S.email.tone = el.value; save(); return; }
+  if (el.matches('[data-merge]')) {
+    const tok = el.value; el.value = ''; if (!tok) return;
+    const ta = $('#email-body'); if (!ta || ta.readOnly) return;
+    const s = ta.selectionStart ?? ta.value.length, en = ta.selectionEnd ?? s;
+    ta.value = ta.value.slice(0, s) + tok + ta.value.slice(en);
+    ta.focus(); ta.setSelectionRange(s + tok.length, s + tok.length);
+    ta.dispatchEvent(new Event('input', { bubbles: true }));
+  }
+});
+document.addEventListener('change', e => {
+  if (e.target.id === 'up-file') { handleQuoteFile(e.target.files[0]); e.target.value = ''; }
+  if (e.target.matches?.('[data-fx]')) {
+    const c = e.target.dataset.fx, n = parseFloat(e.target.value.replace(/[^d.]/g, ''));
+    if (n > 0) S.fx.rates[c] = Math.round(n * 10000) / 10000; else delete S.fx.rates[c];
+    S.fx.asOf = todayIST(); S.fx.note = 'Set by buyer';
+    log(n > 0 ? `Set ${c} rate to ₹${S.fx.rates[c]} for ${todayIST()}` : `Cleared ${c} rate`);
+    if (RT.upload && RT.upload.needCur === c && n > 0) { RT.upload.needCur = null; const st = $('#up-status'); if (st) st.innerHTML = ''; }
+    refreshFx(); save();
+  }
+});
+for (const type of ['dragenter', 'dragover']) document.addEventListener(type, e => { const d = e.target.closest?.('#up-drop'); if (d) { e.preventDefault(); d.classList.add('over'); } });
+document.addEventListener('dragleave', e => { const d = e.target.closest?.('#up-drop'); if (d && !d.contains(e.relatedTarget)) d.classList.remove('over'); });
+document.addEventListener('drop', e => {
+  const d = e.target.closest?.('#up-drop');
+  if (!d) { if (!$('#modal').hidden) e.preventDefault(); return; }
+  e.preventDefault(); d.classList.remove('over');
+  const f = e.dataTransfer?.files?.[0]; if (f) handleQuoteFile(f);
+});
+window.addEventListener('hashchange', () => { const h = location.hash.slice(1); if (RENDERERS[h] && h !== S.tab) setTab(h); });
+
+/* ---------- Boot ---------- */
+function start(data) {
+  S = migrate(data) || loadState();
+  const h = location.hash.slice(1);
+  if (RENDERERS[h]) S.tab = h;
+  $('#global-search').value = S.ui.filter || '';
+  render();
+  setInterval(() => { if (S) { $('#closing').textContent = remainingText(); } }, 60000);
+}
+try { window.claude?.hot?.snapshot?.(() => S); } catch (e) { /* not in a viewer */ }
+if (window.claude?.hot?.ready) window.claude.hot.ready(start); else start(window.claude?.hot?.data ?? {});
+</script>
