@@ -1,0 +1,350 @@
+<title>Procure-X Architecture</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+/* Layout: one reading column of figures and a stack table, in the Procure-X navy-and-red palette */
+:root {
+  --bg: #f6f8fa; --surface: #ffffff; --panel: #eef1f6; --fg: #131b2e; --muted: #4a5568; --line: #c8ced7;
+  --nav: #0c1b33; --nav-fg: #f2f4f9;
+  --ai: #c8281b; --ai-text: #a91f14; --ai-soft: #fde5e1;
+  --buyer: #24448a; --buyer-soft: #e4ebfd; --code-soft: #eef1f6;
+  --sans: 'IBM Plex Sans', 'Segoe UI', Arial, sans-serif; --mono: 'IBM Plex Mono', Consolas, 'Courier New', monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0a101e; --surface: #111a2b; --panel: #172136; --fg: #e8ecf7; --muted: #9aa6c2; --line: #3a4766;
+    --nav: #050a15; --nav-fg: #f2f5fb;
+    --ai: #f0604c; --ai-text: #ff8b7a; --ai-soft: #3b1613;
+    --buyer: #a3baff; --buyer-soft: #17254a; --code-soft: #1f2a43;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0a101e; --surface: #111a2b; --panel: #172136; --fg: #e8ecf7; --muted: #9aa6c2; --line: #3a4766;
+  --nav: #050a15; --nav-fg: #f2f5fb;
+  --ai: #f0604c; --ai-text: #ff8b7a; --ai-soft: #3b1613;
+  --buyer: #a3baff; --buyer-soft: #17254a; --code-soft: #1f2a43;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font-family: var(--sans); font-size: 15px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+.band { background: var(--nav); color: var(--nav-fg); }
+.wrap { max-width: 1080px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.band .wrap { padding-block: 40px 32px; display: grid; gap: 12px; }
+.eyebrow { font-family: var(--mono); font-size: 12px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: #ff8b7a; }
+h1 { margin: 0; font-size: clamp(28px, 4.2vw, 42px); line-height: 1.12; letter-spacing: -.02em; text-wrap: balance; }
+.lede { margin: 0; max-width: 64ch; color: #b9c3d8; font-size: 16.5px; }
+.facts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.facts span { font-family: var(--mono); font-size: 12.5px; border: 1px solid #2a3b5e; border-radius: 999px; padding: 4px 12px; color: #dfe5f2; font-variant-numeric: tabular-nums; }
+main.wrap { padding-block: 32px 56px; display: grid; gap: 44px; }
+section { display: grid; gap: 14px; min-width: 0; }
+h2 { margin: 0; font-size: 21px; letter-spacing: -.01em; text-wrap: balance; }
+h2 .n { font-family: var(--mono); font-size: 13px; color: var(--ai-text); margin-right: 10px; letter-spacing: .06em; }
+p { margin: 0; max-width: 68ch; color: var(--muted); }
+p strong { color: var(--fg); }
+figure { margin: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px; display: grid; gap: 12px; min-width: 0; }
+.scroll { overflow-x: auto; }
+figure svg { display: block; width: 100%; height: auto; min-width: 760px; }
+figcaption { font-size: 13.5px; color: var(--muted); max-width: 80ch; }
+figcaption b { color: var(--fg); }
+/* diagram marks */
+.bound { fill: none; stroke: var(--muted); stroke-width: 1.2; stroke-dasharray: 5 5; }
+.app { fill: var(--panel); stroke: var(--line); stroke-width: 1.2; }
+.b { fill: var(--surface); stroke: var(--line); stroke-width: 1.2; }
+.b-eng { fill: var(--surface); stroke: var(--fg); stroke-width: 2; }
+.b-ai { fill: var(--ai-soft); stroke: var(--ai); stroke-width: 1.4; }
+.b-buyer { fill: var(--buyer-soft); stroke: var(--buyer); stroke-width: 1.4; }
+.b-code { fill: var(--code-soft); stroke: var(--line); stroke-width: 1.2; }
+.b-dash { fill: none; stroke: var(--muted); stroke-width: 1.2; stroke-dasharray: 4 4; }
+.lane { fill: var(--panel); }
+.t { fill: var(--fg); font-family: var(--sans); font-size: 13px; font-weight: 600; }
+.s { fill: var(--muted); font-family: var(--sans); font-size: 11.5px; }
+.cap { fill: var(--muted); font-family: var(--mono); font-size: 10.5px; font-weight: 600; letter-spacing: .08em; }
+.ln { fill: var(--fg); font-family: var(--sans); font-size: 12.5px; font-weight: 600; }
+.w { stroke: var(--fg); stroke-width: 1.4; fill: none; }
+.w-ai { stroke: var(--ai); stroke-width: 1.6; fill: none; }
+.al { fill: var(--fg); font-family: var(--sans); font-size: 11px; font-weight: 500; }
+.al-ai { fill: var(--ai-text); font-family: var(--sans); font-size: 11px; font-weight: 600; }
+.mk { fill: var(--fg); }
+.mk-ai { fill: var(--ai); }
+/* stack table */
+.tbl-wrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 640px; }
+th { text-align: left; font-family: var(--mono); font-size: 11.5px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); background: var(--panel); padding: 10px 14px; border-bottom: 1px solid var(--line); }
+td { padding: 11px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+tr:last-child td { border-bottom: 0; }
+td:first-child { font-weight: 600; white-space: nowrap; }
+td:nth-child(2) { color: var(--fg); }
+td:nth-child(3) { color: var(--muted); }
+code { font-family: var(--mono); font-size: .9em; background: var(--panel); padding: 1px 5px; border-radius: 4px; }
+.rules { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.rule { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; display: grid; gap: 6px; align-content: start; }
+.rule b { font-size: 15px; }
+.rule span { color: var(--muted); font-size: 14px; }
+.rule.ai { border-top: 3px solid var(--ai); }
+.rule.code { border-top: 3px solid var(--fg); }
+.rule.buyer { border-top: 3px solid var(--buyer); }
+.prod { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; }
+.prod li { display: grid; grid-template-columns: minmax(0, 220px) minmax(0, 1fr); gap: 12px; padding: 10px 14px; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; font-size: 14px; }
+.prod li b { font-weight: 600; }
+.prod li span { color: var(--muted); }
+footer.wrap { padding-block: 0 40px; color: var(--muted); font-size: 13px; }
+a { color: var(--ai-text); }
+@media (max-width: 720px) {
+  .rules { grid-template-columns: minmax(0, 1fr); }
+  .prod li { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+}
+</style>
+
+<header class="band"><div class="wrap">
+  <span class="eyebrow">Procure-X RFx Manager · prototype</span>
+  <h1>Procure-X architecture</h1>
+  <p class="lede">One HTML file runs inside the claude.ai artifact sandbox. Claude reads quotes and writes drafts, plain JavaScript calculates every number, and the buyer approves every step. There are no servers.</p>
+  <div class="facts"><span>1 HTML file</span><span>231 KB · 2,898 lines</span><span>0 frameworks</span><span>0 servers</span><span>4 claude.ai capabilities</span><span>5 tabs</span></div>
+</div></header>
+
+<main class="wrap">
+
+<section>
+  <h2><span class="n">01</span>Runtime architecture</h2>
+  <p>Everything the buyer sees is rendered in their own browser from a single state object. The app crosses the sandbox boundary for only three things: <strong>Claude</strong> (reading and writing), <strong>saved views</strong> (private storage), and <strong>CSV downloads</strong>.</p>
+  <figure>
+    <div class="scroll">
+    <svg viewBox="0 0 960 720" role="img" aria-label="Runtime architecture: the single-file app in the browser sandbox renders five tabs from workspace state, calculates in a deterministic evaluation engine, reads quote files in the browser, and calls the claude.ai runtime for Claude, saved views and CSV downloads.">
+      <defs>
+        <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="mk"/></marker>
+        <marker id="ah-ai" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="mk-ai"/></marker>
+      </defs>
+
+      <!-- Browser sandbox and app -->
+      <rect class="bound" x="20" y="20" width="540" height="450" rx="14"/>
+      <text class="cap" x="36" y="40">VIEWER'S BROWSER · CLAUDE.AI ARTIFACT SANDBOX</text>
+      <rect class="app" x="40" y="54" width="500" height="400" rx="10"/>
+      <text class="cap" x="56" y="76">PROCUREX-RFX-MANAGER.HTML · ONE FILE</text>
+
+      <!-- Five tabs -->
+      <rect class="b" x="60" y="92" width="84" height="46" rx="6"/><text class="t" x="102" y="111" text-anchor="middle">RFx</text><text class="t" x="102" y="128" text-anchor="middle">List</text>
+      <rect class="b" x="154" y="92" width="84" height="46" rx="6"/><text class="t" x="196" y="111" text-anchor="middle">RFx</text><text class="t" x="196" y="128" text-anchor="middle">Creator</text>
+      <rect class="b" x="248" y="92" width="84" height="46" rx="6"/><text class="t" x="290" y="111" text-anchor="middle">Vendor</text><text class="t" x="290" y="128" text-anchor="middle">Analyser</text>
+      <rect class="b" x="342" y="92" width="84" height="46" rx="6"/><text class="t" x="384" y="111" text-anchor="middle">Decision</text><text class="t" x="384" y="128" text-anchor="middle">Maker</text>
+      <rect class="b" x="436" y="92" width="84" height="46" rx="6"/><text class="t" x="478" y="111" text-anchor="middle">Email</text><text class="t" x="478" y="128" text-anchor="middle">Compose</text>
+
+      <!-- Core -->
+      <rect class="b" x="60" y="200" width="134" height="120" rx="6"/>
+      <text class="t" x="127" y="222" text-anchor="middle">Workspace state</text>
+      <text class="s" x="127" y="244" text-anchor="middle">W · every RFx</text>
+      <text class="s" x="127" y="262" text-anchor="middle">S · active RFx</text>
+      <text class="s" x="127" y="280" text-anchor="middle">draft vs issued rev.</text>
+      <text class="s" x="127" y="298" text-anchor="middle">audit log</text>
+
+      <rect class="b-eng" x="223" y="200" width="134" height="120" rx="6"/>
+      <text class="t" x="290" y="222" text-anchor="middle">Evaluation engine</text>
+      <text class="s" x="290" y="244" text-anchor="middle">totals · L1/L2/L3</text>
+      <text class="s" x="290" y="262" text-anchor="middle">60/20/20 score</text>
+      <text class="s" x="290" y="280" text-anchor="middle">split award</text>
+      <text class="s" x="290" y="298" text-anchor="middle">₹25 L dual approval</text>
+
+      <rect class="b" x="386" y="200" width="134" height="120" rx="6"/>
+      <text class="t" x="453" y="222" text-anchor="middle">Quote intake</text>
+      <text class="s" x="453" y="244" text-anchor="middle">pdf.js · SheetJS</text>
+      <text class="s" x="453" y="262" text-anchor="middle">FileReader · canvas</text>
+      <text class="s" x="453" y="280" text-anchor="middle">USD/EUR/GBP → ₹</text>
+      <text class="s" x="453" y="298" text-anchor="middle">confidence flags</text>
+
+      <rect class="b" x="60" y="380" width="134" height="50" rx="6"/>
+      <text class="t" x="127" y="401" text-anchor="middle">localStorage</text>
+      <text class="s" x="127" y="419" text-anchor="middle">workspace · theme</text>
+
+      <!-- Internal flows -->
+      <line class="w" x1="127" y1="141" x2="127" y2="197" marker-start="url(#ah)" marker-end="url(#ah)"/>
+      <text class="al" x="133" y="174">edits · render</text>
+      <line class="w" x1="290" y1="197" x2="290" y2="141" marker-end="url(#ah)"/>
+      <text class="al" x="296" y="174">ranks · totals</text>
+      <line class="w" x1="195" y1="260" x2="220" y2="260" marker-end="url(#ah)"/>
+      <text class="al" x="208" y="251" text-anchor="middle">reads</text>
+      <path class="w" d="M453,322 V352 H110 V325" marker-end="url(#ah)"/>
+      <text class="al" x="300" y="345" text-anchor="middle">rates in ₹ · flags</text>
+      <line class="w" x1="80" y1="322" x2="80" y2="377" marker-end="url(#ah)"/>
+      <text class="al" x="86" y="370">saves</text>
+
+      <!-- claude.ai runtime -->
+      <rect class="bound" x="640" y="20" width="300" height="450" rx="14"/>
+      <text class="cap" x="656" y="40">CLAUDE.AI ARTIFACT RUNTIME</text>
+      <rect class="b-ai" x="660" y="70" width="260" height="118" rx="6"/>
+      <text class="t" x="676" y="92">sample → Claude</text>
+      <text class="s" x="676" y="114">runs on the viewer's Claude account</text>
+      <text class="s" x="676" y="132">default tier: co-pilot, extraction,</text>
+      <text class="s" x="676" y="150">analyst · quick tier: drafting</text>
+      <text class="s" x="676" y="168">JSON or streamed text · images in</text>
+
+      <rect class="b" x="660" y="220" width="260" height="72" rx="6"/>
+      <text class="t" x="676" y="242">db + user → saved views</text>
+      <text class="s" x="676" y="262">private to each signed-in user</text>
+
+      <rect class="b" x="660" y="322" width="260" height="56" rx="6"/>
+      <text class="t" x="676" y="344">downloads → CSV export</text>
+      <text class="s" x="676" y="362">viewer confirms each save</text>
+
+      <!-- Crossing the sandbox boundary -->
+      <line class="w-ai" x1="542" y1="104" x2="657" y2="104" marker-end="url(#ah-ai)"/>
+      <text class="al-ai" x="600" y="96" text-anchor="middle">prompt + data</text>
+      <line class="w-ai" x1="657" y1="150" x2="543" y2="150" marker-end="url(#ah-ai)"/>
+      <text class="al-ai" x="600" y="166" text-anchor="middle">JSON · text</text>
+      <line class="w" x1="543" y1="256" x2="657" y2="256" marker-start="url(#ah)" marker-end="url(#ah)"/>
+      <text class="al" x="600" y="248" text-anchor="middle">save · open</text>
+      <line class="w" x1="542" y1="350" x2="657" y2="350" marker-end="url(#ah)"/>
+      <text class="al" x="600" y="342" text-anchor="middle">CSV</text>
+
+      <!-- Loaded from CDNs -->
+      <rect class="b" x="60" y="500" width="200" height="56" rx="6"/>
+      <text class="t" x="160" y="522" text-anchor="middle">Google Fonts</text>
+      <text class="s" x="160" y="540" text-anchor="middle">Inter, JetBrains Mono, icons</text>
+      <line class="w" x1="127" y1="498" x2="127" y2="457" marker-end="url(#ah)"/>
+      <text class="al" x="133" y="482">type · icons</text>
+      <rect class="b" x="340" y="500" width="220" height="56" rx="6"/>
+      <text class="t" x="450" y="522" text-anchor="middle">cdnjs, loaded on demand</text>
+      <text class="s" x="450" y="540" text-anchor="middle">pdf.js 3.11.174 · SheetJS 0.18.5</text>
+      <line class="w" x1="453" y1="498" x2="453" y2="457" marker-end="url(#ah)"/>
+      <text class="al" x="447" y="482" text-anchor="end">on first upload</text>
+
+      <!-- Production integrations -->
+      <rect class="bound" x="20" y="592" width="920" height="112" rx="14"/>
+      <text class="cap" x="36" y="613">PRODUCTION INTEGRATIONS · NOT IN THE PROTOTYPE</text>
+      <rect class="b-dash" x="36" y="628" width="164" height="58" rx="6"/><text class="t" x="118" y="652" text-anchor="middle">ERP</text><text class="s" x="118" y="671" text-anchor="middle">SAP or Coupa POs</text>
+      <rect class="b-dash" x="217" y="628" width="164" height="58" rx="6"/><text class="t" x="299" y="652" text-anchor="middle">Email + e-signature</text><text class="s" x="299" y="671" text-anchor="middle">send and sign notices</text>
+      <rect class="b-dash" x="398" y="628" width="164" height="58" rx="6"/><text class="t" x="480" y="652" text-anchor="middle">FX rate feed</text><text class="s" x="480" y="671" text-anchor="middle">daily reference rate</text>
+      <rect class="b-dash" x="579" y="628" width="164" height="58" rx="6"/><text class="t" x="661" y="652" text-anchor="middle">Supplier portal</text><text class="s" x="661" y="671" text-anchor="middle">vendors upload quotes</text>
+      <rect class="b-dash" x="760" y="628" width="164" height="58" rx="6"/><text class="t" x="842" y="652" text-anchor="middle">SSO + roles</text><text class="s" x="842" y="671" text-anchor="middle">approvals by role</text>
+    </svg>
+    </div>
+    <figcaption><b>Red arrows are the only path to Claude.</b> The app sends Claude a prompt with the relevant RFx data and gets back JSON (form fields, extracted rates) or streamed text (analyst answers, letters). The evaluation engine never calls Claude, so every total, rank and saving is calculated in code. The dashed band shows what a production version connects to.</figcaption>
+  </figure>
+</section>
+
+<section>
+  <h2><span class="n">02</span>Quote to award: who does what</h2>
+  <p>Each step belongs to one actor. Claude only reads and writes; code validates and calculates; the buyer approves before anything moves on.</p>
+  <figure>
+    <div class="scroll">
+    <svg viewBox="0 0 1140 300" role="img" aria-label="Swimlane flow from quote to award: the buyer uploads a quote, code reads the file, Claude extracts rates as JSON, code validates and converts to rupees, the buyer reviews flags, code evaluates, the buyer awards, Claude drafts notices and the buyer sends them.">
+      <defs>
+        <marker id="ah2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="mk"/></marker>
+      </defs>
+      <rect class="lane" x="0" y="14" width="1140" height="80" rx="8"/>
+      <rect class="lane" x="0" y="104" width="1140" height="80" rx="8" style="opacity:.55"/>
+      <rect class="lane" x="0" y="194" width="1140" height="80" rx="8"/>
+      <text class="ln" x="14" y="58">Claude</text>
+      <text class="ln" x="14" y="148">App code</text>
+      <text class="ln" x="14" y="238">Buyer</text>
+
+      <!-- steps: x = 100 + i*116, w = 104; Claude y=26, Code y=116, Buyer y=206 -->
+      <rect class="b-buyer" x="100" y="206" width="104" height="56" rx="6"/><text class="t" x="152" y="230" text-anchor="middle">Upload quote</text><text class="s" x="152" y="248" text-anchor="middle">any format</text>
+      <rect class="b-code" x="216" y="116" width="104" height="56" rx="6"/><text class="t" x="268" y="140" text-anchor="middle">Read file</text><text class="s" x="268" y="158" text-anchor="middle">pdf.js · SheetJS</text>
+      <rect class="b-ai" x="332" y="26" width="104" height="56" rx="6"/><text class="t" x="384" y="50" text-anchor="middle">Extract</text><text class="s" x="384" y="68" text-anchor="middle">rates → JSON</text>
+      <rect class="b-code" x="448" y="116" width="104" height="56" rx="6"/><text class="t" x="500" y="140" text-anchor="middle">Validate</text><text class="s" x="500" y="158" text-anchor="middle">₹ · confidence</text>
+      <rect class="b-buyer" x="564" y="206" width="104" height="56" rx="6"/><text class="t" x="616" y="230" text-anchor="middle">Review flags</text><text class="s" x="616" y="248" text-anchor="middle">approve or fix</text>
+      <rect class="b-code" x="680" y="116" width="104" height="56" rx="6"/><text class="t" x="732" y="140" text-anchor="middle">Evaluate</text><text class="s" x="732" y="158" text-anchor="middle">L-ranks · split</text>
+      <rect class="b-buyer" x="796" y="206" width="104" height="56" rx="6"/><text class="t" x="848" y="230" text-anchor="middle">Award</text><text class="s" x="848" y="248" text-anchor="middle">CPO + Finance</text>
+      <rect class="b-ai" x="912" y="26" width="104" height="56" rx="6"/><text class="t" x="964" y="50" text-anchor="middle">Draft notices</text><text class="s" x="964" y="68" text-anchor="middle">award · regret</text>
+      <rect class="b-buyer" x="1028" y="206" width="104" height="56" rx="6"/><text class="t" x="1080" y="230" text-anchor="middle">Send</text><text class="s" x="1080" y="248" text-anchor="middle">copy · log</text>
+
+      <!-- hand-offs: right edge of step i to left edge of step i+1 -->
+      <path class="w" d="M204,234 H210 V144 H214" marker-end="url(#ah2)"/>
+      <path class="w" d="M320,144 H326 V54 H330" marker-end="url(#ah2)"/>
+      <path class="w" d="M436,54 H442 V144 H446" marker-end="url(#ah2)"/>
+      <path class="w" d="M552,144 H558 V234 H562" marker-end="url(#ah2)"/>
+      <path class="w" d="M668,234 H674 V144 H678" marker-end="url(#ah2)"/>
+      <path class="w" d="M784,144 H790 V234 H794" marker-end="url(#ah2)"/>
+      <path class="w" d="M900,234 H906 V54 H910" marker-end="url(#ah2)"/>
+      <path class="w" d="M1016,54 H1022 V234 H1026" marker-end="url(#ah2)"/>
+    </svg>
+    </div>
+    <figcaption><b>Claude appears twice, both times as a draft.</b> Extracted rates are checked and converted to ₹ in code, and low-confidence values stay out of the ranking until the buyer approves them. Award letters are drafts the buyer edits and sends.</figcaption>
+  </figure>
+  <div class="rules">
+    <div class="rule ai"><b>Claude drafts</b><span>Fills the create page, extracts rates, answers questions and writes letters, always as structured JSON or reviewable text.</span></div>
+    <div class="rule code"><b>Code calculates</b><span>Totals, L1/L2/L3 ranks, 60/20/20 scores, split-award savings, currency conversion and approval rules.</span></div>
+    <div class="rule buyer"><b>The buyer decides</b><span>Approves flagged prices, records approvals, executes the award and sends every notice.</span></div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="n">03</span>Tech stack</h2>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>Layer</th><th>Technology</th><th>Used for</th></tr></thead>
+    <tbody>
+      <tr><td>UI design</td><td>Google Stitch</td><td>First versions of the four core screens and the visual system (navy, red, Inter)</td></tr>
+      <tr><td>Front end</td><td>HTML5, CSS3, vanilla JavaScript (ES2020+)</td><td>All five tabs as render functions over one state object, with event delegation; no framework, no bundler</td></tr>
+      <tr><td>Styling</td><td>CSS custom properties, Grid, Flexbox, sticky positioning</td><td>Light and dark themes from one token set; layout that adapts down to phone width</td></tr>
+      <tr><td>Type and icons</td><td>Inter, JetBrains Mono, Material Symbols (Google Fonts)</td><td>Interface type, scanned-quote text, and only the icons the app uses</td></tr>
+      <tr><td>File reading</td><td>pdf.js 3.11.174, SheetJS 0.18.5 (cdnjs); FileReader, DOMParser, Canvas</td><td>PDF, Excel, CSV, text, email and image quotes read in the browser; scanned PDF pages rendered to images</td></tr>
+      <tr><td>AI</td><td>Claude, through the claude.ai artifact <code>sample</code> capability</td><td>Co-pilot form filling, quote extraction from text and images, analyst Q&amp;A, clarification and notice drafting; JSON and streamed responses</td></tr>
+      <tr><td>Hosting</td><td>claude.ai Artifacts</td><td>Sandboxed, shareable live link with no servers to run</td></tr>
+      <tr><td>Data</td><td>Browser localStorage; artifact <code>db</code> + <code>user</code></td><td>Each browser keeps its workspace of RFx; saved views are private to each signed-in user</td></tr>
+      <tr><td>Export</td><td>Artifact <code>downloads</code></td><td>CSV export of the comparison matrix</td></tr>
+      <tr><td>Build</td><td>Claude Code (Claude Opus 5.5), Node.js, Bash, PowerShell</td><td>Wrote and iterated the app; joins 13 source parts into one file and syntax-checks it</td></tr>
+      <tr><td>Testing</td><td>Headless Microsoft Edge, scripted browser checks</td><td>Layout screenshots in light and dark; end-to-end flows run with a stand-in for Claude</td></tr>
+      <tr><td>Source control</td><td>Git, GitHub</td><td><a href="https://github.com/avinashj89/procrex">github.com/avinashj89/procrex</a></td></tr>
+      <tr><td>Presentation</td><td>claude.ai Slides</td><td>13-slide pitch deck that exports to .pptx and PDF</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section>
+  <h2><span class="n">04</span>How it was built</h2>
+  <figure>
+    <div class="scroll">
+    <svg viewBox="0 0 960 220" role="img" aria-label="Build pipeline: screens designed in Google Stitch, exported through the Stitch MCP server, built with Claude Code into one HTML file, then published as a claude.ai artifact and a Slides deck and pushed to GitHub.">
+      <defs>
+        <marker id="ah3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="mk"/></marker>
+      </defs>
+      <rect class="b" x="0" y="76" width="170" height="70" rx="6"/>
+      <text class="t" x="85" y="104" text-anchor="middle">Google Stitch</text>
+      <text class="s" x="85" y="124" text-anchor="middle">4 screens designed</text>
+      <rect class="b" x="210" y="76" width="170" height="70" rx="6"/>
+      <text class="t" x="295" y="104" text-anchor="middle">Stitch MCP</text>
+      <text class="s" x="295" y="124" text-anchor="middle">export images + HTML</text>
+      <rect class="b-eng" x="420" y="46" width="230" height="130" rx="6"/>
+      <text class="t" x="535" y="72" text-anchor="middle">Claude Code</text>
+      <text class="s" x="535" y="96" text-anchor="middle">13 source parts</text>
+      <text class="s" x="535" y="116" text-anchor="middle">build.sh → one HTML file</text>
+      <text class="s" x="535" y="136" text-anchor="middle">node --check · headless Edge</text>
+      <text class="s" x="535" y="156" text-anchor="middle">git commits</text>
+      <rect class="b" x="720" y="16" width="240" height="50" rx="6"/>
+      <text class="t" x="736" y="37">claude.ai artifact</text><text class="s" x="736" y="55">live app</text>
+      <rect class="b" x="720" y="86" width="240" height="50" rx="6"/>
+      <text class="t" x="736" y="107">claude.ai Slides</text><text class="s" x="736" y="125">pitch deck</text>
+      <rect class="b" x="720" y="156" width="240" height="50" rx="6"/>
+      <text class="t" x="736" y="177">GitHub</text><text class="s" x="736" y="195">avinashj89/procrex</text>
+      <line class="w" x1="172" y1="111" x2="207" y2="111" marker-end="url(#ah3)"/>
+      <text class="al" x="190" y="68" text-anchor="middle">screens</text>
+      <line class="w" x1="382" y1="111" x2="417" y2="111" marker-end="url(#ah3)"/>
+      <text class="al" x="400" y="68" text-anchor="middle">designs</text>
+      <path class="w" d="M652,80 H686 V41 H717" marker-end="url(#ah3)"/>
+      <line class="w" x1="652" y1="111" x2="717" y2="111" marker-end="url(#ah3)"/>
+      <path class="w" d="M652,142 H686 V181 H717" marker-end="url(#ah3)"/>
+      <text class="al" x="692" y="34" text-anchor="end">publish</text>
+      <text class="al" x="692" y="104" text-anchor="end">publish</text>
+      <text class="al" x="692" y="198" text-anchor="end">git push</text>
+    </svg>
+    </div>
+    <figcaption><b>Design first, then build.</b> The four core screens started in Google Stitch; Claude Code turned them into a working single-file app, published it to claude.ai, built the deck from screenshots of it, and pushed the source to GitHub.</figcaption>
+  </figure>
+</section>
+
+<section>
+  <h2><span class="n">05</span>From prototype to production</h2>
+  <ul class="prod">
+    <li><b>Browser storage per viewer</b><span>A shared database with RFx, quotes and audit history, so a buying team works on the same events.</span></li>
+    <li><b>Buyer-entered exchange rate</b><span>The official daily reference rate, fetched automatically.</span></li>
+    <li><b>Notices logged, not sent</b><span>An email service and e-signature for award letters.</span></li>
+    <li><b>Quotes uploaded by the buyer</b><span>A supplier portal where vendors upload quotes themselves.</span></li>
+    <li><b>Simulated approvals</b><span>Single sign-on with roles, so the CPO and Finance approve in their own queue.</span></li>
+    <li><b>Award ends in the app</b><span>An ERP connector (SAP or Coupa) that raises the purchase order.</span></li>
+  </ul>
+</section>
+
+</main>
+<footer class="wrap">Procure-X RFx Manager · built by Avinash J · <a href="https://claude.ai/artifact/8a3cCrzvNdf1kp9pRYuKUQ">live app</a> · <a href="https://github.com/avinashj89/procrex">source on GitHub</a></footer>

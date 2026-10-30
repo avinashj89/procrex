@@ -8,6 +8,7 @@ Procure-X is a working prototype of an AI-assisted sourcing tool. A buyer descri
 |---|---|
 | **Live app** | https://claude.ai/artifact/8a3cCrzvNdf1kp9pRYuKUQ |
 | **Pitch deck** | https://claude.ai/artifact/9D74KSd867zeMb6TjfnDym |
+| **Architecture** | https://claude.ai/artifact/VPX1bUKNaVR8zdPCc7cidb |
 | **Walkthrough video** | [Add your Loom or Google Drive link] |
 
 > The AI features run on Claude inside claude.ai. Open the live link while signed in to claude.ai and allow Claude when asked. Everything else works in any browser.
@@ -99,6 +100,8 @@ Use **Reset example data** (clock icon, top right) to start again.
 
 ## How it's built
 
+The [architecture page](https://claude.ai/artifact/VPX1bUKNaVR8zdPCc7cidb) has the runtime diagram, the quote-to-award flow showing what Claude, the code and the buyer each do, the full tech stack, and how it was built. Its source is [`docs/architecture.html`](docs/architecture.html).
+
 - **One self-contained HTML file** ([`procurex-rfx-manager.html`](procurex-rfx-manager.html)): plain HTML, CSS and JavaScript, no framework and no build step.
 - **Hosting:** published as a [claude.ai artifact](https://claude.ai/artifact/8a3cCrzvNdf1kp9pRYuKUQ). Its runtime capabilities provide:
   - `sample`: calls to Claude for the co-pilot, quote extraction (including images), analyst and drafting, on the viewer's own Claude account.
@@ -128,6 +131,7 @@ Open `procurex-rfx-manager.html` in any modern browser. Every screen, calculatio
 procurex-rfx-manager.html    The app (single file)
 stitch/                      Original Google Stitch screen designs (image + HTML)
 test-quotes/                 Sample vendor quote (USD) for trying the upload
+docs/architecture.html       Architecture diagrams and tech stack (source of the architecture page)
 docs/screenshots/            Screens used in this README
 ```
 
